@@ -2,59 +2,177 @@
 
 ## Purpose
 
-These baseline scenarios define the minimum scenario set for architecture validation, acceptance testing, and deterministic regression.
+Baseline scenarios are deterministic simulation cases used to validate JamShield Recon-X Sim behavior under controlled conditions.
 
-## Scenario Set
+These scenarios define environmental and sensor conditions through scenario events. They do not directly define mission states. Mission states and localization modes are runtime outcomes produced by the autonomy stack during a deterministic run.
 
-### `baseline_nominal_v1`
+## Scenario Modeling Principles
 
-- Intent: validate nominal end-to-end operation without induced degradation
-- Environment: open sky route
-- Events: none
-- Expected mission path: `PREPARE -> GNSS_PRIMARY -> MISSION_COMPLETE`
-- Acceptance profile: `baseline_nominal_profile_v1`
+Baseline scenario documentation separates three concepts:
 
-### `urban_canyon_degradation_v1`
+- scenario events
+- localization response
+- mission state transitions
 
-- Intent: verify degraded GNSS handling without full denial
-- Environment: dense urban corridor
-- Events:
-  - `gnss_degradation_zone`
-  - `sensor_noise_override` on camera with bounded increase
-- Expected mission path: `PREPARE -> GNSS_PRIMARY -> GNSS_DEGRADED -> GNSS_PRIMARY -> MISSION_COMPLETE`
-- Acceptance profile: `urban_canyon_profile_v1`
+These concepts must not be merged into a single path expression.
 
-### `denial_corridor_v1`
+### Scenario events
 
-- Intent: verify deterministic fallback to VIO through a GNSS denial zone
-- Environment: industrial corridor
-- Events:
-  - `gnss_denial_zone`
-- Expected mission path: `PREPARE -> GNSS_PRIMARY -> VIO_PRIMARY -> GNSS_PRIMARY or MISSION_COMPLETE`
-- Acceptance profile: `denial_corridor_profile_v1`
+Scenario events define what the simulation injects, such as GNSS degradation, GNSS denial, communication degradation, or sensor noise changes.
 
-### `spoof_like_drift_recovery_v1`
+### Localization response
 
-- Intent: verify spoof-like bias detection and GNSS rejection while preserving mission continuity
-- Environment: semi-open route with stable visual texture
-- Events:
-  - `gnss_spoof_like_drift`
-- Expected mission path: `PREPARE -> GNSS_PRIMARY -> VIO_PRIMARY -> GNSS_PRIMARY or MISSION_COMPLETE`
-- Acceptance profile: `spoof_like_drift_profile_v1`
+Localization response describes how confidence-aware localization is expected to behave in terms of localization modes:
 
-### `comms_loss_with_gnss_instability_v1`
+- `GNSS_PRIMARY`
+- `BLENDED`
+- `VIO_PRIMARY`
+- `HOLD_LAST_SAFE`
 
-- Intent: verify health supervision under communication degradation combined with weak GNSS
-- Environment: mixed terrain route
-- Events:
-  - `gnss_degradation_zone`
-  - `communication_degradation`
-- Expected mission path: `PREPARE -> GNSS_PRIMARY -> GNSS_DEGRADED -> LOCALIZATION_CONTINGENCY -> VIO_PRIMARY or MISSION_ABORT`
-- Acceptance profile: `comms_instability_profile_v1`
+### Mission state transitions
 
-## Baseline Rules
+Mission state transitions describe deterministic mission continuity behavior in terms of mission states:
 
-- Each baseline scenario must have exactly one canonical manifest.
-- Acceptance thresholds are scenario-specific and defined in `../evaluation/acceptance-criteria.md`.
-- Regression runs use baseline scenarios before any expanded scenario library.
-- New scenarios may be added as a Future system extension, but baseline identifiers must remain stable for CI history.
+- `MISSION_PREPARE`
+- `MISSION_EXECUTE`
+- `MISSION_DEGRADED`
+- `MISSION_FALLBACK`
+- `MISSION_SAFE_HOLD`
+- `MISSION_ABORT`
+- `MISSION_COMPLETE`
+
+### Deterministic runs
+
+Each baseline scenario is executed as a deterministic run defined by a `scenario_manifest` and a fixed `run_seed`. The same manifest and seed must reproduce the same scenario event timeline and the same mission-level evaluation outcome.
+
+## Scenario Definition Structure
+
+Each baseline scenario is defined by a scenario manifest with a stable structure.
+
+Typical scenario-definition fields are:
+
+- `scenario_id`
+- `map_name`
+- `vehicle_spawn`
+- `route_waypoints`
+- `gnss_event_timeline`
+- `comm_event_timeline`
+- `sensor_noise_profile`
+- `run_seed`
+
+These fields describe scenario setup and event scheduling. They do not define runtime mission states or localization modes directly.
+
+## Baseline Scenario Set
+
+### Nominal Mission
+
+Scenario description:
+
+- Nominal route execution with no induced GNSS degradation and nominal sensor conditions.
+
+Scenario events:
+
+- no GNSS degradation
+- nominal sensor noise
+
+Expected localization behavior:
+
+- localization remains `GNSS_PRIMARY`
+
+Expected mission state behavior:
+
+- `MISSION_PREPARE -> MISSION_EXECUTE -> MISSION_COMPLETE`
+
+### GNSS Degraded Corridor
+
+Scenario description:
+
+- Route passes through a temporary region of reduced GNSS quality without full GNSS denial.
+
+Scenario events:
+
+- `gnss_degraded_corridor`
+
+Expected localization behavior:
+
+- `GNSS_PRIMARY -> BLENDED`
+
+Expected mission state behavior:
+
+- `MISSION_PREPARE -> MISSION_EXECUTE -> MISSION_DEGRADED -> MISSION_EXECUTE -> MISSION_COMPLETE`
+
+### GNSS Denied Zone
+
+Scenario description:
+
+- Route intersects a hard GNSS denial region that requires non-GNSS localization continuity.
+
+Scenario events:
+
+- `gnss_denied_zone`
+
+Expected localization behavior:
+
+- `GNSS_PRIMARY -> BLENDED -> VIO_PRIMARY`
+
+Expected mission state behavior:
+
+- `MISSION_PREPARE -> MISSION_EXECUTE -> MISSION_FALLBACK -> MISSION_EXECUTE -> MISSION_COMPLETE`
+
+### Spoof-Like Drift Scenario
+
+Scenario description:
+
+- GNSS observations experience a gradual spoof-like drift while the route remains otherwise executable.
+
+Scenario events:
+
+- `spoof_like_drift`
+
+Expected localization behavior:
+
+- `GNSS_PRIMARY -> BLENDED`
+
+Expected mission state behavior:
+
+- `MISSION_PREPARE -> MISSION_EXECUTE -> MISSION_DEGRADED -> MISSION_EXECUTE`
+
+### GNSS Denied + Communication Degradation
+
+Scenario description:
+
+- GNSS denial is combined with degraded communication timing or freshness to stress localization resilience and mission continuity.
+
+Scenario events:
+
+- `gnss_denied_zone`
+- communication degradation
+
+Expected localization behavior:
+
+- `GNSS_PRIMARY -> VIO_PRIMARY`
+
+Expected mission state behavior:
+
+- `MISSION_PREPARE -> MISSION_EXECUTE -> MISSION_FALLBACK -> MISSION_SAFE_HOLD`
+
+## Deterministic Execution
+
+Each baseline scenario must be reproducible from:
+
+- a `scenario_manifest`
+- a fixed `run_seed`
+- fixed runtime configuration
+- fixed simulator timing configuration
+
+Deterministic execution means that the same scenario inputs reproduce the same scenario event ordering and replay-compatible evaluation outcome.
+
+## Scenario Evaluation Role
+
+Baseline scenarios exist to test:
+
+- localization resilience
+- trust behavior
+- mission continuity decisions
+
+They provide the minimum scenario set for acceptance testing and deterministic regression in simulation-first development.
