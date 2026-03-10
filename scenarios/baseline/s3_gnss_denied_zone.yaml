@@ -1,0 +1,8 @@
+scenario_id: s3_gnss_denied_zone
+map_name: industrial_corridor
+vehicle_spawn: {"x": 0.0, "y": 0.0, "z": 28.0}
+route_waypoints:
+  - {"x": 50.0, "y": 10.0, "z": 28.0}
+  - {"x": 140.0, "y": 40.0, "z": 28.0}
+gnss_condition: denied
+run_seed: 333

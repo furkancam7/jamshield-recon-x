@@ -1,0 +1,9 @@
+scenario_id: s2_gnss_degraded_corridor
+map_name: urban_corridor
+vehicle_spawn: {"x": 5.0, "y": -10.0, "z": 32.0}
+route_waypoints:
+  - {"x": 80.0, "y": -10.0, "z": 32.0}
+  - {"x": 140.0, "y": 30.0, "z": 32.0}
+gnss_condition: degraded
+run_seed: 222
+
