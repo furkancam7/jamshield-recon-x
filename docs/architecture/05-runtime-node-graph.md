@@ -57,8 +57,8 @@ It complements the higher-level architecture documents by describing how runtime
 4. `gnss_trust_node` evaluates GNSS behavior using GNSS observations, sync status, and non-GNSS motion context, then publishes GNSS trust on `/trust/*`.
 5. `vio_node` consumes camera and IMU data and publishes VIO localization outputs on `/localization/*`.
 6. `fusion_node` receives GNSS localization, VIO localization, sync state, and trust-derived source confidence, then publishes the fused localization estimate and source status on `/localization/*`.
-7. `trust_engine_node` aggregates trust signals, estimator condition, and mission health into source confidence and `mission_confidence` outputs on `/trust/*`.
-8. `mission_continuity_node` consumes fused localization, trust decisions, mission health, and scenario progress, then publishes deterministic mission state, action, and explanation on `/mission/*`.
+7. `trust_engine_node` aggregates trust signals, estimator condition, and mission health into source confidence, localization confidence, and `mission_confidence` outputs on `/trust/*`.
+8. `mission_continuity_node` consumes fused localization, trust confidence outputs, mission health, and scenario progress, then publishes deterministic mission state, action, and explanation on `/mission/*`.
 9. `sitl_bridge_node` consumes mission actions and sends simulator control inputs to the simulated vehicle.
 10. The simulator responds to those inputs, producing the next sensor cycle for the runtime loop.
 11. In parallel, `ew_risk_map_node` and `tactical_summary_node` consume runtime state and produce tactical outputs on `/tactical/*`.
@@ -78,9 +78,9 @@ It complements the higher-level architecture documents by describing how runtime
 | `/localization/vio/estimate` | `vio_node` | `gnss_trust_node`, `fusion_node`, `trust_engine_node`, `health_monitor_node`, `logger_node` | Publishes VIO localization estimate and estimator quality context. | Yes | No |
 | `/localization/fused/estimate` | `fusion_node` | `mission_continuity_node`, `ew_risk_map_node`, `health_monitor_node`, `logger_node` | Publishes confidence-aware fused localization output. | Yes | No |
 | `/localization/source_status` | `fusion_node` | `trust_engine_node`, `logger_node` | Publishes active localization mode and source gating status. | Yes | No |
-| `/trust/gnss` | `gnss_trust_node` | `trust_engine_node`, `ew_risk_map_node`, `logger_node` | Publishes GNSS trust and GNSS anomaly outputs. | Yes | No |
-| `/trust/source_confidence` | `trust_engine_node` | `fusion_node`, `ew_risk_map_node`, `logger_node` | Publishes source confidence for confidence-aware localization. | Yes | No |
-| `/trust/decision` | `trust_engine_node` | `mission_continuity_node`, `tactical_summary_node`, `health_monitor_node`, `logger_node` | Publishes trust aggregation outputs that inform downstream mission continuity and tactical outputs. | Yes | No |
+| `/trust/gnss/value` | `gnss_trust_node` | `trust_engine_node`, `ew_risk_map_node`, `logger_node` | Publishes GNSS trust and GNSS anomaly outputs. | Yes | No |
+| `/trust/localization/confidence` | `trust_engine_node` | `fusion_node`, `ew_risk_map_node`, `logger_node` | Publishes localization confidence for confidence-aware localization and tactical interpretation. | Yes | No |
+| `/trust/mission_confidence` | `trust_engine_node` | `mission_continuity_node`, `tactical_summary_node`, `health_monitor_node`, `logger_node` | Publishes aggregated mission confidence for downstream mission continuity and tactical outputs. | Yes | No |
 | `/mission/state` | `mission_continuity_node` | `tactical_summary_node`, `health_monitor_node`, `operator_station_node`, `logger_node` | Publishes deterministic mission state. | Yes | No |
 | `/mission/action` | `mission_continuity_node` | `sitl_bridge_node`, `logger_node` | Publishes mission actions sent to the simulator. | Yes | No |
 | `/mission/explanation` | `mission_continuity_node` | `operator_station_node`, `logger_node` | Publishes mission-state explanations and reasoned transition context. | No | No |
@@ -96,9 +96,9 @@ It complements the higher-level architecture documents by describing how runtime
 
 ### GNSS trust path
 
-`gnss_adapter_node -> /sensors/gnss/fix -> gnss_trust_node -> /trust/gnss -> trust_engine_node`
+`gnss_adapter_node -> /sensors/gnss/fix -> gnss_trust_node -> /trust/gnss/value -> trust_engine_node`
 
-This path detects GNSS degradation and produces `gnss_trust`. It is runtime-critical because trust decisions depend on it, but it is not itself a mission decision path.
+This path detects GNSS degradation and produces `gnss_trust`. It is runtime-critical because downstream confidence aggregation depends on it, but it is not itself a mission decision path.
 
 ### VIO fallback path
 
@@ -110,13 +110,13 @@ This path provides non-GNSS localization continuity. It becomes critical when GN
 
 `gnss_adapter_node + vio_node + trust_engine_node + time_sync_node -> fusion_node -> /localization/fused/estimate`
 
-This path implements confidence-aware localization. `fusion_node` consumes trust-derived source confidence, but fusion is not trust aggregation.
+This path implements confidence-aware localization. `fusion_node` consumes trust-derived localization confidence, but fusion is not trust aggregation.
 
 ### Trust aggregation path
 
-`gnss_trust_node + vio_node + health_monitor_node + fusion_node -> trust_engine_node -> /trust/*`
+`gnss_trust_node + vio_node + health_monitor_node + fusion_node -> trust_engine_node -> /trust/localization/confidence and /trust/mission_confidence`
 
-This path aggregates trust signals and estimator condition into `mission_confidence` and related trust outputs. It does not produce mission decisions or control commands.
+This path aggregates trust signals and estimator condition into localization confidence, `mission_confidence`, and related trust outputs. It does not produce mission decisions or control commands.
 
 ### Mission decision path
 
@@ -247,9 +247,9 @@ vio_node --> trust_engine_node : /localization/vio/estimate
 vio_node --> health_monitor_node : /localization/vio/estimate
 vio_node --> logger_node : /localization/vio/estimate
 
-gnss_trust_node --> trust_engine_node : /trust/gnss
-gnss_trust_node --> ew_risk_map_node : /trust/gnss
-gnss_trust_node --> logger_node : /trust/gnss
+gnss_trust_node --> trust_engine_node : /trust/gnss/value
+gnss_trust_node --> ew_risk_map_node : /trust/gnss/value
+gnss_trust_node --> logger_node : /trust/gnss/value
 
 health_monitor_node --> trust_engine_node : /mission/health
 health_monitor_node --> mission_continuity_node : /mission/health
@@ -265,13 +265,13 @@ fusion_node --> health_monitor_node : /localization/fused/estimate
 fusion_node --> logger_node : /localization/fused/estimate
 fusion_node --> logger_node : /localization/source_status
 
-trust_engine_node --> fusion_node : /trust/source_confidence
-trust_engine_node --> mission_continuity_node : /trust/decision
-trust_engine_node --> tactical_summary_node : /trust/decision
-trust_engine_node --> health_monitor_node : /trust/decision
-trust_engine_node --> ew_risk_map_node : /trust/source_confidence
-trust_engine_node --> logger_node : /trust/source_confidence
-trust_engine_node --> logger_node : /trust/decision
+trust_engine_node --> fusion_node : /trust/localization/confidence
+trust_engine_node --> mission_continuity_node : /trust/mission_confidence
+trust_engine_node --> tactical_summary_node : /trust/mission_confidence
+trust_engine_node --> health_monitor_node : /trust/mission_confidence
+trust_engine_node --> ew_risk_map_node : /trust/localization/confidence
+trust_engine_node --> logger_node : /trust/localization/confidence
+trust_engine_node --> logger_node : /trust/mission_confidence
 
 mission_continuity_node --> sitl_bridge_node : /mission/action
 mission_continuity_node --> tactical_summary_node : /mission/state

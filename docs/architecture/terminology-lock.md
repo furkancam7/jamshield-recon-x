@@ -33,7 +33,7 @@ Node names must use `snake_case` and end with `_node`.
 | `gnss_trust_node` | Computes GNSS trust and GNSS anomaly indicators from GNSS behavior. |
 | `vio_node` | Produces VIO localization estimates and VIO quality indicators from camera and IMU data. |
 | `fusion_node` | Produces the fused localization estimate and the active localization source status. |
-| `trust_engine_node` | Converts GNSS trust and estimator health into confidence-aware localization decisions. |
+| `trust_engine_node` | Aggregates trust signals and publishes source confidence, localization confidence, and mission confidence outputs for downstream autonomy logic. |
 | `mission_continuity_node` | Applies deterministic mission continuity logic and publishes mission state, action, and explanation. |
 | `sitl_bridge_node` | Translates mission actions into simulator control inputs. |
 | `ew_risk_map_node` | Builds an EW risk map from navigation degradation evidence. |
@@ -52,7 +52,7 @@ Only the following topic families are allowed.
 | `/sensors/*` | Raw or near-raw simulator-derived sensor streams used by runtime autonomy. | `camera_adapter_node`, `imu_adapter_node`, `gnss_adapter_node` |
 | `/sync/*` | Simulation time alignment, freshness, and sync health outputs. | `time_sync_node` |
 | `/localization/*` | Source-specific and fused localization estimates plus source status outputs. | `gnss_adapter_node`, `vio_node`, `fusion_node` |
-| `/trust/*` | GNSS trust, source confidence, and trust decision outputs. | `gnss_trust_node`, `trust_engine_node` |
+| `/trust/*` | GNSS trust, source confidence, localization confidence, and mission confidence outputs. | `gnss_trust_node`, `trust_engine_node` |
 | `/mission/*` | Mission continuity state, action, explanation, and health outputs. | `mission_continuity_node`, `health_monitor_node` |
 | `/tactical/*` | Tactical intelligence products for operator interpretation. | `ew_risk_map_node`, `tactical_summary_node` |
 | `/events/*` | Scenario lifecycle events and detected fault events. | `scenario_orchestrator_node`, `health_monitor_node` |
@@ -64,6 +64,7 @@ Locked constraints:
 - `/truth/*` must never be consumed by runtime autonomy nodes.
 - `/truth/*` may be consumed only by `logger_node` and `evaluation_node`.
 - `/evaluation/*` is evaluation output, not runtime input.
+- Mission decisions must be published only under `/mission/*`.
 - `operator_station_node` is read-only during deterministic runs.
 
 ## 4. Localization Modes

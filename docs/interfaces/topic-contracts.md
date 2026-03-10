@@ -31,9 +31,10 @@ Examples:
 
 - `/sensors/camera/front/image`
 - `/localization/gnss/estimate`
-- `/localization/fused/pose`
+- `/localization/fused/estimate`
 - `/trust/gnss/value`
 - `/trust/localization/confidence`
+- `/trust/mission_confidence`
 - `/mission/state`
 - `/tactical/summary`
 
@@ -58,8 +59,8 @@ Naming rules:
 | `/localization/vio/estimate` | `LocalizationEstimate` | `vio_node` | `gnss_trust_node`, `fusion_node`, `trust_engine_node`, `health_monitor_node`, `logger_node` | runtime autonomy | VIO estimate with estimator quality |
 | `/localization/fused/estimate` | `LocalizationEstimate` | `fusion_node` | `mission_continuity_node`, `ew_risk_map_node`, `health_monitor_node`, `logger_node` | runtime autonomy | Active fused localization estimate |
 | `/localization/source_status` | `LocalizationSourceStatus` | `fusion_node` | `trust_engine_node`, `logger_node` | runtime autonomy | Current source mode and quality flags |
-| `/trust/gnss` | `GnssTrustReport` | `gnss_trust_node` | `trust_engine_node`, `ew_risk_map_node`, `logger_node` | runtime autonomy | GNSS trust and anomaly indicators |
-| `/trust/source_confidence` | `SourceConfidenceReport` | `trust_engine_node` | `fusion_node`, `ew_risk_map_node`, `logger_node` | runtime autonomy | Confidence-aware localization input |
+| `/trust/gnss/value` | `GnssTrustReport` | `gnss_trust_node` | `trust_engine_node`, `ew_risk_map_node`, `logger_node` | runtime autonomy | GNSS trust and anomaly indicators |
+| `/trust/localization/confidence` | `SourceConfidenceReport` | `trust_engine_node` | `fusion_node`, `ew_risk_map_node`, `logger_node` | runtime autonomy | Confidence-aware localization input |
 | `/trust/mission_confidence` | `TrustDecision` | `trust_engine_node` | `mission_continuity_node`, `tactical_summary_node`, `health_monitor_node`, `logger_node` | runtime autonomy | Aggregated trust output used by downstream mission continuity and tactical interpretation |
 | `/mission/state` | `MissionState` | `mission_continuity_node` | `tactical_summary_node`, `health_monitor_node`, `operator_station_node`, `logger_node` | runtime autonomy | Authoritative mission continuity state |
 | `/mission/action` | `MissionAction` | `mission_continuity_node` | `sitl_bridge_node`, `logger_node` | runtime autonomy | Deterministic mission action output |
