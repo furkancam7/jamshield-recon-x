@@ -43,6 +43,12 @@ Node names must use `snake_case` and end with `_node`.
 | `health_monitor_node` | Detects freshness, heartbeat, sync, and estimator health faults. |
 | `operator_station_node` | Displays mission, tactical, and evaluation outputs without driving runtime autonomy decisions. |
 
+Locked node-boundary rules:
+
+- `health_monitor_node` belongs to the Verification and Operations layer, not the Core Autonomy layer.
+- `trust_engine_node` publishes trust and confidence outputs only.
+- Mission decisions are produced only by `mission_continuity_node`.
+
 ## 3. Topic Families
 
 Only the following topic families are allowed.
@@ -66,6 +72,17 @@ Locked constraints:
 - `/evaluation/*` is evaluation output, not runtime input.
 - Mission decisions must be published only under `/mission/*`.
 - `operator_station_node` is read-only during deterministic runs.
+
+Locked trust-topic examples:
+
+- `/trust/gnss/value`
+- `/trust/vio/value`
+- `/trust/localization/confidence`
+- `/trust/mission_confidence`
+
+Usage rule:
+
+- Topics under `/trust/*` carry trust or confidence values and must not imply mission-decision authority.
 
 ## 4. Localization Modes
 

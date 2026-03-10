@@ -10,6 +10,8 @@ Each scenario separates:
 - localization mode progression
 - mission state progression
 
+Each baseline scenario is authored as a `scenario_manifest` and executed as a `deterministic_run`.
+
 ## Nominal Mission
 
 Scenario events:
@@ -28,7 +30,7 @@ Expected mission states:
 
 Scenario events:
 
-- temporary GNSS degradation zone
+- `gnss_degraded_corridor`
 
 Expected localization modes:
 
@@ -42,7 +44,7 @@ Expected mission states:
 
 Scenario events:
 
-- hard GNSS denial region
+- `gnss_denied_zone`
 
 Expected localization modes:
 
@@ -56,7 +58,7 @@ Expected mission states:
 
 Scenario events:
 
-- gradual GNSS drift
+- `spoof_like_drift`
 
 Expected localization modes:
 
@@ -70,7 +72,7 @@ Expected mission states:
 
 Scenario events:
 
-- GNSS denial
+- `gnss_denied_zone`
 - communication degradation
 
 Expected localization modes:

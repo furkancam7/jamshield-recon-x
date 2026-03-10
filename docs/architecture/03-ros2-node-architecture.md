@@ -54,7 +54,7 @@ This file must remain consistent with `terminology-lock.md`.
 | `gnss_trust_node` | Computes GNSS trust and GNSS anomaly outputs. | `/sensors/*`, `/localization/*`, `/sync/*` | `/trust/*` |
 | `vio_node` | Computes VIO estimates and VIO quality outputs. | `/sensors/*`, `/sync/*` | `/localization/*` |
 | `fusion_node` | Produces confidence-aware fused localization and active source status. | `/localization/*`, `/trust/*`, `/sync/*` | `/localization/*` |
-| `trust_engine_node` | Aggregates trust signals and publishes source confidence, localization confidence, and `mission_confidence` for downstream mission continuity. | `/trust/*`, `/localization/*`, `/mission/*` | `/trust/*` |
+| `trust_engine_node` | Aggregates trust signals and publishes source confidence, localization confidence, and `mission_confidence` for downstream mission continuity. | `/trust/*`, `/localization/*`, `/mission/health` | `/trust/*` |
 | `mission_continuity_node` | Applies deterministic mission continuity logic and publishes mission decisions. | `/localization/*`, `/trust/*`, `/mission/*`, `/events/*` | `/mission/*` |
 | `sitl_bridge_node` | Converts mission actions into simulator control commands. | `/mission/*` | simulator control inputs |
 | `ew_risk_map_node` | Generates EW risk map outputs from navigation degradation evidence. | `/trust/*`, `/localization/*`, `/events/*` | `/tactical/*` |
@@ -104,7 +104,7 @@ The runtime autonomy set is:
 - `mission_continuity_node`
 - `sitl_bridge_node`
 
-These nodes drive localization, trust aggregation, fused state estimation, and deterministic mission continuity during live simulation.
+These nodes drive localization, trust aggregation, fused state estimation, and deterministic mission continuity during live simulation. Mission decisions are produced only by `mission_continuity_node`.
 
 ### Tactical intelligence
 

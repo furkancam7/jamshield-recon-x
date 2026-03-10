@@ -73,6 +73,7 @@ Trust evaluation verifies whether trust behavior responds correctly to runtime d
 
 - `gnss_trust`
 - `vio_trust`
+- `sync_quality`
 - `localization_confidence`
 - `mission_confidence`
 
@@ -80,6 +81,7 @@ Trust evaluation verifies whether trust behavior responds correctly to runtime d
 
 - `gnss_trust` must decrease when GNSS anomalies occur.
 - `vio_trust` must reflect VIO tracking quality and decrease when VIO support degrades.
+- `sync_quality` must decrease when timing alignment or message freshness degrades.
 - `localization_confidence` must decrease when fused localization quality or continuity degrades.
 - `mission_confidence` must decrease when localization resilience weakens or when the system approaches `MISSION_SAFE_HOLD` or `MISSION_ABORT`.
 
@@ -114,7 +116,7 @@ Scenario validation categories describe controlled scenario conditions. They are
 ### Communication degradation
 
 - Scenario condition: degraded timing or message freshness
-- Expected mission behavior: controlled degraded behavior, safe hold, or justified abort
+- Expected mission behavior: controlled degraded behavior, `MISSION_SAFE_HOLD`, or justified abort
 - Expected localization behavior: reduction in `localization_confidence` and possible entry into `HOLD_LAST_SAFE`
 
 ## Provisional Thresholds
