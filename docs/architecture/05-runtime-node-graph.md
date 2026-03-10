@@ -33,7 +33,6 @@ It complements the higher-level architecture documents by describing how runtime
 - `trust_engine_node`
 - `mission_continuity_node`
 - `sitl_bridge_node`
-- `health_monitor_node`
 
 ### Tactical Intelligence Nodes
 
@@ -42,6 +41,7 @@ It complements the higher-level architecture documents by describing how runtime
 
 ### Verification and Operations Nodes
 
+- `health_monitor_node`
 - `logger_node`
 - `evaluation_node`
 
@@ -57,7 +57,7 @@ It complements the higher-level architecture documents by describing how runtime
 4. `gnss_trust_node` evaluates GNSS behavior using GNSS observations, sync status, and non-GNSS motion context, then publishes GNSS trust on `/trust/*`.
 5. `vio_node` consumes camera and IMU data and publishes VIO localization outputs on `/localization/*`.
 6. `fusion_node` receives GNSS localization, VIO localization, sync state, and trust-derived source confidence, then publishes the fused localization estimate and source status on `/localization/*`.
-7. `trust_engine_node` converts trust outputs, estimator condition, and mission health into source confidence and trust decisions on `/trust/*`.
+7. `trust_engine_node` aggregates trust signals, estimator condition, and mission health into source confidence and `mission_confidence` outputs on `/trust/*`.
 8. `mission_continuity_node` consumes fused localization, trust decisions, mission health, and scenario progress, then publishes deterministic mission state, action, and explanation on `/mission/*`.
 9. `sitl_bridge_node` consumes mission actions and sends simulator control inputs to the simulated vehicle.
 10. The simulator responds to those inputs, producing the next sensor cycle for the runtime loop.
@@ -80,7 +80,7 @@ It complements the higher-level architecture documents by describing how runtime
 | `/localization/source_status` | `fusion_node` | `trust_engine_node`, `logger_node` | Publishes active localization mode and source gating status. | Yes | No |
 | `/trust/gnss` | `gnss_trust_node` | `trust_engine_node`, `ew_risk_map_node`, `logger_node` | Publishes GNSS trust and GNSS anomaly outputs. | Yes | No |
 | `/trust/source_confidence` | `trust_engine_node` | `fusion_node`, `ew_risk_map_node`, `logger_node` | Publishes source confidence for confidence-aware localization. | Yes | No |
-| `/trust/decision` | `trust_engine_node` | `mission_continuity_node`, `tactical_summary_node`, `health_monitor_node`, `logger_node` | Publishes trust decisions used by mission continuity and tactical outputs. | Yes | No |
+| `/trust/decision` | `trust_engine_node` | `mission_continuity_node`, `tactical_summary_node`, `health_monitor_node`, `logger_node` | Publishes trust aggregation outputs that inform downstream mission continuity and tactical outputs. | Yes | No |
 | `/mission/state` | `mission_continuity_node` | `tactical_summary_node`, `health_monitor_node`, `operator_station_node`, `logger_node` | Publishes deterministic mission state. | Yes | No |
 | `/mission/action` | `mission_continuity_node` | `sitl_bridge_node`, `logger_node` | Publishes mission actions sent to the simulator. | Yes | No |
 | `/mission/explanation` | `mission_continuity_node` | `operator_station_node`, `logger_node` | Publishes mission-state explanations and reasoned transition context. | No | No |
@@ -111,6 +111,12 @@ This path provides non-GNSS localization continuity. It becomes critical when GN
 `gnss_adapter_node + vio_node + trust_engine_node + time_sync_node -> fusion_node -> /localization/fused/estimate`
 
 This path implements confidence-aware localization. `fusion_node` consumes trust-derived source confidence, but fusion is not trust aggregation.
+
+### Trust aggregation path
+
+`gnss_trust_node + vio_node + health_monitor_node + fusion_node -> trust_engine_node -> /trust/*`
+
+This path aggregates trust signals and estimator condition into `mission_confidence` and related trust outputs. It does not produce mission decisions or control commands.
 
 ### Mission decision path
 
@@ -164,8 +170,9 @@ Ground truth is not a runtime input. Evaluation is not runtime autonomy.
 - Node naming is locked by `terminology-lock.md`.
 - Topic families are controlled and may change only through architecture review.
 - Runtime autonomy and evaluation must remain separated.
-- `gnss_trust` and related trust outputs are not mission decisions.
+- `gnss_trust`, `mission_confidence`, and related trust outputs are not mission decisions.
 - Mission continuity is not raw localization and is not produced by `fusion_node`.
+- `trust_engine_node` aggregates trust signals and does not publish control commands.
 - Tactical outputs do not control the runtime autonomy loop.
 - The core autonomy loop ends at `sitl_bridge_node`.
 
@@ -193,7 +200,6 @@ package "Core Autonomy Nodes" {
   component trust_engine_node
   component mission_continuity_node
   component sitl_bridge_node
-  component health_monitor_node
 }
 
 package "Tactical Intelligence Nodes" {
@@ -202,6 +208,7 @@ package "Tactical Intelligence Nodes" {
 }
 
 package "Verification and Operations Nodes" {
+  component health_monitor_node
   component logger_node
   component evaluation_node
 }

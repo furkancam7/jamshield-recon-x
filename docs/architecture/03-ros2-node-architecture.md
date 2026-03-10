@@ -25,7 +25,6 @@ This file must remain consistent with `terminology-lock.md`.
 - `trust_engine_node`
 - `mission_continuity_node`
 - `sitl_bridge_node`
-- `health_monitor_node`
 
 ### Tactical Intelligence Nodes
 
@@ -34,6 +33,7 @@ This file must remain consistent with `terminology-lock.md`.
 
 ### Verification and Operations Nodes
 
+- `health_monitor_node`
 - `logger_node`
 - `evaluation_node`
 
@@ -54,7 +54,7 @@ This file must remain consistent with `terminology-lock.md`.
 | `gnss_trust_node` | Computes GNSS trust and GNSS anomaly outputs. | `/sensors/*`, `/localization/*`, `/sync/*` | `/trust/*` |
 | `vio_node` | Computes VIO estimates and VIO quality outputs. | `/sensors/*`, `/sync/*` | `/localization/*` |
 | `fusion_node` | Produces confidence-aware fused localization and active source status. | `/localization/*`, `/trust/*`, `/sync/*` | `/localization/*` |
-| `trust_engine_node` | Converts trust and estimator health into localization source decisions. | `/trust/*`, `/localization/*`, `/mission/*` | `/trust/*` |
+| `trust_engine_node` | Aggregates trust signals and publishes `mission_confidence` and source-confidence outputs for downstream mission continuity. | `/trust/*`, `/localization/*`, `/mission/*` | `/trust/*` |
 | `mission_continuity_node` | Applies deterministic mission continuity logic and publishes mission decisions. | `/localization/*`, `/trust/*`, `/mission/*`, `/events/*` | `/mission/*` |
 | `sitl_bridge_node` | Converts mission actions into simulator control commands. | `/mission/*` | simulator control inputs |
 | `ew_risk_map_node` | Generates EW risk map outputs from navigation degradation evidence. | `/trust/*`, `/localization/*`, `/events/*` | `/tactical/*` |
@@ -103,9 +103,8 @@ The runtime autonomy set is:
 - `trust_engine_node`
 - `mission_continuity_node`
 - `sitl_bridge_node`
-- `health_monitor_node`
 
-These nodes drive localization, trust, health, and deterministic mission continuity during live simulation.
+These nodes drive localization, trust aggregation, fused state estimation, and deterministic mission continuity during live simulation.
 
 ### Tactical intelligence
 
@@ -120,11 +119,12 @@ These nodes derive operator-facing tactical outputs from runtime evidence but do
 
 The verification and replay set is:
 
+- `health_monitor_node`
 - `ground_truth_adapter_node`
 - `logger_node`
 - `evaluation_node`
 
-These nodes support logging, replay, metrics extraction, and offline verification.
+These nodes support runtime health observation, logging, replay, metrics extraction, and offline verification.
 
 ### Operator-facing
 

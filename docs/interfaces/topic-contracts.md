@@ -7,6 +7,45 @@
 - `/truth/*` is reserved for evaluation-only ground truth.
 - `/evaluation/*` exists only during replay or offline evaluation.
 
+## Topic Naming Convention
+
+Topic families define the top-level namespace boundary for a class of data. Concrete topics are the repository-approved contracts that live under those families.
+
+Locked topic families are:
+
+- `/sensors/*`
+- `/sync/*`
+- `/localization/*`
+- `/trust/*`
+- `/mission/*`
+- `/tactical/*`
+- `/events/*`
+- `/truth/*`
+- `/evaluation/*`
+
+Concrete topic naming follows the general pattern:
+
+`/family/component/resource`
+
+Examples:
+
+- `/sensors/camera/front/image`
+- `/localization/gnss/estimate`
+- `/localization/fused/pose`
+- `/trust/gnss/value`
+- `/trust/localization/confidence`
+- `/mission/state`
+- `/tactical/summary`
+
+Naming rules:
+
+- The family identifies the data domain.
+- The component identifies the producing subsystem or data source.
+- The resource identifies the specific contract carried on the topic.
+- Some concrete topics may use a shorter form such as `/mission/state` when the family contract is singular and already unambiguous.
+- Topic names under `/trust/*` must not imply control or mission decision authority.
+- Mission decisions are published only under `/mission/*`.
+
 ## Topic Matrix
 
 | Topic | Message | Publisher | Subscribers | Class | Notes |
@@ -21,7 +60,7 @@
 | `/localization/source_status` | `LocalizationSourceStatus` | `fusion_node` | `trust_engine_node`, `logger_node` | runtime autonomy | Current source mode and quality flags |
 | `/trust/gnss` | `GnssTrustReport` | `gnss_trust_node` | `trust_engine_node`, `ew_risk_map_node`, `logger_node` | runtime autonomy | GNSS trust and anomaly indicators |
 | `/trust/source_confidence` | `SourceConfidenceReport` | `trust_engine_node` | `fusion_node`, `ew_risk_map_node`, `logger_node` | runtime autonomy | Confidence-aware localization input |
-| `/trust/decision` | `TrustDecision` | `trust_engine_node` | `mission_continuity_node`, `tactical_summary_node`, `health_monitor_node`, `logger_node` | runtime autonomy | Source transition and gating decision |
+| `/trust/mission_confidence` | `TrustDecision` | `trust_engine_node` | `mission_continuity_node`, `tactical_summary_node`, `health_monitor_node`, `logger_node` | runtime autonomy | Aggregated trust output used by downstream mission continuity and tactical interpretation |
 | `/mission/state` | `MissionState` | `mission_continuity_node` | `tactical_summary_node`, `health_monitor_node`, `operator_station_node`, `logger_node` | runtime autonomy | Authoritative mission continuity state |
 | `/mission/action` | `MissionAction` | `mission_continuity_node` | `sitl_bridge_node`, `logger_node` | runtime autonomy | Deterministic mission action output |
 | `/mission/explanation` | `MissionExplanation` | `mission_continuity_node` | `operator_station_node`, `logger_node` | runtime autonomy | Transition rationale with reason codes |
