@@ -1,0 +1,31 @@
+{
+  "checks": [
+    {
+      "detail": "Expected nominal trust score > degraded trust score > denied trust score.",
+      "name": "trust_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must not end in MISSION_NORMAL.",
+      "name": "denied_not_normal",
+      "passed": true
+    },
+    {
+      "detail": "Degraded scenario must not be classified as denied.",
+      "name": "degraded_not_denied",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario must not collapse to MISSION_EMERGENCY_LAND.",
+      "name": "nominal_not_emergency",
+      "passed": true
+    }
+  ],
+  "overall_result": "PASS",
+  "run_id": "20260310T184704Z",
+  "scenario_ids": [
+    "s1_nominal",
+    "s2_gnss_degraded_corridor",
+    "s3_gnss_denied_zone"
+  ]
+}

@@ -36,9 +36,17 @@ def main() -> int:
 
     manifest = load_manifest(args.scenario)
     snapshot = ScenarioOrchestrator(manifest).build_snapshot()
+    vio_healthy = not args.vio_unhealthy
+    logger.info(
+        "Resolved inputs scenario_id=%s gnss_condition=%s vio_healthy=%s output_dir=%s",
+        manifest.scenario_id,
+        manifest.gnss_condition,
+        vio_healthy,
+        args.output_dir,
+    )
     trust_assessment = TrustService().evaluate(
         snapshot=snapshot,
-        vio_healthy=not args.vio_unhealthy,
+        vio_healthy=vio_healthy,
     )
     mission_state = MissionStateMachine().update(
         mission_confidence=trust_assessment.mission_confidence,
@@ -73,6 +81,14 @@ def main() -> int:
         "mission_state": mission_state.value,
         "report_path": str(report_path),
     }
+    logger.info(
+        "Computed outputs scenario_id=%s gnss_state=%s trust_score=%.3f mission_confidence=%.3f mission_state=%s",
+        manifest.scenario_id,
+        trust_assessment.gnss_state,
+        trust_assessment.trust_score,
+        trust_assessment.mission_confidence,
+        mission_state.value,
+    )
     logger.info("Vertical slice completed for scenario %s", manifest.scenario_id)
     print(json.dumps(summary, indent=2))
     return 0
@@ -80,4 +96,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

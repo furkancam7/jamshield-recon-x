@@ -1,0 +1,14 @@
+{
+  "ate_m": 0.5,
+  "gnss_condition": "nominal",
+  "gnss_state": "nominal",
+  "ground_truth_usage": "evaluation_only",
+  "map_name": "open_field",
+  "mission_confidence": 0.97,
+  "mission_state": "MISSION_NORMAL",
+  "route_length_m": 123.246,
+  "run_seed": 111,
+  "scenario_id": "s1_nominal",
+  "trust_score": 0.96,
+  "vio_healthy": true
+}

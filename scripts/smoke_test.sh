@@ -8,8 +8,8 @@ TMP_DIR="$(mktemp -d)"
 export PYTHONPATH="$ROOT_DIR/src${PYTHONPATH:+:$PYTHONPATH}"
 
 "$PYTHON_BIN" -m unittest discover -s "$ROOT_DIR/tests/unit"
-"$PYTHON_BIN" -m scenario_orchestrator.main "$ROOT_DIR/scenarios/baseline/s1_nominal.yaml" --output-dir "$TMP_DIR"
-"$PYTHON_BIN" -m scenario_orchestrator.main "$ROOT_DIR/scenarios/baseline/s3_gnss_denied_zone.yaml" --output-dir "$TMP_DIR" --vio-unhealthy
+
+VIO_HEALTHY=true "$ROOT_DIR/scripts/run_scenario.sh" "$ROOT_DIR/scenarios/baseline/s1_nominal.yaml" "$TMP_DIR"
+VIO_HEALTHY=false "$ROOT_DIR/scripts/run_scenario.sh" "$ROOT_DIR/scenarios/baseline/s3_gnss_denied_zone.yaml" "$TMP_DIR"
 
 echo "Smoke test artifacts written to $TMP_DIR"
-

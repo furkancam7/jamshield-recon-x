@@ -1,0 +1,14 @@
+{
+  "ate_m": 8.0,
+  "gnss_condition": "denied",
+  "gnss_state": "denied",
+  "ground_truth_usage": "evaluation_only",
+  "map_name": "industrial_corridor",
+  "mission_confidence": 0.287,
+  "mission_state": "MISSION_SAFE_HOLD",
+  "route_length_m": 145.859,
+  "run_seed": 333,
+  "scenario_id": "s3_gnss_denied_zone",
+  "trust_score": 0.05,
+  "vio_healthy": true
+}

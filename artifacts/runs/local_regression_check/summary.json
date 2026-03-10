@@ -1,0 +1,54 @@
+{
+  "checks": [
+    {
+      "detail": "Expected nominal trust score > degraded trust score > denied trust score.",
+      "name": "trust_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must not end in MISSION_NORMAL.",
+      "name": "denied_not_normal",
+      "passed": true
+    },
+    {
+      "detail": "Degraded scenario must not be classified as denied.",
+      "name": "degraded_not_denied",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario must not collapse to MISSION_EMERGENCY_LAND.",
+      "name": "nominal_not_emergency",
+      "passed": true
+    }
+  ],
+  "overall_regression_result": "PASS",
+  "run_id": "local_regression_check",
+  "scenario_ids": [
+    "s1_nominal",
+    "s2_gnss_degraded_corridor",
+    "s3_gnss_denied_zone"
+  ],
+  "scenarios": [
+    {
+      "ate_rmse": 0.5,
+      "gnss_state": "nominal",
+      "gnss_trust_score": 0.96,
+      "mission_state": "MISSION_NORMAL",
+      "scenario_id": "s1_nominal"
+    },
+    {
+      "ate_rmse": 3.0,
+      "gnss_state": "degraded",
+      "gnss_trust_score": 0.59,
+      "mission_state": "MISSION_DEGRADED",
+      "scenario_id": "s2_gnss_degraded_corridor"
+    },
+    {
+      "ate_rmse": 8.0,
+      "gnss_state": "denied",
+      "gnss_trust_score": 0.05,
+      "mission_state": "MISSION_SAFE_HOLD",
+      "scenario_id": "s3_gnss_denied_zone"
+    }
+  ]
+}

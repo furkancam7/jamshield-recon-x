@@ -1,0 +1,14 @@
+{
+  "ate_m": 3.0,
+  "gnss_condition": "degraded",
+  "gnss_state": "degraded",
+  "ground_truth_usage": "evaluation_only",
+  "map_name": "urban_corridor",
+  "mission_confidence": 0.693,
+  "mission_state": "MISSION_DEGRADED",
+  "route_length_m": 147.111,
+  "run_seed": 222,
+  "scenario_id": "s2_gnss_degraded_corridor",
+  "trust_score": 0.59,
+  "vio_healthy": true
+}
