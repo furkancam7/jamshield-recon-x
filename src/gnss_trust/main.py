@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from common.config import load_app_config
+from common.config import resolve_app_config
 from scenario_orchestrator.manifest_loader import load_manifest
 from scenario_orchestrator.orchestrator import ScenarioOrchestrator
 
@@ -28,10 +28,18 @@ def main() -> int:
         default=str(DEFAULT_CONFIG_PATH),
         help="Path to the simulation config file.",
     )
+    parser.add_argument(
+        "--config-override",
+        help="Optional CLI override config applied after any scenario override.",
+    )
     args = parser.parse_args()
 
-    config = load_app_config(args.config)
     manifest = load_manifest(args.scenario)
+    config = resolve_app_config(
+        base_path=args.config,
+        scenario_override_path=manifest.config_override_path,
+        cli_override_path=args.config_override,
+    )
     snapshot = ScenarioOrchestrator(manifest).build_snapshot()
     assessment = TrustService(config.trust).evaluate(
         snapshot, vio_healthy=not args.vio_unhealthy

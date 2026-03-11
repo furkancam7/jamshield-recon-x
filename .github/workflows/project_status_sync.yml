@@ -1,0 +1,32 @@
+name: Project Status Sync
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, closed]
+  issues:
+    types: [opened, edited, reopened, closed, labeled]
+
+jobs:
+  sync-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Determine URL
+        id: target
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "url=${{ github.event.pull_request.html_url }}" >> $GITHUB_OUTPUT
+          else
+            echo "url=${{ github.event.issue.html_url }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Add item to project if needed
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+          OWNER: furkancam7
+          PROJECT_NUMBER: 1
+          ITEM_URL: ${{ steps.target.outputs.url }}
+        run: |
+          gh project item-add "$PROJECT_NUMBER" --owner "$OWNER" --url "$ITEM_URL" || true

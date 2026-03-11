@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from common.config import load_app_config
+from common.config import resolve_app_config
 from .state_machine import MissionStateMachine
 
 DEFAULT_CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "sim" / "default.yaml"
@@ -25,9 +25,16 @@ def main() -> int:
         default=str(DEFAULT_CONFIG_PATH),
         help="Path to the simulation config file.",
     )
+    parser.add_argument(
+        "--config-override",
+        help="Optional CLI override config applied after the base config.",
+    )
     args = parser.parse_args()
 
-    config = load_app_config(args.config)
+    config = resolve_app_config(
+        base_path=args.config,
+        cli_override_path=args.config_override,
+    )
     state = MissionStateMachine(config=config.mission).update(
         mission_confidence=args.mission_confidence,
         gnss_state=args.gnss_state,
