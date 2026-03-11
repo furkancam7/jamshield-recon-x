@@ -1,0 +1,63 @@
+name: Agent Task
+description: Work item eligible for agent execution
+title: "[TASK] "
+labels: ["task", "agent-ready"]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+    validations:
+      required: true
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints
+      description: Include architecture and runtime boundaries
+    validations:
+      required: true
+
+  - type: textarea
+    id: files
+    attributes:
+      label: Files Likely Affected
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: Use checkbox format
+      value: |
+        - [ ] Implementation complete
+        - [ ] Tests added/updated
+        - [ ] CI passes
+        - [ ] Docs updated if needed
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation Steps
+    validations:
+      required: true
+
+  - type: dropdown
+    id: agent_eligible
+    attributes:
+      label: Agent Eligible
+      options:
+        - "yes"
+        - "no"
+    validations:
+      required: true
