@@ -6,4 +6,7 @@ route_waypoints:
   - {"x": 120.0, "y": 20.0, "z": 30.0}
 gnss_condition: nominal
 run_seed: 111
-
+metadata:
+  title: Nominal Open Field Baseline
+  description: Baseline nominal GNSS scenario for regression and smoke validation.
+  owner: autonomy-sim

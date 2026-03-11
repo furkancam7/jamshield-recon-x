@@ -1,10 +1,39 @@
-"""YAML loading helpers with a stdlib fallback parser."""
+"""YAML loading helpers and app config loading."""
 
 from __future__ import annotations
 
 import json
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+
+
+@dataclass(frozen=True)
+class TrustConfig:
+    quality_weight: float
+    availability_weight: float
+    mission_confidence_weight: float
+    vio_bonus: float
+    denied_outage_ratio_threshold: float
+    denied_trust_threshold: float
+    degraded_trust_threshold: float
+
+
+@dataclass(frozen=True)
+class MissionConfig:
+    nominal_confidence_threshold: float
+    degraded_confidence_threshold: float
+    denied_fallback_confidence_threshold: float
+    emergency_land_confidence_threshold: float
+    denied_allowed_states: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class AppConfig:
+    config_id: str
+    schema_version: str
+    trust: TrustConfig
+    mission: MissionConfig
 
 
 def load_yaml_file(path: str | Path) -> dict[str, Any]:
@@ -28,6 +57,75 @@ def load_yaml_file(path: str | Path) -> dict[str, Any]:
         raise ValueError(f"Top-level YAML document must be a mapping: {source_path}")
 
     return data
+
+
+def load_app_config(path: str | Path) -> AppConfig:
+    payload = load_yaml_file(path)
+    return _validate_app_config(payload, Path(path))
+
+
+def _validate_app_config(payload: dict[str, Any], source_path: Path) -> AppConfig:
+    required_fields = {"config_id", "schema_version", "trust", "mission"}
+    missing = required_fields.difference(payload)
+    if missing:
+        missing_list = ", ".join(sorted(missing))
+        raise ValueError(f"Config missing required fields: {missing_list}")
+
+    trust_payload = _require_mapping(payload["trust"], "trust")
+    mission_payload = _require_mapping(payload["mission"], "mission")
+
+    denied_allowed_states = mission_payload.get("denied_allowed_states")
+    if not isinstance(denied_allowed_states, list) or not denied_allowed_states:
+        raise ValueError("mission.denied_allowed_states must be a non-empty list.")
+
+    return AppConfig(
+        config_id=str(payload["config_id"]).strip(),
+        schema_version=str(payload["schema_version"]).strip(),
+        trust=TrustConfig(
+            quality_weight=_read_float(trust_payload, "quality_weight"),
+            availability_weight=_read_float(trust_payload, "availability_weight"),
+            mission_confidence_weight=_read_float(
+                trust_payload, "mission_confidence_weight"
+            ),
+            vio_bonus=_read_float(trust_payload, "vio_bonus"),
+            denied_outage_ratio_threshold=_read_float(
+                trust_payload, "denied_outage_ratio_threshold"
+            ),
+            denied_trust_threshold=_read_float(
+                trust_payload, "denied_trust_threshold"
+            ),
+            degraded_trust_threshold=_read_float(
+                trust_payload, "degraded_trust_threshold"
+            ),
+        ),
+        mission=MissionConfig(
+            nominal_confidence_threshold=_read_float(
+                mission_payload, "nominal_confidence_threshold"
+            ),
+            degraded_confidence_threshold=_read_float(
+                mission_payload, "degraded_confidence_threshold"
+            ),
+            denied_fallback_confidence_threshold=_read_float(
+                mission_payload, "denied_fallback_confidence_threshold"
+            ),
+            emergency_land_confidence_threshold=_read_float(
+                mission_payload, "emergency_land_confidence_threshold"
+            ),
+            denied_allowed_states=tuple(str(state) for state in denied_allowed_states),
+        ),
+    )
+
+
+def _require_mapping(value: Any, field_name: str) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        raise ValueError(f"{field_name} must be a mapping.")
+    return value
+
+
+def _read_float(payload: dict[str, Any], field_name: str) -> float:
+    if field_name not in payload:
+        raise ValueError(f"Missing config field: {field_name}")
+    return float(payload[field_name])
 
 
 def _parse_simple_yaml(text: str) -> dict[str, Any]:
@@ -166,4 +264,3 @@ def _parse_scalar(value: str) -> Any:
         return int(value)
     except ValueError:
         return value
-

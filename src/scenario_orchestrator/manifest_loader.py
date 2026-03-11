@@ -26,6 +26,7 @@ class ScenarioManifest:
     route_waypoints: list[Position3D]
     gnss_condition: str
     run_seed: int
+    metadata: dict[str, str]
 
 
 def load_manifest(path: str | Path) -> ScenarioManifest:
@@ -41,6 +42,7 @@ def _validate_manifest(payload: dict[str, Any], source_path: Path) -> ScenarioMa
         "route_waypoints",
         "gnss_condition",
         "run_seed",
+        "metadata",
     }
     missing = required_fields.difference(payload)
     if missing:
@@ -76,6 +78,8 @@ def _validate_manifest(payload: dict[str, Any], source_path: Path) -> ScenarioMa
     if run_seed < 0:
         raise ValueError("run_seed must be non-negative.")
 
+    metadata = _parse_metadata(payload["metadata"])
+
     return ScenarioManifest(
         scenario_id=scenario_id,
         map_name=map_name,
@@ -83,6 +87,7 @@ def _validate_manifest(payload: dict[str, Any], source_path: Path) -> ScenarioMa
         route_waypoints=route_waypoints,
         gnss_condition=gnss_condition,
         run_seed=run_seed,
+        metadata=metadata,
     )
 
 
@@ -101,3 +106,22 @@ def _parse_position(value: Any, field_name: str) -> Position3D:
         z=float(value["z"]),
     )
 
+
+def _parse_metadata(value: Any) -> dict[str, str]:
+    if not isinstance(value, dict):
+        raise ValueError("metadata must be a mapping.")
+
+    required_fields = {"title", "description", "owner"}
+    missing = required_fields.difference(value)
+    if missing:
+        missing_list = ", ".join(sorted(missing))
+        raise ValueError(f"metadata missing required fields: {missing_list}")
+
+    metadata: dict[str, str] = {}
+    for field_name in sorted(required_fields):
+        field_value = str(value[field_name]).strip()
+        if not field_value:
+            raise ValueError(f"metadata.{field_name} must not be empty.")
+        metadata[field_name] = field_value
+
+    return metadata

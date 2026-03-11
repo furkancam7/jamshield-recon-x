@@ -1,0 +1,25 @@
+{
+  "ate_m": 8.0,
+  "config_id": "sim-v1",
+  "gnss_condition": "denied",
+  "gnss_state": "denied",
+  "ground_truth_usage": "evaluation_only",
+  "map_name": "industrial_corridor",
+  "mission_confidence": 0.038,
+  "mission_state": "MISSION_EMERGENCY_LAND",
+  "route_length_m": 145.859,
+  "run_id": "phase3_validation",
+  "run_seed": 333,
+  "scenario_id": "s3_gnss_denied_zone",
+  "scenario_metadata": {
+    "description": "Regression scenario covering GNSS denial with forced fallback degradation.",
+    "owner": "autonomy-sim",
+    "title": "Denied Industrial Corridor"
+  },
+  "schema_version": "1.0",
+  "software_revision": "25d5a04269334b183a581013344975665e41765c",
+  "timestamp": "2026-03-11T07:53:42Z",
+  "trust_score": 0.05,
+  "vio_healthy": false,
+  "vio_state": "lost"
+}

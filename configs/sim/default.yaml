@@ -1,0 +1,19 @@
+config_id: sim-v1
+schema_version: "1.0"
+trust:
+  quality_weight: 0.8
+  availability_weight: 0.2
+  mission_confidence_weight: 0.75
+  vio_bonus: 0.25
+  denied_outage_ratio_threshold: 0.8
+  denied_trust_threshold: 0.25
+  degraded_trust_threshold: 0.75
+mission:
+  nominal_confidence_threshold: 0.8
+  degraded_confidence_threshold: 0.5
+  denied_fallback_confidence_threshold: 0.3
+  emergency_land_confidence_threshold: 0.2
+  denied_allowed_states:
+    - MISSION_FALLBACK
+    - MISSION_SAFE_HOLD
+    - MISSION_EMERGENCY_LAND

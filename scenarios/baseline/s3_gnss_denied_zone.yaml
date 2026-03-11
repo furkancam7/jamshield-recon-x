@@ -6,3 +6,7 @@ route_waypoints:
   - {"x": 140.0, "y": 40.0, "z": 28.0}
 gnss_condition: denied
 run_seed: 333
+metadata:
+  title: Denied Industrial Corridor
+  description: Regression scenario covering GNSS denial with forced fallback degradation.
+  owner: autonomy-sim

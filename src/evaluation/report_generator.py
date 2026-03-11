@@ -6,9 +6,13 @@ import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+from evaluation.artifact_schema import REPORT_SCHEMA_VERSION, validate_report
+
 
 @dataclass(frozen=True)
 class EvaluationReport:
+    schema_version: str
+    run_id: str
     scenario_id: str
     map_name: str
     run_seed: int
@@ -17,20 +21,26 @@ class EvaluationReport:
     trust_score: float
     mission_confidence: float
     vio_healthy: bool
+    vio_state: str
     mission_state: str
     ate_m: float
     route_length_m: float
     ground_truth_usage: str
+    config_id: str
+    software_revision: str
+    timestamp: str
+    scenario_metadata: dict[str, str]
 
 
 def write_report(output_dir: str | Path, report: EvaluationReport) -> Path:
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
+    payload = asdict(report)
+    validate_report(payload)
     report_path = output_path / f"{report.scenario_id}_report.json"
     report_path.write_text(
-        json.dumps(asdict(report), indent=2, sort_keys=True),
+        json.dumps(payload, indent=2, sort_keys=True),
         encoding="utf-8",
     )
     return report_path
-

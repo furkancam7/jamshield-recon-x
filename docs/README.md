@@ -32,6 +32,7 @@ This documentation does not claim hardware validation. Any reference to hardware
 - `evaluation/`: metrics, acceptance criteria, regression protocol
 - `runbooks/`: local setup, simulation execution, replay analysis, troubleshooting
 - `decisions/`: architecture decision records
+- `roadmap/`: phase-based master plan and live progress tracker
 
 ## Reading Order
 
@@ -40,7 +41,8 @@ This documentation does not claim hardware validation. Any reference to hardware
 3. `interfaces/topic-contracts.md`
 4. `scenario-design/scenario-manifest-spec.md`
 5. `evaluation/metrics.md`
-6. `decisions/ADR-001-ground-truth-is-evaluation-only.md`
+6. `roadmap/master-plan.md`
+7. `decisions/ADR-001-ground-truth-is-evaluation-only.md`
 
 ## Terminology
 

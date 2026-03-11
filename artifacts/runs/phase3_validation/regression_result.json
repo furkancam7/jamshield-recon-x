@@ -1,0 +1,41 @@
+{
+  "checks": [
+    {
+      "detail": "Expected nominal trust score > degraded trust score > denied trust score.",
+      "name": "trust_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must not end in MISSION_NORMAL.",
+      "name": "denied_not_normal",
+      "passed": true
+    },
+    {
+      "detail": "Degraded scenario must not be classified as denied.",
+      "name": "degraded_not_denied",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario must not collapse to MISSION_EMERGENCY_LAND.",
+      "name": "nominal_not_emergency",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario trust score must remain at or above 0.90.",
+      "name": "nominal_minimum_trust_threshold",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must end in the allowed denied-state set.",
+      "name": "denied_allowed_mission_states",
+      "passed": true
+    }
+  ],
+  "overall_result": "PASS",
+  "run_id": "phase3_validation",
+  "scenario_ids": [
+    "s1_nominal",
+    "s2_gnss_degraded_corridor",
+    "s3_gnss_denied_zone"
+  ]
+}

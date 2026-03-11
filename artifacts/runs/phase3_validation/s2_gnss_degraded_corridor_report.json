@@ -1,0 +1,25 @@
+{
+  "ate_m": 3.0,
+  "config_id": "sim-v1",
+  "gnss_condition": "degraded",
+  "gnss_state": "degraded",
+  "ground_truth_usage": "evaluation_only",
+  "map_name": "urban_corridor",
+  "mission_confidence": 0.693,
+  "mission_state": "MISSION_DEGRADED",
+  "route_length_m": 147.111,
+  "run_id": "phase3_validation",
+  "run_seed": 222,
+  "scenario_id": "s2_gnss_degraded_corridor",
+  "scenario_metadata": {
+    "description": "Regression scenario covering degraded but non-denied GNSS conditions.",
+    "owner": "autonomy-sim",
+    "title": "Degraded Urban Corridor"
+  },
+  "schema_version": "1.0",
+  "software_revision": "25d5a04269334b183a581013344975665e41765c",
+  "timestamp": "2026-03-11T07:53:41Z",
+  "trust_score": 0.59,
+  "vio_healthy": true,
+  "vio_state": "healthy"
+}

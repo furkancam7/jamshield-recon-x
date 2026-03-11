@@ -6,4 +6,7 @@ route_waypoints:
   - {"x": 140.0, "y": 30.0, "z": 32.0}
 gnss_condition: degraded
 run_seed: 222
-
+metadata:
+  title: Degraded Urban Corridor
+  description: Regression scenario covering degraded but non-denied GNSS conditions.
+  owner: autonomy-sim

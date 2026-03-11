@@ -1,6 +1,7 @@
 from pathlib import Path
 import unittest
 
+from common.config import load_app_config
 from gnss_trust.trust_service import TrustService
 from scenario_orchestrator.manifest_loader import load_manifest
 from scenario_orchestrator.orchestrator import ScenarioOrchestrator
@@ -8,13 +9,15 @@ from scenario_orchestrator.orchestrator import ScenarioOrchestrator
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 SCENARIO_DIR = ROOT_DIR / "scenarios" / "baseline"
+CONFIG_PATH = ROOT_DIR / "configs" / "sim" / "default.yaml"
 
 
 class GnssTrustTests(unittest.TestCase):
     def _evaluate(self, scenario_name: str):
         manifest = load_manifest(SCENARIO_DIR / scenario_name)
         snapshot = ScenarioOrchestrator(manifest).build_snapshot()
-        return TrustService().evaluate(snapshot, vio_healthy=True)
+        config = load_app_config(CONFIG_PATH)
+        return TrustService(config.trust).evaluate(snapshot, vio_healthy=True)
 
     def test_nominal_has_highest_trust(self) -> None:
         nominal = self._evaluate("s1_nominal.yaml")
@@ -30,4 +33,3 @@ class GnssTrustTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

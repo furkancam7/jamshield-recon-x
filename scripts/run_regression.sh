@@ -5,6 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 RUN_ID="${1:-$(date -u +%Y%m%dT%H%M%SZ)}"
 RUN_DIR="$ROOT_DIR/artifacts/runs/$RUN_ID"
+CONFIG_PATH="${CONFIG_PATH:-$ROOT_DIR/configs/sim/default.yaml}"
 
 SCENARIOS=(
   "$ROOT_DIR/scenarios/baseline/s1_nominal.yaml"
@@ -25,11 +26,11 @@ for scenario in "${SCENARIOS[@]}"; do
   fi
 
   echo "Scenario $scenario_name uses VIO_HEALTHY=$vio_healthy"
-  VIO_HEALTHY="$vio_healthy" "$ROOT_DIR/scripts/run_scenario.sh" "$scenario" "$RUN_DIR"
+  RUN_ID="$RUN_ID" CONFIG_PATH="$CONFIG_PATH" VIO_HEALTHY="$vio_healthy" "$ROOT_DIR/scripts/run_scenario.sh" "$scenario" "$RUN_DIR"
 done
 
 set +e
-"$PYTHON_BIN" -m evaluation.regression_compare "$RUN_DIR" --output "$RUN_DIR/regression_result.json"
+"$PYTHON_BIN" -m evaluation.regression_compare "$RUN_DIR" --config "$CONFIG_PATH" --output "$RUN_DIR/regression_result.json"
 REGRESSION_EXIT=$?
 set -e
 
