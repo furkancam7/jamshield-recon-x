@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from math import isfinite
 from pathlib import Path
 from typing import Any
 
@@ -69,18 +70,16 @@ def _validate_app_config(payload: dict[str, Any], source_path: Path) -> AppConfi
     missing = required_fields.difference(payload)
     if missing:
         missing_list = ", ".join(sorted(missing))
-        raise ValueError(f"Config missing required fields: {missing_list}")
+        raise ValueError(
+            f"Config missing required fields in {source_path}: {missing_list}"
+        )
 
     trust_payload = _require_mapping(payload["trust"], "trust")
     mission_payload = _require_mapping(payload["mission"], "mission")
 
-    denied_allowed_states = mission_payload.get("denied_allowed_states")
-    if not isinstance(denied_allowed_states, list) or not denied_allowed_states:
-        raise ValueError("mission.denied_allowed_states must be a non-empty list.")
-
     return AppConfig(
-        config_id=str(payload["config_id"]).strip(),
-        schema_version=str(payload["schema_version"]).strip(),
+        config_id=_read_string(payload, "config_id"),
+        schema_version=_read_string(payload, "schema_version"),
         trust=TrustConfig(
             quality_weight=_read_float(trust_payload, "quality_weight"),
             availability_weight=_read_float(trust_payload, "availability_weight"),
@@ -111,7 +110,10 @@ def _validate_app_config(payload: dict[str, Any], source_path: Path) -> AppConfi
             emergency_land_confidence_threshold=_read_float(
                 mission_payload, "emergency_land_confidence_threshold"
             ),
-            denied_allowed_states=tuple(str(state) for state in denied_allowed_states),
+            denied_allowed_states=_read_string_list(
+                mission_payload,
+                "denied_allowed_states",
+            ),
         ),
     )
 
@@ -125,7 +127,55 @@ def _require_mapping(value: Any, field_name: str) -> dict[str, Any]:
 def _read_float(payload: dict[str, Any], field_name: str) -> float:
     if field_name not in payload:
         raise ValueError(f"Missing config field: {field_name}")
-    return float(payload[field_name])
+
+    raw_value = payload[field_name]
+    if isinstance(raw_value, bool):
+        raise ValueError(f"Config field {field_name} must be numeric, got boolean.")
+
+    try:
+        value = float(raw_value)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"Config field {field_name} must be numeric.") from exc
+
+    if not isfinite(value):
+        raise ValueError(f"Config field {field_name} must be finite.")
+
+    return value
+
+
+def _read_string(payload: dict[str, Any], field_name: str) -> str:
+    if field_name not in payload:
+        raise ValueError(f"Missing config field: {field_name}")
+
+    raw_value = payload[field_name]
+    if not isinstance(raw_value, str):
+        raise ValueError(f"Config field {field_name} must be a string.")
+
+    value = raw_value.strip()
+    if not value:
+        raise ValueError(f"Config field {field_name} must be a non-empty string.")
+
+    return value
+
+
+def _read_string_list(payload: dict[str, Any], field_name: str) -> tuple[str, ...]:
+    if field_name not in payload:
+        raise ValueError(f"Missing config field: {field_name}")
+
+    raw_value = payload[field_name]
+    if not isinstance(raw_value, list) or not raw_value:
+        raise ValueError(f"{field_name} must be a non-empty list.")
+
+    values: list[str] = []
+    for item in raw_value:
+        if not isinstance(item, str):
+            raise ValueError(f"{field_name} entries must be strings.")
+        value = item.strip()
+        if not value:
+            raise ValueError(f"{field_name} entries must be non-empty strings.")
+        values.append(value)
+
+    return tuple(values)
 
 
 def _parse_simple_yaml(text: str) -> dict[str, Any]:
