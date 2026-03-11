@@ -42,7 +42,9 @@ This documentation does not claim hardware validation. Any reference to hardware
 4. `scenario-design/scenario-manifest-spec.md`
 5. `evaluation/metrics.md`
 6. `roadmap/master-plan.md`
-7. `decisions/ADR-001-ground-truth-is-evaluation-only.md`
+7. `roadmap/phase-03-closure.md`
+8. `roadmap/phase-04-backlog.md`
+9. `decisions/ADR-001-ground-truth-is-evaluation-only.md`
 
 ## Terminology
 

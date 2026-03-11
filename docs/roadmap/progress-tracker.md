@@ -12,7 +12,7 @@
 
 - Son güncelleme: `2026-03-11`
 - Çalışma referansı: `Faz 2 sonu / Faz 3 başı`
-- Aktif faz: `Faz 3 - Config and Artifact Hardening`
+- Aktif faz: `Faz 4 - VIO Health Upgrade`
 - Ana hedef: `Simulation Production` omurgasını kapatmak
 - Bu dosyanın amacı: ne yapıldı, ne eksik, ne bloklu, hangi kanıtla ilerliyoruz sorularını tek yerde tutmak
 
@@ -23,8 +23,8 @@
 | 0 | Architecture Lock | Tamamlandı | 2026-03-11 | `docs/architecture/terminology-lock.md`, `docs/decisions/ADR-001..003` | Periyodik docs drift kontrolü |
 | 1 | First Executable Vertical Slice | Tamamlandı | 2026-03-11 | `src/scenario_orchestrator/main.py`, `scripts/smoke_test.sh` | Büyük refactor sonrası smoke re-validation |
 | 2 | Determinism and Regression Baseline | Tamamlandı | 2026-03-11 | `scripts/run_regression.sh`, `src/evaluation/summary_report.py` | Regression kapsamını büyütme ihtiyacı |
-| 3 | Config and Artifact Hardening | Devam Ediyor | 2026-03-11 | `src/evaluation/artifact_schema.py`, `configs/sim/default.yaml` | Faz kapanış review ve sign-off |
-| 4 | VIO Health Upgrade | Yapılmadı | - | - | Faz başlamadı |
+| 3 | Config and Artifact Hardening | Tamamlandı | 2026-03-11 | `docs/roadmap/phase-03-closure.md`, `artifacts/runs/phase3_validation/` | Periyodik schema/version drift kontrolü |
+| 4 | VIO Health Upgrade | Devam Ediyor | 2026-03-11 | `docs/roadmap/phase-04-backlog.md` | Contract implementasyonu ve regression ekleri |
 | 5 | Real VIO Metric Skeleton | Yapılmadı | - | - | Faz başlamadı |
 | 6 | Localization Fusion | Yapılmadı | - | - | Faz başlamadı |
 | 7 | Trust Engine Maturity | Yapılmadı | - | - | Faz başlamadı |
@@ -39,11 +39,11 @@
 
 ## Aktif Faz Detayı
 
-### Faz 3 - Config and Artifact Hardening
+### Faz 4 - VIO Health Upgrade
 
 **Amaç**
 
-Davranışı config-driven yapmak ve artifact sözleşmesini sabitlemek.
+`vio_healthy` ikili yapısını mission continuity ve regression için daha anlamlı VIO health modeline dönüştürmek.
 
 **Durum**
 
@@ -51,55 +51,50 @@ Davranışı config-driven yapmak ve artifact sözleşmesini sabitlemek.
 
 **Checklist - Yapılacaklar**
 
-- [x] Threshold ve policy değerlerini config dosyasına taşı
-- [x] `config_id` alanını evaluation artifacts içine ekle
-- [x] `software_revision` alanını evaluation artifacts içine ekle
-- [x] Stable report schema tanımla
-- [x] Stable summary schema tanımla
-- [x] Scenario metadata completeness check ekle
-- [x] Repeated determinism unit/regression doğrulamasını ekle
-- [x] Nominal minimum trust regression gate ekle
-- [x] Denied allowed mission-state gate ekle
-- [ ] Faz 3 kapanış kanıt setini tek blok altında özetle
-- [ ] Faz 3 sign-off sonrası Faz 4 backlog’unu aç
+- [x] Faz 4 public contract'ını yaz
+- [x] `vio_state`, `vio_health_score`, `effective_vio_state` alanlarını kilitle
+- [x] Çatışma kuralını `en kötüyü al` olarak tanımla
+- [x] Score-to-state eşiklerini yaz
+- [x] `vio_healthy` compatibility kuralını yaz
+- [x] Minimum senaryo matrisini aç
+- [x] Regression kapsamını yaz
+- [ ] Faz 4 implementasyon issue'larını aç
+- [ ] Mission continuity kod sözleşmesini yeni VIO inputlarına uyarlamaya başla
+- [ ] Faz 4 regression senaryolarını repo içine ekle
 
 **Checklist - Exit Gate Doğrulamaları**
 
-- [x] Config davranışı kontrol ediyor
-- [x] Artifact’tan run koşulları geri okunabiliyor
-- [x] `config_id` ve `software_revision` kayıtlı
-- [x] Schema sabit ve doğrulanıyor
-- [x] Aynı senaryo iki kez aynı mantıksal artifact sonucunu veriyor
-- [ ] Faz kapanış kararı yazılı olarak kaydedildi
+- [ ] Binary VIO health ana sözleşme olmaktan çıktı
+- [ ] `effective_vio_state` artifacts içinde kayıtlı
+- [ ] Mission continuity `effective_vio_state` değişimine tepki veriyor
+- [ ] Çatışmalı vakalar regression ile doğrulanıyor
+- [ ] `vio_healthy` deprecated compatibility alanı olarak korunuyor
 
 **Tamamlananlar**
 
-- `report` ve `summary` artifacts için schema validation eklendi
-- Config yükleme modeli ve default sim config tanımlandı
-- Scenario metadata zorunlu hale getirildi
-- Regression ve unit test seti faz 3 ihtiyaçlarına göre genişletildi
+- Faz 4 backlog dokümanı oluşturuldu
+- Public contract, conflict rule ve score-to-state eşikleri yazıldı
+- Minimum scenario matrix ve regression planı tanımlandı
 
 **Eksikler**
 
-- Faz 3 kapanış notunun ayrı bir kapanış kaydı halinde yazılması
-- Faz 4 için ayrıntılı issue/backlog kırılımının tracker’a açılması
+- Faz 4 kod implementasyonu başlamadı
+- Regression senaryoları ve compatibility alanı henüz koda işlenmedi
+- Mission continuity girişi halen `vio_healthy` ağırlıklı
 
 **Kanıt / Artifact**
 
-- `src/evaluation/artifact_schema.py`
-- `configs/sim/default.yaml`
-- `tests/unit/test_config_and_artifacts.py`
-- `tests/unit/test_execution_consistency.py`
-- `artifacts/runs/phase3_validation/`
+- `docs/roadmap/phase-04-backlog.md`
+- `docs/roadmap/phase-03-closure.md`
 
 **Riskler**
 
-- Faz 3 teknik olarak bitmiş görünse bile kapanış review yapılmadan “kapandı” kabul edilmesi
-- Yeni alanlar eklendikçe schema version disiplininin unutulması
+- `vio_state` ve `vio_health_score` birlikte geldiği için karar mantığı gereksiz karmaşıklaşabilir
+- Faz 4 implementasyonu sırasında Faz 3 determinism disiplininin bozulma riski var
 
 **Sonraki Adım**
 
-Faz 3 kapanış notunu yaz, kanıtları bağla, ardından Faz 4 için VIO health contract seçeneklerini aç.
+Faz 4 implementation issue’larını aç, mission continuity ve artifact contract değişikliklerini koda taşı, ardından denied varyant regression setini ekle.
 
 ## Faz Kartları
 
@@ -272,7 +267,7 @@ Config-driven behavior ve stable artifacts.
 
 **Durum**
 
-`Devam Ediyor`
+`Tamamlandı`
 
 **Checklist - Yapılacaklar**
 
@@ -280,8 +275,8 @@ Config-driven behavior ve stable artifacts.
 - [x] Stable artifact schema ekle
 - [x] Versioned metadata ekle
 - [x] Scenario metadata zorunlu kıl
-- [ ] Faz kapanış notunu yaz
-- [ ] Faz 4 backlog’unu aç
+- [x] Faz kapanış notunu yaz
+- [x] Faz 4 backlog’unu aç
 
 **Checklist - Exit Gate Doğrulamaları**
 
@@ -289,33 +284,37 @@ Config-driven behavior ve stable artifacts.
 - [x] Artifacts versioned
 - [x] Schema sabit
 - [x] Determinism korunuyor
-- [ ] Faz kapatma review’u yazılı
+- [x] Faz kapatma review’u yazılı
 
 **Tamamlananlar**
 
-- Aktif faz detayı bölümüne bak
+- Faz 3 kapanış raporu oluşturuldu
+- Faz 4 backlog'u karar tamamlayıcı şekilde açıldı
 
 **Eksikler**
 
-- Aktif faz detayı bölümüne bak
+- Sürekli schema drift ve regression kapsam büyütme ihtiyacı
 
 **Kanıt / Artifact**
 
-- Aktif faz detayı bölümüne bak
+- `docs/roadmap/phase-03-closure.md`
+- `artifacts/runs/phase3_validation/`
 
 **Riskler**
 
-- Aktif faz detayı bölümüne bak
+- Uzun vadeli mimari terminoloji ile mevcut vertical slice arasında fark bulunuyor
+- Faz 4 geçişinde compatibility alanlarının uzun süre kalıcı hale gelmesi riski var
 
 **Sonraki Adım**
 
-- Aktif faz detayı bölümüne bak
+- Faz 4 implementasyonunu aç
 
 **Günlük Log**
 
 | Tarih | Ne Yapıldı | Ne Çıkmadı | Blocker | Sonraki Adım |
 | --- | --- | --- | --- | --- |
 | 2026-03-11 | Config/artifact hardening altyapısı eklendi | Faz kapanış notu henüz yazılmadı | Yok | Faz 3 sign-off hazırla |
+| 2026-03-11 | Faz 3 closure ve Faz 4 backlog dokümanları yazıldı | Kod implementasyonu bu turda yapılmadı | Yok | Faz 4 implementation backlog'unu issue düzeyine indir |
 
 ### Faz 4 - VIO Health Upgrade
 
@@ -325,14 +324,14 @@ VIO health modelini binary yapıdan çıkarıp anlamlı hale getirmek.
 
 **Durum**
 
-`Yapılmadı`
+`Devam Ediyor`
 
 **Checklist - Yapılacaklar**
 
-- [ ] `vio_state` veya `vio_health_score` sözleşmesini seç
-- [ ] Mission continuity entegrasyonunu tasarla
+- [x] `vio_state + vio_health_score + effective_vio_state` sözleşmesini seç
+- [x] Mission continuity entegrasyonunu tasarla
 - [ ] Yeni regression senaryolarını ekle
-- [ ] VIO semantics dokümanını yaz
+- [x] VIO semantics dokümanını yaz
 
 **Checklist - Exit Gate Doğrulamaları**
 
@@ -342,29 +341,34 @@ VIO health modelini binary yapıdan çıkarıp anlamlı hale getirmek.
 
 **Tamamlananlar**
 
-- Henüz başlanmadı
+- Faz 4 backlog ve contract kararı yazıldı
+- `vio_state + vio_health_score + effective_vio_state` modeli tanımlandı
+- Çatışma kuralı ve compatibility kuralı sabitlendi
 
 **Eksikler**
 
-- Fazın tamamı
+- Kod implementasyonu
+- Regression senaryoları
+- Artifact şema genişletmesi
 
 **Kanıt / Artifact**
 
-- Henüz yok
+- `docs/roadmap/phase-04-backlog.md`
 
 **Riskler**
 
-- Erken fazda aşırı VIO derinliğine gömülmek
+- Faz 4 backlog'unun implementasyon sırasında gereksiz büyümesi
+- Çift otoriteli VIO modelinin açıklanabilirliği zorlaştırması
 
 **Sonraki Adım**
 
-Faz 3 kapandıktan sonra contract kararını netleştir.
+Contract'ı koda işle, ardından denied varyant regression setini ekle.
 
 **Günlük Log**
 
 | Tarih | Ne Yapıldı | Ne Çıkmadı | Blocker | Sonraki Adım |
 | --- | --- | --- | --- | --- |
-| - | - | - | - | Faz başlamadı |
+| 2026-03-11 | Faz 4 contract ve backlog yazıldı | Kod implementasyonu yapılmadı | Yok | Faz 4 issue setini aç ve implementasyona başla |
 
 ### Faz 5 - Real VIO Metric Skeleton
 
@@ -925,21 +929,23 @@ Saha geçişini plansızlıktan kurtarmak.
 
 ## Eksik Listesi
 
-- Faz 3 kapanış notu yazılmadı
-- Faz 4 backlog kırılımı henüz açılmadı
-- Faz 4+ için execution yok, yalnızca roadmap var
+- Faz 4 kod implementasyonu başlamadı
+- Faz 4 regression senaryoları eklenmedi
+- `effective_vio_state` henüz artifact şemasına işlenmedi
 
 ## Blocker Listesi
 
 - Şu anda kayıtlı aktif blocker yok
-- İlk muhtemel blocker: Faz 4 için `vio_state` mi `vio_health_score` mu seçileceği
+- İzlenecek teknik risk: çift otoriteli VIO modelinin mission continuity tarafında sade ve explainable kalması
 
 ## Karar Notları
 
 - `Simulation Production first` ilkesi korunacak
 - Faz geçişleri yalnızca kapı doğrulamasıyla yapılacak
 - ROS2 migration erken başlatılmayacak
-- VIO derinliği, Faz 3 kapanmadan ana çalışma alanı olmayacak
+- Faz 3 kapandı; Faz 4 aktif çalışma alanı oldu
+- Faz 4 için `vio_state` ve `vio_health_score` birlikte üretilecek
+- Çatışma halinde `en kötüyü al` kuralı uygulanacak
 
 ## Değişiklik Günlüğü
 
@@ -947,3 +953,4 @@ Saha geçişini plansızlıktan kurtarmak.
 | --- | --- |
 | 2026-03-11 | `master-plan.md` ile uyumlu ilk progress tracker oluşturuldu |
 | 2026-03-11 | Başlangıç durumu `Faz 2 sonu / Faz 3 başı` olarak sabitlendi |
+| 2026-03-11 | Faz 3 `Tamamlandı`, Faz 4 `Devam Ediyor` durumuna geçirildi |
