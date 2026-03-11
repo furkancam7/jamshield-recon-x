@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from common.config import load_app_config
+from common.config import resolve_app_config
 from common.logging import get_logger
 from common.runtime_metadata import resolve_software_revision, utc_timestamp
 from evaluation.artifact_schema import REPORT_SCHEMA_VERSION
@@ -24,12 +24,17 @@ def run_scenario(
     scenario_path: str | Path,
     output_dir: str | Path,
     config_path: str | Path = DEFAULT_CONFIG_PATH,
+    config_override_path: str | Path | None = None,
     run_id: str | None = None,
     vio_healthy: bool = True,
 ) -> dict[str, object]:
     logger = get_logger("scenario_orchestrator.main")
-    config = load_app_config(config_path)
     manifest = load_manifest(scenario_path)
+    config = resolve_app_config(
+        base_path=config_path,
+        scenario_override_path=manifest.config_override_path,
+        cli_override_path=config_override_path,
+    )
     snapshot = ScenarioOrchestrator(manifest).build_snapshot()
     resolved_run_id = run_id or Path(output_dir).name
     software_revision = resolve_software_revision()
@@ -121,6 +126,10 @@ def main() -> int:
         help="Path to the simulation config file.",
     )
     parser.add_argument(
+        "--config-override",
+        help="Optional CLI override config applied after any scenario override.",
+    )
+    parser.add_argument(
         "--run-id",
         help="Optional run identifier written into the evaluation artifacts.",
     )
@@ -130,6 +139,7 @@ def main() -> int:
         scenario_path=args.scenario,
         output_dir=args.output_dir,
         config_path=args.config,
+        config_override_path=args.config_override,
         run_id=args.run_id,
         vio_healthy=not args.vio_unhealthy,
     )

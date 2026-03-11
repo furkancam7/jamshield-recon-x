@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 import json
 from dataclasses import dataclass
 from math import isfinite
@@ -61,8 +62,35 @@ def load_yaml_file(path: str | Path) -> dict[str, Any]:
 
 
 def load_app_config(path: str | Path) -> AppConfig:
-    payload = load_yaml_file(path)
-    return _validate_app_config(payload, Path(path))
+    return resolve_app_config(path)
+
+
+def resolve_app_config(
+    base_path: str | Path,
+    scenario_override_path: str | Path | None = None,
+    cli_override_path: str | Path | None = None,
+) -> AppConfig:
+    payload = resolve_app_config_payload(
+        base_path=base_path,
+        scenario_override_path=scenario_override_path,
+        cli_override_path=cli_override_path,
+    )
+    return _validate_app_config(payload, Path(base_path))
+def resolve_app_config_payload(
+    base_path: str | Path,
+    scenario_override_path: str | Path | None = None,
+    cli_override_path: str | Path | None = None,
+) -> dict[str, Any]:
+    payload = load_yaml_file(base_path)
+    payload = _apply_config_override(
+        payload,
+        scenario_override_path,
+    )
+    payload = _apply_config_override(
+        payload,
+        cli_override_path,
+    )
+    return payload
 
 
 def _validate_app_config(payload: dict[str, Any], source_path: Path) -> AppConfig:
@@ -118,6 +146,61 @@ def _validate_app_config(payload: dict[str, Any], source_path: Path) -> AppConfi
     )
 
 
+def _apply_config_override(
+    base_payload: dict[str, Any],
+    override_path: str | Path | None,
+) -> dict[str, Any]:
+    if override_path is None:
+        return base_payload
+
+    override_payload = load_yaml_file(override_path)
+    return _merge_config_mappings(
+        base_payload=base_payload,
+        override_payload=override_payload,
+        override_source=Path(override_path),
+        field_path="config",
+    )
+
+
+def _merge_config_mappings(
+    base_payload: dict[str, Any],
+    override_payload: dict[str, Any],
+    override_source: Path,
+    field_path: str,
+) -> dict[str, Any]:
+    merged = deepcopy(base_payload)
+
+    for key, override_value in override_payload.items():
+        current_path = f"{field_path}.{key}"
+        if key not in merged:
+            raise ValueError(
+                f"Unknown config override field in {override_source}: {current_path}"
+            )
+
+        base_value = merged[key]
+        if isinstance(base_value, dict):
+            if not isinstance(override_value, dict):
+                raise ValueError(
+                    f"Config override field {current_path} in {override_source} "
+                    "must remain a mapping."
+                )
+            merged[key] = _merge_config_mappings(
+                base_payload=base_value,
+                override_payload=override_value,
+                override_source=override_source,
+                field_path=current_path,
+            )
+            continue
+
+        if isinstance(override_value, dict):
+            raise ValueError(
+                f"Config override field {current_path} in {override_source} "
+                "must not replace a scalar with a mapping."
+            )
+
+        merged[key] = deepcopy(override_value)
+
+    return merged
 def _require_mapping(value: Any, field_name: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"{field_name} must be a mapping.")
