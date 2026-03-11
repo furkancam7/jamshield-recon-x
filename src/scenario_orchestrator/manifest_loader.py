@@ -27,6 +27,7 @@ class ScenarioManifest:
     gnss_condition: str
     run_seed: int
     metadata: dict[str, str]
+    config_override_path: Path | None = None
 
 
 def load_manifest(path: str | Path) -> ScenarioManifest:
@@ -79,6 +80,10 @@ def _validate_manifest(payload: dict[str, Any], source_path: Path) -> ScenarioMa
         raise ValueError("run_seed must be non-negative.")
 
     metadata = _parse_metadata(payload["metadata"])
+    config_override_path = _parse_config_override_path(
+        payload.get("config_override"),
+        source_path,
+    )
 
     return ScenarioManifest(
         scenario_id=scenario_id,
@@ -88,6 +93,7 @@ def _validate_manifest(payload: dict[str, Any], source_path: Path) -> ScenarioMa
         gnss_condition=gnss_condition,
         run_seed=run_seed,
         metadata=metadata,
+        config_override_path=config_override_path,
     )
 
 
@@ -125,3 +131,21 @@ def _parse_metadata(value: Any) -> dict[str, str]:
         metadata[field_name] = field_value
 
     return metadata
+
+
+def _parse_config_override_path(value: Any, source_path: Path) -> Path | None:
+    if value is None:
+        return None
+
+    if not isinstance(value, str):
+        raise ValueError("config_override must be a string path when provided.")
+
+    raw_path = value.strip()
+    if not raw_path:
+        raise ValueError("config_override must not be empty.")
+
+    override_path = Path(raw_path)
+    if not override_path.is_absolute():
+        override_path = source_path.parent / override_path
+
+    return override_path
