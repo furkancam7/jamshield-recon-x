@@ -4,50 +4,42 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from common.config import TrustConfig
-from gnss_trust.heuristics import compute_mission_confidence, compute_trust_score
+from common.config import GnssTrustConfig
+from gnss_trust.heuristics import compute_gnss_trust
 from gnss_trust.state_classifier import classify_gnss_state
 from scenario_orchestrator.orchestrator import GnssConditionSnapshot
 
 
 @dataclass(frozen=True)
-class TrustAssessment:
+class GnssTrustAssessment:
     scenario_id: str
-    trust_score: float
+    gnss_trust: float
     gnss_state: str
-    mission_confidence: float
-    vio_healthy: bool
 
 
-class TrustService:
+class GnssTrustService:
     """Computes GNSS trust outputs for the minimal slice."""
 
-    def __init__(self, config: TrustConfig) -> None:
+    def __init__(self, config: GnssTrustConfig) -> None:
         self._config = config
 
     def evaluate(
-        self, snapshot: GnssConditionSnapshot, vio_healthy: bool = True
-    ) -> TrustAssessment:
-        trust_score = compute_trust_score(
+        self,
+        snapshot: GnssConditionSnapshot,
+    ) -> GnssTrustAssessment:
+        gnss_trust = compute_gnss_trust(
             measurement_quality=snapshot.measurement_quality,
             outage_ratio=snapshot.outage_ratio,
             config=self._config,
         )
         gnss_state = classify_gnss_state(
-            trust_score=trust_score,
+            trust_score=gnss_trust,
             outage_ratio=snapshot.outage_ratio,
             config=self._config,
         )
-        mission_confidence = compute_mission_confidence(
-            trust_score=trust_score,
-            vio_healthy=vio_healthy,
-            config=self._config,
-        )
 
-        return TrustAssessment(
+        return GnssTrustAssessment(
             scenario_id=snapshot.scenario_id,
-            trust_score=trust_score,
+            gnss_trust=gnss_trust,
             gnss_state=gnss_state,
-            mission_confidence=mission_confidence,
-            vio_healthy=vio_healthy,
         )

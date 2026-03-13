@@ -1,0 +1,80 @@
+{
+  "ate_m": 8.0,
+  "config_id": "sim-v1",
+  "effective_vio_state": "weak",
+  "ew_affected_cell_count": 1,
+  "ew_corridor_cost": 0.113,
+  "ew_max_risk": 0.95,
+  "ew_primary_reason_code": "ew_gnss_denial_hotspot",
+  "ew_reason_codes": [
+    "ew_gnss_denial_hotspot",
+    "ew_localization_instability"
+  ],
+  "ew_risk_level": "high",
+  "ew_risk_map_path": "C:\\Users\\Furkan\\Desktop\\jamshield-recon-x\\jamshield-recon-x\\artifacts\\runs\\20260313T105100Z\\s5_denied_vio_weak_ew_risk_map.json",
+  "gnss_condition": "denied",
+  "gnss_state": "denied",
+  "gnss_trust": 0.05,
+  "gnss_weight": 0.10932944606413994,
+  "ground_truth_usage": "evaluation_only",
+  "localization_confidence": 0.5496661807580175,
+  "localization_mode": "VIO_PRIMARY",
+  "map_name": "industrial_corridor",
+  "mission_audit_path": "C:\\Users\\Furkan\\Desktop\\jamshield-recon-x\\jamshield-recon-x\\artifacts\\runs\\20260313T105100Z\\s5_denied_vio_weak_mission_audit.json",
+  "mission_confidence": 0.345,
+  "mission_primary_reason_code": "mission_safe_hold_vio_weak",
+  "mission_reason_codes": [
+    "mission_safe_hold_vio_weak"
+  ],
+  "mission_state": "MISSION_SAFE_HOLD",
+  "mission_transition_count": 1,
+  "route_length_m": 145.859,
+  "run_id": "20260313T105100Z",
+  "run_seed": 555,
+  "scenario_id": "s5_denied_vio_weak",
+  "scenario_metadata": {
+    "description": "GNSS denied scenario with degraded VIO producing cautious hold.",
+    "owner": "autonomy-sim",
+    "title": "Denied with Weak VIO Fallback"
+  },
+  "schema_version": "2.3",
+  "software_revision": "2e31a5ba1f7682acf36fe0201cdbf92769173b61",
+  "sync_quality": 1.0,
+  "tactical_advisory_code": "operator_hold_position_and_investigate",
+  "tactical_advisory_text": "Hold position and investigate navigation degradation before resuming.",
+  "tactical_primary_reason_code": "tactical_safe_hold_active",
+  "tactical_reason_codes": [
+    "tactical_safe_hold_active",
+    "tactical_ew_hotspot_detected"
+  ],
+  "tactical_summary_path": "C:\\Users\\Furkan\\Desktop\\jamshield-recon-x\\jamshield-recon-x\\artifacts\\runs\\20260313T105100Z\\s5_denied_vio_weak_tactical_summary.json",
+  "tactical_summary_text": "Mission is safe hold with VIO-primary localization; EW risk is high. Hold position and investigate navigation degradation before resuming.",
+  "timestamp": "2026-03-13T07:50:00Z",
+  "trust_primary_reason_code": "gnss_denial_suspected",
+  "trust_reason_codes": [
+    "gnss_denial_suspected",
+    "localization_confidence_low"
+  ],
+  "vio_health_score": 0.611,
+  "vio_metrics": {
+    "effective_vio_state": "weak",
+    "feature_count": 12,
+    "imu_alignment_error": 0.358,
+    "matched_feature_count": 5,
+    "pose_delta_xy_m": 0.297,
+    "profile_id": "weak_texture_v1",
+    "reason_codes": [
+      "track_continuity_drop"
+    ],
+    "reprojection_error_px": 1.384,
+    "timestamp_ns": 605000000,
+    "track_continuity": 0.417,
+    "vio_health_score": 0.611,
+    "vio_state": "weak",
+    "yaw_delta_rad": 0.02
+  },
+  "vio_metrics_source": "pipeline_v1",
+  "vio_state": "weak",
+  "vio_trust": 0.611,
+  "vio_weight": 0.8906705539358601
+}

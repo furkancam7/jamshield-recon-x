@@ -1,0 +1,58 @@
+{
+  "ate_m": 8.0,
+  "config_id": "sim-v1",
+  "effective_vio_state": "lost",
+  "gnss_condition": "denied",
+  "gnss_state": "denied",
+  "gnss_trust": 0.05,
+  "gnss_weight": 0.4491017964071856,
+  "ground_truth_usage": "evaluation_only",
+  "localization_confidence": 0.0731377245508982,
+  "localization_mode": "HOLD_LAST_SAFE",
+  "map_name": "open_field",
+  "mission_confidence": 0.098,
+  "mission_state": "MISSION_ABORT",
+  "route_length_m": 123.246,
+  "run_id": "20260313T091015Z",
+  "run_seed": 1201,
+  "scenario_id": "s12_fusion_dead_reckoning",
+  "scenario_metadata": {
+    "description": "Denied GNSS with lost VIO should produce HOLD_LAST_SAFE localization mode.",
+    "owner": "autonomy-sim",
+    "title": "Fusion Hold Last Safe Mode"
+  },
+  "schema_version": "2.0",
+  "software_revision": "2e31a5ba1f7682acf36fe0201cdbf92769173b61",
+  "sync_quality": 1.0,
+  "timestamp": "2026-03-13T06:10:29Z",
+  "trust_primary_reason_code": "localization_confidence_low",
+  "trust_reason_codes": [
+    "gnss_denial_suspected",
+    "vio_trust_low",
+    "localization_confidence_low"
+  ],
+  "vio_health_score": 0.092,
+  "vio_metrics": {
+    "effective_vio_state": "lost",
+    "feature_count": 6,
+    "imu_alignment_error": 0.563,
+    "matched_feature_count": 1,
+    "pose_delta_xy_m": 0.268,
+    "profile_id": "lost_tracking_v1",
+    "reason_codes": [
+      "low_feature_count",
+      "track_continuity_drop",
+      "high_reprojection_error"
+    ],
+    "reprojection_error_px": 3.7,
+    "timestamp_ns": 1251000000,
+    "track_continuity": 0.167,
+    "vio_health_score": 0.092,
+    "vio_state": "lost",
+    "yaw_delta_rad": -0.16
+  },
+  "vio_metrics_source": "pipeline_v1",
+  "vio_state": "lost",
+  "vio_trust": 0.092,
+  "vio_weight": 0.5508982035928144
+}

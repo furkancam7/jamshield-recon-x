@@ -1,0 +1,15 @@
+scenario_id: s10_fusion_degraded_fused
+map_name: open_field
+vehicle_spawn: {"x": 0.0, "y": 0.0, "z": 30.0}
+route_waypoints:
+  - {"x": 60.0, "y": 0.0, "z": 30.0}
+  - {"x": 120.0, "y": 20.0, "z": 30.0}
+gnss_condition: degraded
+run_seed: 1001
+evaluation_profile: urban_canyon_profile_v1
+vio:
+  profile_id: nominal_v1
+metadata:
+  title: Fusion Degraded GNSS Blended Mode
+  description: Degraded GNSS with good VIO should produce BLENDED localization mode.
+  owner: autonomy-sim

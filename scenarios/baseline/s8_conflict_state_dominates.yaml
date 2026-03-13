@@ -1,0 +1,16 @@
+scenario_id: s8_conflict_state_dominates
+map_name: industrial_corridor
+vehicle_spawn: {"x": 0.0, "y": 0.0, "z": 28.0}
+route_waypoints:
+  - {"x": 50.0, "y": 10.0, "z": 28.0}
+  - {"x": 140.0, "y": 40.0, "z": 28.0}
+gnss_condition: denied
+run_seed: 888
+evaluation_profile: spoof_like_drift_profile_v1
+vio:
+  profile_id: nominal_v1
+  reported_state: lost
+metadata:
+  title: VIO Conflict - State Dominates
+  description: VIO score is high but state reports lost. Worst-case rule preserves lost.
+  owner: autonomy-sim

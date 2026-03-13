@@ -1,0 +1,21 @@
+scenario_id: s19_ew_mid_route_denial_hotspot
+map_name: industrial_corridor
+vehicle_spawn: {"x": 0.0, "y": 0.0, "z": 28.0}
+route_waypoints:
+  - {"x": 60.0, "y": 10.0, "z": 28.0}
+  - {"x": 140.0, "y": 40.0, "z": 28.0}
+gnss_condition: nominal
+run_seed: 1919
+evaluation_profile: denial_corridor_profile_v1
+vio:
+  profile_id: nominal_v1
+mission_timeline:
+  tick_period_s: 1.0
+  steps:
+    - {"repeats": 2, "gnss_condition": "nominal"}
+    - {"repeats": 2, "gnss_condition": "denied"}
+    - {"repeats": 2, "gnss_condition": "nominal"}
+metadata:
+  title: EW Mid Route Denial Hotspot
+  description: Mid-route GNSS denial should create a localized EW hotspot along the corridor.
+  owner: autonomy-sim

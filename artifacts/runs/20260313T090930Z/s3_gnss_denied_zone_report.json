@@ -1,0 +1,52 @@
+{
+  "ate_m": 8.0,
+  "config_id": "sim-v1",
+  "effective_vio_state": "good",
+  "gnss_condition": "denied",
+  "gnss_state": "denied",
+  "gnss_trust": 0.05,
+  "gnss_weight": 0.08333333333333333,
+  "ground_truth_usage": "evaluation_only",
+  "localization_confidence": 0.7604166666666666,
+  "localization_mode": "VIO_PRIMARY",
+  "map_name": "industrial_corridor",
+  "mission_confidence": 0.45,
+  "mission_state": "MISSION_FALLBACK",
+  "route_length_m": 145.859,
+  "run_id": "20260313T090930Z",
+  "run_seed": 333,
+  "scenario_id": "s3_gnss_denied_zone",
+  "scenario_metadata": {
+    "description": "Regression scenario covering GNSS denial with forced fallback degradation.",
+    "owner": "autonomy-sim",
+    "title": "Denied Industrial Corridor"
+  },
+  "schema_version": "2.0",
+  "software_revision": "2e31a5ba1f7682acf36fe0201cdbf92769173b61",
+  "sync_quality": 1.0,
+  "timestamp": "2026-03-13T06:09:43Z",
+  "trust_primary_reason_code": "gnss_denial_suspected",
+  "trust_reason_codes": [
+    "gnss_denial_suspected"
+  ],
+  "vio_health_score": 0.825,
+  "vio_metrics": {
+    "effective_vio_state": "good",
+    "feature_count": 24,
+    "imu_alignment_error": 0.351,
+    "matched_feature_count": 24,
+    "pose_delta_xy_m": 0.342,
+    "profile_id": "nominal_v1",
+    "reason_codes": [],
+    "reprojection_error_px": 0.556,
+    "timestamp_ns": 383000000,
+    "track_continuity": 1.0,
+    "vio_health_score": 0.825,
+    "vio_state": "good",
+    "yaw_delta_rad": 0.03
+  },
+  "vio_metrics_source": "pipeline_v1",
+  "vio_state": "good",
+  "vio_trust": 0.825,
+  "vio_weight": 0.9166666666666667
+}

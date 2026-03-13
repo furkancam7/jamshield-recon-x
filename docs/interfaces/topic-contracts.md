@@ -67,7 +67,7 @@ Naming rules:
 | `/mission/state` | `MissionState` | `mission_continuity_node` | `tactical_summary_node`, `health_monitor_node`, `operator_station_node`, `logger_node` | runtime autonomy | Authoritative mission continuity state |
 | `/mission/action` | `MissionAction` | `mission_continuity_node` | `sitl_bridge_node`, `logger_node` | runtime autonomy | Deterministic mission action output |
 | `/mission/explanation` | `MissionExplanation` | `mission_continuity_node` | `operator_station_node`, `logger_node` | runtime autonomy | Transition rationale with reason codes |
-| `/mission/health` | `HealthStatus` | `health_monitor_node` | `trust_engine_node`, `mission_continuity_node`, `tactical_summary_node`, `operator_station_node`, `logger_node` | runtime autonomy | Health severity and affected subsystem |
+| `/mission/health` | `HealthStatus` | `health_monitor_node` | `trust_engine_node`, `mission_continuity_node`, `tactical_summary_node`, `operator_station_node`, `logger_node` | runtime autonomy | Planned runtime health contract; deferred in the current executable slice |
 | `/tactical/ew_risk_map` | `EwRiskMap` | `ew_risk_map_node` | `tactical_summary_node`, `operator_station_node`, `logger_node` | tactical intelligence | Navigation degradation heat map |
 | `/tactical/summary` | `TacticalSummary` | `tactical_summary_node` | `operator_station_node`, `logger_node` | tactical intelligence | Operator-oriented tactical summary |
 | `/events/scenario` | `ScenarioEvent` | `scenario_orchestrator_node` | `mission_continuity_node`, `ew_risk_map_node`, `logger_node` | runtime autonomy | Scenario schedule and lifecycle events |
@@ -76,6 +76,13 @@ Naming rules:
 | `/evaluation/run_metadata` | `EvaluationRunMetadata` | `evaluation_node` | `operator_station_node` | evaluation | Replay metadata and manifest hash |
 | `/evaluation/metrics` | `EvaluationMetric` | `evaluation_node` | `operator_station_node` | evaluation | Metric stream emitted after replay |
 | `/evaluation/verdict` | `EvaluationVerdict` | `evaluation_node` | `operator_station_node` | evaluation | Pass, fail, or invalid run decision |
+
+## Current Slice Note
+
+- The current executable slice publishes `/tactical/summary` from mission, trust, and EW outputs only.
+- `/mission/health` remains part of the architecture contract, but no `health_monitor_node` runtime producer exists yet.
+- Tactical summary wording must therefore remain independent from health-status inputs until that publisher is implemented.
+- The current executable slice does not run ROS2 `logger_node` or `evaluation_node`; equivalent observer responsibilities are currently fulfilled by file-based artifacts such as `*_runtime_trace.json`, `*_truth_trace.json`, `replay_results.json`, `evaluation_metrics.json`, and `evaluation_verdicts.json`.
 
 ## Separation Constraints
 

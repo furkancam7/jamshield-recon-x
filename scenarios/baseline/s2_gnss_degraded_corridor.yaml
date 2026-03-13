@@ -6,6 +6,9 @@ route_waypoints:
   - {"x": 140.0, "y": 30.0, "z": 32.0}
 gnss_condition: degraded
 run_seed: 222
+evaluation_profile: urban_canyon_profile_v1
+vio:
+  profile_id: nominal_v1
 metadata:
   title: Degraded Urban Corridor
   description: Regression scenario covering degraded but non-denied GNSS conditions.

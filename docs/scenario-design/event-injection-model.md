@@ -34,7 +34,7 @@ Expected runtime effect:
 
 - lower `measurement_quality`
 - increased covariance in GNSS-derived estimates
-- possible transition from `GNSS_PRIMARY` to `GNSS_DEGRADED`
+- possible transition from `GNSS_PRIMARY` to `BLENDED`
 
 ### `gnss_denial_zone`
 
@@ -48,7 +48,7 @@ Required parameters:
 
 Expected runtime effect:
 
-- `GNSS_DENIAL_SUSPECT`
+- `gnss_denial_suspected`
 - hard gating of GNSS in `trust_engine_node`
 - transition to `VIO_PRIMARY` if VIO remains healthy
 
@@ -68,7 +68,7 @@ Required parameters:
 Expected runtime effect:
 
 - growing innovation mismatch between GNSS and VIO
-- `GNSS_SPOOF_LIKE_DRIFT`
+- spoof-like drift evidence reflected through trust degradation outputs
 - rapid GNSS rejection if thresholds are exceeded
 
 ### `communication_degradation`
@@ -84,8 +84,8 @@ Required parameters:
 
 Expected runtime effect:
 
-- `HEALTH_SYNC_STALE` or estimator freshness warnings
-- possible transition to `LOCALIZATION_CONTINGENCY` if data age exceeds limits
+- `sync_quality_low` evidence and reduced mission confidence
+- possible transition to `MISSION_SAFE_HOLD` and timeout-based `MISSION_ABORT` if degradation persists
 
 ### `sensor_noise_override`
 
@@ -133,6 +133,16 @@ The profile function must be pure with respect to manifest parameters and seed.
 - Denial supersedes degradation on GNSS targets.
 - Spoof-like drift composes after degradation so that quality reduction and bias can coexist.
 - Communication degradation cannot alter scenario event publication ordering.
+
+## Current Slice Note
+
+- Event injection in the executable slice must remain consistent with current mission-state outputs:
+  - `MISSION_EXECUTE`
+  - `MISSION_DEGRADED`
+  - `MISSION_FALLBACK`
+  - `MISSION_SAFE_HOLD`
+  - `MISSION_ABORT`
+- `LOCALIZATION_CONTINGENCY` remains an architecture concept and is not emitted by current executable artifacts.
 
 ## Lifecycle Publication
 

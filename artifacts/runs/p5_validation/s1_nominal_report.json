@@ -1,0 +1,43 @@
+{
+  "ate_m": 0.5,
+  "config_id": "sim-v1",
+  "effective_vio_state": "good",
+  "gnss_condition": "nominal",
+  "gnss_state": "nominal",
+  "ground_truth_usage": "evaluation_only",
+  "map_name": "open_field",
+  "mission_confidence": 0.97,
+  "mission_state": "MISSION_NORMAL",
+  "route_length_m": 123.246,
+  "run_id": "p5_validation",
+  "run_seed": 111,
+  "scenario_id": "s1_nominal",
+  "scenario_metadata": {
+    "description": "Baseline nominal GNSS scenario for regression and smoke validation.",
+    "owner": "autonomy-sim",
+    "title": "Nominal Open Field Baseline"
+  },
+  "schema_version": "1.2",
+  "software_revision": "2e31a5ba1f7682acf36fe0201cdbf92769173b61",
+  "timestamp": "2026-03-11T14:14:42Z",
+  "trust_score": 0.96,
+  "vio_health_score": 0.799,
+  "vio_healthy": true,
+  "vio_metrics": {
+    "effective_vio_state": "good",
+    "feature_count": 24,
+    "imu_alignment_error": 0.328,
+    "matched_feature_count": 23,
+    "pose_delta_xy_m": 0.321,
+    "profile_id": "nominal_v1",
+    "reason_codes": [],
+    "reprojection_error_px": 0.817,
+    "timestamp_ns": 161000000,
+    "track_continuity": 1.0,
+    "vio_health_score": 0.799,
+    "vio_state": "good",
+    "yaw_delta_rad": 0.032
+  },
+  "vio_metrics_source": "pipeline_v1",
+  "vio_state": "good"
+}

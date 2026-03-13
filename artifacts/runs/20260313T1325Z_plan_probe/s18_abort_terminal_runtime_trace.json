@@ -1,0 +1,97 @@
+{
+  "entries": [
+    {
+      "effective_vio_state": "lost",
+      "estimated_position_m": {
+        "x": 8.0,
+        "y": 0.0,
+        "z": 28.0
+      },
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.2212529069767442,
+      "localization_mode": "HOLD_LAST_SAFE",
+      "mission_confidence": 0.178,
+      "mission_primary_reason_code": "mission_abort_vio_lost",
+      "mission_state": "MISSION_ABORT",
+      "route_progress_pct": 0.0,
+      "step_inputs": {
+        "gnss_condition": "denied",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "lost_tracking_v1"
+        }
+      },
+      "sync_quality": 1.0,
+      "tick_index": 0,
+      "timestamp_ns": 0,
+      "trust_primary_reason_code": "gnss_denial_suspected",
+      "vio_trust": 0.269
+    },
+    {
+      "effective_vio_state": "good",
+      "estimated_position_m": {
+        "x": 73.797,
+        "y": 18.099,
+        "z": 28.0
+      },
+      "gnss_state": "nominal",
+      "gnss_trust": 0.96,
+      "localization_confidence": 0.9101763146266018,
+      "localization_mode": "HOLD_LAST_SAFE",
+      "mission_confidence": 0.92,
+      "mission_primary_reason_code": "mission_abort_terminal_latched",
+      "mission_state": "MISSION_ABORT",
+      "route_progress_pct": 50.0,
+      "step_inputs": {
+        "gnss_condition": "nominal",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "sync_quality": 1.0,
+      "tick_index": 1,
+      "timestamp_ns": 1000000000,
+      "trust_primary_reason_code": "trust_inputs_nominal",
+      "vio_trust": 0.823
+    },
+    {
+      "effective_vio_state": "good",
+      "estimated_position_m": {
+        "x": 145.5,
+        "y": 42.0,
+        "z": 28.0
+      },
+      "gnss_state": "nominal",
+      "gnss_trust": 0.96,
+      "localization_confidence": 0.9101763146266018,
+      "localization_mode": "HOLD_LAST_SAFE",
+      "mission_confidence": 0.92,
+      "mission_primary_reason_code": "mission_abort_terminal_latched",
+      "mission_state": "MISSION_ABORT",
+      "route_progress_pct": 100.0,
+      "step_inputs": {
+        "gnss_condition": "nominal",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "sync_quality": 1.0,
+      "tick_index": 2,
+      "timestamp_ns": 2000000000,
+      "trust_primary_reason_code": "trust_inputs_nominal",
+      "vio_trust": 0.823
+    }
+  ],
+  "run_id": "20260313T1325Z_plan_probe",
+  "scenario_id": "s18_abort_terminal",
+  "schema_version": "1.0"
+}

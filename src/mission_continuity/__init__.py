@@ -1,6 +1,5 @@
 """Mission continuity package."""
 
-from .state_machine import MissionStateMachine
+from .state_machine import MissionDecision, MissionStateMachine
 
-__all__ = ["MissionStateMachine"]
-
+__all__ = ["MissionDecision", "MissionStateMachine"]

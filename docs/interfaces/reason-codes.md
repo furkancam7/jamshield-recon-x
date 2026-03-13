@@ -5,65 +5,90 @@
 - Reason codes are stable identifiers, not free text.
 - `primary_reason_code` is the first causal explanation for a decision.
 - `reason_codes` may include supporting context in deterministic order.
-- Codes are shared across runtime logs, replay, and evaluation.
+- Codes are shared across runtime logs, replay, tactical artifacts, and evaluation outputs.
+- Canonical format is always `snake_case`.
 
 ## GNSS Trust Codes
 
 | Code | Meaning |
 | --- | --- |
-| `GNSS_OK` | GNSS behavior is within nominal limits |
-| `GNSS_HDOP_HIGH` | Horizontal dilution of precision exceeded threshold |
-| `GNSS_SAT_COUNT_LOW` | Satellite count dropped below minimum requirement |
-| `GNSS_TEMPORAL_JITTER` | Fix-to-fix variation exceeded temporal stability limit |
-| `GNSS_KINEMATIC_MISMATCH` | GNSS motion estimate disagrees with inertial or VIO motion |
-| `GNSS_DENIAL_SUSPECT` | GNSS signal loss pattern matches denial behavior |
-| `GNSS_SPOOF_LIKE_DRIFT` | GNSS bias drift pattern matches spoof-like behavior |
-| `GNSS_RECOVERY_STABLE` | GNSS recovered and remained stable for recovery dwell |
-
-## Trust Engine Codes
-
-| Code | Meaning |
-| --- | --- |
-| `TRUST_GNSS_PRIMARY` | GNSS selected as primary source |
-| `TRUST_BLEND_ALLOWED` | GNSS and VIO both allowed in blended mode |
-| `TRUST_VIO_PRIMARY` | VIO selected as primary source |
-| `TRUST_GNSS_GATED` | GNSS excluded from fusion update |
-| `TRUST_VIO_GATED` | VIO excluded from fusion update |
-| `TRUST_HYSTERESIS_HOLD` | Transition delayed by dwell or hysteresis rule |
-| `TRUST_NO_VALID_SOURCE` | No localization source satisfies minimum confidence |
+| `trust_inputs_nominal` | Trust inputs remained inside nominal bounds. |
+| `gnss_measurement_quality_low` | GNSS quality degraded below the configured low threshold. |
+| `gnss_denial_suspected` | GNSS behavior matches a denial-like outage pattern. |
+| `vio_trust_low` | VIO health degraded below the configured low threshold. |
+| `sync_quality_low` | Timing alignment or freshness degraded below the configured threshold. |
+| `localization_confidence_low` | Fused localization confidence fell below the configured low threshold. |
 
 ## Mission Continuity Codes
 
 | Code | Meaning |
 | --- | --- |
-| `MISSION_PREPARE_WAITING_FOR_LOCK` | Mission is waiting for an initial valid localization source |
-| `MISSION_CONTINUE_NOMINAL` | Mission continues under nominal localization conditions |
-| `MISSION_REDUCE_SPEED_GNSS_DEGRADED` | Mission speed reduced because GNSS trust dropped |
-| `MISSION_SWITCH_TO_VIO` | Mission switched to VIO-led localization |
-| `MISSION_HOLD_LOCALIZATION_CONTINGENCY` | Mission holding because no source satisfies continuity criteria |
-| `MISSION_ABORT_HEALTH_CRITICAL` | Mission aborted because health severity became critical |
-| `MISSION_ABORT_TIMEOUT` | Mission aborted after contingency timeout |
-| `MISSION_COMPLETE_ROUTE_FINISHED` | Mission reached the terminal waypoint |
+| `mission_execute_nominal` | Mission continues under nominal localization conditions. |
+| `mission_degraded_gnss_reduced` | Mission continues in degraded mode because GNSS trust dropped. |
+| `mission_fallback_vio_primary` | Mission continues under VIO-led fallback localization. |
+| `mission_safe_hold_vio_weak` | Mission holds because denied GNSS coincided with weak VIO. |
+| `mission_safe_hold_localization_unstable` | Mission holds because localization continuity is insufficient. |
+| `mission_recovery_dwell_active` | Recovery is delayed until the configured dwell requirement is satisfied. |
+| `mission_state_oscillation_detected` | State flapping exceeded the configured oscillation window limit. |
+| `mission_abort_safe_hold_timeout` | Mission aborted after persistent safe hold exceeded timeout. |
+| `mission_abort_vio_lost` | Mission aborted because fallback localization was lost. |
+| `mission_abort_terminal_latched` | Mission remained aborted because abort is terminal within the run. |
 
-## Health Codes
+## EW Risk Map Codes
 
 | Code | Meaning |
 | --- | --- |
-| `HEALTH_OK` | Subsystem nominal |
-| `HEALTH_SYNC_STALE` | Sync status is stale or missing |
-| `HEALTH_VIO_STALLED` | VIO estimate not updating at required rate |
-| `HEALTH_FUSION_INVALID` | Fused estimate invalid or stale |
-| `HEALTH_TRUST_STALE` | Trust decision not updating at required rate |
-| `HEALTH_NODE_HEARTBEAT_LOST` | Node heartbeat timeout occurred |
+| `ew_risk_nominal` | No material EW-style risk evidence accumulated in the current run. |
+| `ew_gnss_denial_hotspot` | Risk map is primarily shaped by denial-like GNSS loss evidence. |
+| `ew_sync_instability_corridor` | Risk map is primarily shaped by low sync-quality evidence along the route. |
+| `ew_localization_instability` | Risk map is primarily shaped by localization instability evidence. |
+| `ew_gnss_degraded_corridor` | Risk map is primarily shaped by degraded-but-not-denied GNSS evidence. |
+
+## EW Evidence Codes
+
+| Code | Meaning |
+| --- | --- |
+| `gnss_denial_suspected` | Denial-like GNSS evidence was observed while stamping the grid. |
+| `gnss_measurement_quality_low` | Degraded GNSS quality evidence was observed while stamping the grid. |
+| `sync_quality_low` | Low sync-quality evidence was observed while stamping the grid. |
+| `localization_confidence_low` | Localization confidence evidence was observed while stamping the grid. |
+| `vio_primary_active` | Risk evidence occurred while localization was running in `VIO_PRIMARY`. |
+| `hold_last_safe_active` | Risk evidence occurred while localization was running in `HOLD_LAST_SAFE`. |
+
+## Tactical Summary Reason Codes
+
+| Code | Meaning |
+| --- | --- |
+| `tactical_nominal_overview` | Tactical summary reports a nominal mission and localization picture. |
+| `tactical_mission_degraded` | Tactical summary is primarily driven by mission degradation. |
+| `tactical_fallback_active` | Tactical summary is primarily driven by fallback navigation. |
+| `tactical_safe_hold_active` | Tactical summary is primarily driven by safe-hold behavior. |
+| `tactical_abort_active` | Tactical summary is primarily driven by an abort condition. |
+| `tactical_ew_hotspot_detected` | Tactical summary is primarily driven by elevated EW route risk. |
+| `tactical_sync_risk_observed` | Tactical summary is primarily driven by sync-quality risk. |
+| `tactical_localization_instability_observed` | Tactical summary is primarily driven by localization instability. |
+
+## Tactical Advisory Codes
+
+| Code | Meaning |
+| --- | --- |
+| `operator_continue_nominal` | Operator may continue on the current route under nominal conditions. |
+| `operator_continue_with_caution` | Operator may continue but should monitor confidence and timing risk. |
+| `operator_avoid_high_risk_corridor` | Operator should avoid the highlighted route corridor due to elevated tactical risk. |
+| `operator_prepare_manual_review` | Operator should prepare for manual review of navigation quality and route safety. |
+| `operator_hold_position_and_investigate` | Operator should hold position and investigate before resuming. |
+| `operator_abort_and_retask` | Operator should abort the current route and retask. |
 
 ## Evaluation Codes
 
 | Code | Meaning |
 | --- | --- |
-| `EVAL_PASS` | Run passed all acceptance checks |
-| `EVAL_FAIL_METRIC_THRESHOLD` | One or more metrics violated scenario acceptance thresholds |
-| `EVAL_FAIL_MISSION_SUCCESS` | Mission success criteria were not satisfied |
-| `EVAL_INVALID_TRUTH_MISSING` | Evaluation-only ground truth missing or incomplete |
-| `EVAL_INVALID_REPLAY_DIVERGENCE` | Deterministic replay diverged from recorded runtime outputs |
-| `EVAL_INVALID_MANIFEST_HASH` | Manifest hash does not match recorded run metadata |
-| `EVAL_INVALID_LOG_CORRUPTION` | Required log artifacts are corrupt or unreadable |
+| `evaluation_pending` | Scenario report was generated before replay/evaluation verdict materialization. |
+| `evaluation_acceptance_passed` | Replay and acceptance thresholds passed for the scenario. |
+| `evaluation_threshold_exceeded` | Replay was valid but one or more acceptance thresholds failed. |
+| `evaluation_profile_missing` | Scenario referenced an unknown evaluation profile. |
+| `deterministic_replay_failed` | Replay diverged from the original runtime artifacts and invalidated the run. |
+
+## Legacy Rule
+
+- Uppercase reason-code forms in older artifacts are legacy and must not be reused in current interfaces.

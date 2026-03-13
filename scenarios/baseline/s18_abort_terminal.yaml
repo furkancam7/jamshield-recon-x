@@ -1,0 +1,20 @@
+scenario_id: s18_abort_terminal
+map_name: industrial_corridor
+vehicle_spawn: {"x": 0.0, "y": 0.0, "z": 28.0}
+route_waypoints:
+  - {"x": 55.0, "y": 12.0, "z": 28.0}
+  - {"x": 145.0, "y": 42.0, "z": 28.0}
+gnss_condition: denied
+run_seed: 1818
+evaluation_profile: baseline_nominal_profile_v1
+vio:
+  profile_id: lost_tracking_v1
+mission_timeline:
+  tick_period_s: 1.0
+  steps:
+    - {"repeats": 1, "gnss_condition": "denied", "vio": {"profile_id": "lost_tracking_v1"}}
+    - {"repeats": 2, "gnss_condition": "nominal", "vio": {"profile_id": "nominal_v1"}}
+metadata:
+  title: Terminal Abort Latch
+  description: After abort is triggered, later healthy ticks must remain terminal within the same scenario run.
+  owner: autonomy-sim

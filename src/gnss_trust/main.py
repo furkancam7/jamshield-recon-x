@@ -10,7 +10,7 @@ from common.config import resolve_app_config
 from scenario_orchestrator.manifest_loader import load_manifest
 from scenario_orchestrator.orchestrator import ScenarioOrchestrator
 
-from .trust_service import TrustService
+from .trust_service import GnssTrustService
 
 DEFAULT_CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "sim" / "default.yaml"
 
@@ -18,11 +18,6 @@ DEFAULT_CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "sim" / 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Evaluate GNSS trust for a scenario.")
     parser.add_argument("scenario", help="Path to the scenario YAML file.")
-    parser.add_argument(
-        "--vio-unhealthy",
-        action="store_true",
-        help="Force the simplified VIO health input to false.",
-    )
     parser.add_argument(
         "--config",
         default=str(DEFAULT_CONFIG_PATH),
@@ -41,9 +36,7 @@ def main() -> int:
         cli_override_path=args.config_override,
     )
     snapshot = ScenarioOrchestrator(manifest).build_snapshot()
-    assessment = TrustService(config.trust).evaluate(
-        snapshot, vio_healthy=not args.vio_unhealthy
-    )
+    assessment = GnssTrustService(config.gnss_trust).evaluate(snapshot)
 
     print(json.dumps(assessment.__dict__, indent=2))
     return 0

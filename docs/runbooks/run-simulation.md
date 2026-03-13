@@ -2,58 +2,77 @@
 
 ## Purpose
 
-This runbook describes the canonical simulation execution workflow for a deterministic scenario run.
+This runbook describes the current executable-slice workflow for a deterministic scenario run.
 
 ## Inputs
 
-- built workspace
-- sourced runtime environment
-- selected scenario manifest
-- writable log output directory
+- Python environment with `PYTHONPATH=src`
+- selected baseline scenario manifest
+- simulation config file
+- writable output directory under `artifacts/runs/`
 
 ## Canonical Command Contract
 
-The repository should expose an entry point equivalent to:
+Run one scenario:
 
 ```bash
-ros2 launch jamshield_recon_x_sim sim.launch.py \
-  scenario_manifest:=docs/scenario-design/manifests/<scenario>.yaml \
-  record:=true \
-  output_dir:=<run_dir>
+bash scripts/run_scenario.sh scenarios/baseline/<scenario>.yaml artifacts/runs/<run_id>
 ```
 
-If this launch contract is not yet implemented, treat the missing wrapper as a Future system extension and run the equivalent simulator, adapter, autonomy, and logger processes manually.
+Run full baseline regression:
+
+```bash
+bash scripts/run_regression.sh <run_id>
+```
+
+Current-slice note:
+
+- The executable flow is file-based.
+- ROS2 launch wrappers and node-orchestrated runtime remain Phase 12 migration work.
 
 ## Execution Procedure
 
 1. Select a single scenario manifest and record its hash.
 2. Ensure the output directory is empty or versioned by `run_id`.
-3. Start the simulation with recording enabled.
-4. Confirm that the following topic families are active: `/sensors/*`, `/sync/*`, `/localization/*`, `/trust/*`, `/mission/*`, `/tactical/*`, `/events/*`, and `/truth/*`.
-5. Observe the live mission state for expected startup sequence: `PREPARE` followed by a valid primary localization mode.
-6. Allow the scenario to run to `MISSION_COMPLETE` or `MISSION_ABORT`.
-7. Stop the run only after logger finalization completes.
+3. Run `scripts/run_scenario.sh` for a single scenario or `scripts/run_regression.sh` for `s1-s20`.
+4. Confirm per-scenario artifacts are emitted:
+   - `*_report.json`
+   - `*_runtime_trace.json`
+   - `*_truth_trace.json`
+   - `*_mission_audit.json`
+   - `*_ew_risk_map.json`
+   - `*_tactical_summary.json`
+5. Confirm mission states remain in the current executable set:
+   - `MISSION_EXECUTE`
+   - `MISSION_DEGRADED`
+   - `MISSION_FALLBACK`
+   - `MISSION_SAFE_HOLD`
+   - `MISSION_ABORT`
+6. Run artifact validation when needed:
+   - `bash scripts/check_artifacts.sh artifacts/runs/<run_id>`
 
 ## Required Runtime Checks
 
-- `scenario_orchestrator_node` published manifest and event lifecycle messages
-- `time_sync_node` remained monotonic
-- `logger_node` recorded `/truth/pose`
-- no runtime node subscribed to `/truth/*`
-- mission state transitions were explained on `/mission/explanation`
+- scenario report includes `manifest_hash`, `config_hash`, and `evaluation_profile`
+- replay/evaluation bundles are present for regression runs
+- reason codes in reports remain `snake_case`
+- `/truth/*` stays evaluation-only and is not used as runtime autonomy input
 
 ## Expected Outputs
 
-- recorded runtime log bundle
-- recorded evaluation-only ground truth
-- manifest hash or manifest copy
-- run metadata with seed and clock rate
+- scenario artifacts listed above for each scenario
+- run-level bundles on regression runs:
+  - `replay_results.json/.md/.csv`
+  - `evaluation_metrics.json/.md/.csv`
+  - `evaluation_verdicts.json/.md/.csv`
+  - `summary.json/.md`
+  - `regression_result.json`
 
 ## Immediate Triage Rules
 
 Stop the run and mark it suspect if:
 
-- `/truth/pose` is absent
-- `MISSION_ABORT` occurs in a scenario that does not allow abort
-- topic freshness warnings appear before any injected event justifies them
-- the simulation clock is non-monotonic
+- any required scenario artifact is missing
+- report uses legacy mission/localization values outside the current executable set
+- deterministic replay for a scenario is not `PASS` in `replay_results.json`
+- `scripts/check_artifacts.sh` fails for the run directory

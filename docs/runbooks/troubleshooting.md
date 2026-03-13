@@ -4,14 +4,19 @@
 
 This runbook covers simulation, replay, and evaluation failures. It does not cover real hardware, which belongs to the Future hardware integration phase.
 
+Current-slice note:
+
+- Troubleshooting is artifact-first (`*_report.json`, `*_runtime_trace.json`, `*_mission_audit.json`, replay/evaluation bundles).
+- ROS2 `health_monitor_node`, `logger_node`, and `evaluation_node` are architecture targets and not executable runtime nodes yet.
+
 ## Symptom: No Fused Localization Output
 
 Check:
 
-1. `/sync/status` for stale or missing sensor inputs
-2. `/localization/vio/estimate` freshness and `is_valid`
-3. `/trust/source_confidence` for `TRUST_NO_VALID_SOURCE`
-4. `/mission/health` for `HEALTH_VIO_STALLED` or `HEALTH_FUSION_INVALID`
+1. `<scenario>_runtime_trace.json` for persistent `localization_mode=HOLD_LAST_SAFE`
+2. `<scenario>_report.json` for low `localization_confidence`
+3. `<scenario>_report.json` `trust_primary_reason_code` for `localization_confidence_low` or `sync_quality_low`
+4. `<scenario>_mission_audit.json` for forced holds and transition history
 
 Likely causes:
 
@@ -23,14 +28,14 @@ Likely causes:
 
 Check:
 
-1. `/mission/explanation` primary reason code
-2. `/mission/health` severity immediately before abort
-3. scenario event timeline on `/events/scenario`
-4. whether the abort exceeded the contingency timeout
+1. `<scenario>_report.json` and `<scenario>_mission_audit.json` primary reason codes
+2. `<scenario>_mission_audit.json` for transition ordering and timeout escalation
+3. `<scenario>_runtime_trace.json` for per-tick `mission_state`
+4. whether `mission_abort_safe_hold_timeout`, `mission_abort_vio_lost`, or `mission_abort_terminal_latched` was triggered
 
 Likely causes:
 
-- prolonged `LOCALIZATION_CONTINGENCY`
+- prolonged `MISSION_SAFE_HOLD`
 - critical health fault
 - scenario manifest inconsistent with route duration or sensor profile
 
@@ -39,9 +44,9 @@ Likely causes:
 Check:
 
 1. manifest hash equality
-2. availability and completeness of `/truth/pose`
-3. first divergence in mission state or trust decision sequence
-4. log corruption or dropped recorded topics
+2. availability and completeness of `<scenario>_truth_trace.json`
+3. first divergence in `replay_results.json`
+4. profile and artifact presence in `evaluation_verdicts.json` and `evaluation_metrics.json`
 
 Likely causes:
 
@@ -53,10 +58,10 @@ Likely causes:
 
 Check:
 
-1. `/trust/gnss` for `GNSS_SPOOF_LIKE_DRIFT`
-2. innovation consistency component of the GNSS trust report
-3. `/trust/decision` for `TRUST_GNSS_GATED`
-4. `/localization/source_status` active mode
+1. `<scenario>_report.json` `gnss_state` and `gnss_trust`
+2. `<scenario>_runtime_trace.json` for tick-level trust drop timing
+3. `<scenario>_report.json` `trust_primary_reason_code` and `trust_reason_codes`
+4. final localization mode (`BLENDED`, `VIO_PRIMARY`, or `HOLD_LAST_SAFE`) in report/runtime trace
 
 Likely causes:
 
@@ -68,10 +73,10 @@ Likely causes:
 
 Check:
 
-1. fallback reaction time against scenario threshold
-2. VIO estimate freshness during denial interval
-3. communication degradation events that may have affected camera or IMU timing
-4. `LOCALIZATION_CONTINGENCY` entry reason codes
+1. `evaluation_metrics.json` for `FALLBACK_REACTION_TIME_S`
+2. `<scenario>_runtime_trace.json` for denied ticks and mission transition timing
+3. manifest `mission_timeline` overrides and route geometry assumptions
+4. mission/trust reason codes for `sync_quality_low`, `localization_confidence_low`, and denied-state transitions
 
 Likely causes:
 

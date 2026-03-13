@@ -1,0 +1,21 @@
+{
+  "advisory_code": "operator_avoid_high_risk_corridor",
+  "advisory_text": "Avoid the highlighted high-risk corridor and reassess route progress.",
+  "affected_area_count": 1,
+  "ew_corridor_cost": 0.119,
+  "ew_risk_level": "high",
+  "localization_mode": "VIO_PRIMARY",
+  "mission_confidence": 0.409,
+  "mission_state": "MISSION_FALLBACK",
+  "primary_reason_code": "tactical_fallback_active",
+  "reason_codes": [
+    "tactical_fallback_active",
+    "tactical_ew_hotspot_detected",
+    "tactical_sync_risk_observed"
+  ],
+  "run_id": "20260313T1325Z_plan_probe",
+  "scenario_id": "s14_sync_low_denied_good",
+  "schema_version": "1.0",
+  "summary_text": "Mission is fallback with VIO-primary localization; EW risk is high. Avoid the highlighted high-risk corridor and reassess route progress.",
+  "timestamp_ns": 0
+}

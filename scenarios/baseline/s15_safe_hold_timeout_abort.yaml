@@ -1,0 +1,20 @@
+scenario_id: s15_safe_hold_timeout_abort
+map_name: industrial_corridor
+vehicle_spawn: {"x": 0.0, "y": 0.0, "z": 28.0}
+route_waypoints:
+  - {"x": 50.0, "y": 10.0, "z": 28.0}
+  - {"x": 140.0, "y": 40.0, "z": 28.0}
+gnss_condition: denied
+run_seed: 1515
+evaluation_profile: denial_corridor_profile_v1
+vio:
+  profile_id: weak_texture_v1
+  reported_state: weak
+mission_timeline:
+  tick_period_s: 1.0
+  steps:
+    - {"repeats": 3}
+metadata:
+  title: Safe Hold Timeout Abort
+  description: Persistent denied plus weak VIO should time out from safe hold into mission abort.
+  owner: autonomy-sim

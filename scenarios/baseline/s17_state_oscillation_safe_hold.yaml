@@ -1,0 +1,21 @@
+scenario_id: s17_state_oscillation_safe_hold
+map_name: urban_canyon
+vehicle_spawn: {"x": 0.0, "y": 0.0, "z": 32.0}
+route_waypoints:
+  - {"x": 30.0, "y": 5.0, "z": 32.0}
+  - {"x": 95.0, "y": 25.0, "z": 32.0}
+gnss_condition: degraded
+run_seed: 1717
+evaluation_profile: urban_canyon_profile_v1
+vio:
+  profile_id: nominal_v1
+mission_timeline:
+  tick_period_s: 1.0
+  steps:
+    - {"repeats": 1, "gnss_condition": "degraded"}
+    - {"repeats": 2, "gnss_condition": "nominal"}
+    - {"repeats": 1, "gnss_condition": "degraded"}
+metadata:
+  title: Mission Oscillation Guard
+  description: Rapid state transitions inside the sliding window should force mission safe hold.
+  owner: autonomy-sim

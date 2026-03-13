@@ -1,0 +1,15 @@
+scenario_id: s9_fusion_gnss_primary
+map_name: open_field
+vehicle_spawn: {"x": 0.0, "y": 0.0, "z": 30.0}
+route_waypoints:
+  - {"x": 60.0, "y": 0.0, "z": 30.0}
+  - {"x": 120.0, "y": 20.0, "z": 30.0}
+gnss_condition: nominal
+run_seed: 901
+evaluation_profile: baseline_nominal_profile_v1
+vio:
+  profile_id: nominal_v1
+metadata:
+  title: Fusion GNSS Primary Mode
+  description: Nominal GNSS with good VIO should produce GNSS_PRIMARY localization mode.
+  owner: autonomy-sim

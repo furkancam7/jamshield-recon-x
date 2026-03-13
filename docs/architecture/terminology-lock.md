@@ -115,6 +115,16 @@ Mission states describe mission continuity decisions, not estimator internals.
 | `MISSION_ABORT` | The mission is terminated because safety or continuity criteria can no longer be met. |
 | `MISSION_COMPLETE` | The mission route has completed without terminal failure. |
 
+Current executable slice note:
+
+- The executable slice currently emits only:
+  - `MISSION_EXECUTE`
+  - `MISSION_DEGRADED`
+  - `MISSION_FALLBACK`
+  - `MISSION_SAFE_HOLD`
+  - `MISSION_ABORT`
+- `MISSION_PREPARE` and `MISSION_COMPLETE` remain architecture targets and must be labeled as deferred when referenced outside architecture intent.
+
 Conceptual trigger logic:
 
 - `MISSION_PREPARE` is active before the first usable localization state is declared.

@@ -136,8 +136,8 @@ Doküman doğrulaması tek başına sistem kurmaz. İlk gerçek akış olmadan n
 ### Exit Gate
 
 - `scenario -> gnss_trust -> mission_continuity -> report` akışı çalışıyor
-- Nominal senaryo `MISSION_NORMAL` ile bitebiliyor
-- Denied senaryo `MISSION_NORMAL` ile bitmiyor
+- Nominal senaryo `MISSION_EXECUTE` ile bitebiliyor
+- Denied senaryo `MISSION_EXECUTE` ile bitmiyor
 - Report artifact üretiliyor
 
 ### Sonraki Fazı Açan Sonuç

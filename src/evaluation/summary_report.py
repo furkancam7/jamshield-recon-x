@@ -20,19 +20,48 @@ def generate_summary(
 
     scenarios = []
     config_ids = set()
+    evaluation_profiles = set()
     software_revisions = set()
     for scenario_id in EXPECTED_SCENARIO_IDS:
         report = reports[scenario_id]
         config_ids.add(report["config_id"])
+        evaluation_profiles.add(report["evaluation_profile"])
         software_revisions.add(report["software_revision"])
         scenarios.append(
             {
                 "scenario_id": scenario_id,
                 "gnss_state": report["gnss_state"],
-                "gnss_trust_score": report["trust_score"],
+                "gnss_trust": report["gnss_trust"],
+                "vio_trust": report["vio_trust"],
+                "sync_quality": report["sync_quality"],
                 "mission_confidence": report["mission_confidence"],
+                "trust_primary_reason_code": report["trust_primary_reason_code"],
+                "mission_primary_reason_code": report["mission_primary_reason_code"],
+                "mission_transition_count": report["mission_transition_count"],
+                "ew_risk_level": report["ew_risk_level"],
+                "ew_primary_reason_code": report["ew_primary_reason_code"],
+                "ew_max_risk": report["ew_max_risk"],
+                "ew_affected_cell_count": report["ew_affected_cell_count"],
+                "ew_corridor_cost": report["ew_corridor_cost"],
+                "ew_risk_map_path": report["ew_risk_map_path"],
+                "tactical_primary_reason_code": report["tactical_primary_reason_code"],
+                "tactical_advisory_code": report["tactical_advisory_code"],
+                "tactical_summary_text": report["tactical_summary_text"],
+                "tactical_summary_path": report["tactical_summary_path"],
+                "manifest_hash": report["manifest_hash"],
+                "config_hash": report["config_hash"],
+                "evaluation_profile": report["evaluation_profile"],
+                "deterministic_replay_passed": report["deterministic_replay_passed"],
+                "evaluation_verdict": report["evaluation_verdict"],
+                "invalid_run": report["invalid_run"],
+                "evaluation_primary_reason_code": report["evaluation_primary_reason_code"],
                 "mission_state": report["mission_state"],
+                "effective_vio_state": report["effective_vio_state"],
+                "vio_profile_id": report["vio_metrics"]["profile_id"],
+                "localization_mode": report["localization_mode"],
+                "localization_confidence": report["localization_confidence"],
                 "ate_rmse": report.get("ate_m"),
+                "mission_audit_path": report["mission_audit_path"],
                 "timestamp": report["timestamp"],
             }
         )
@@ -52,6 +81,7 @@ def generate_summary(
             regression_result["overall_result"] if regression_result else "UNKNOWN"
         ),
         "config_id": next(iter(config_ids)),
+        "evaluation_profiles": sorted(evaluation_profiles),
         "software_revision": next(iter(software_revisions)),
         "generated_at": utc_timestamp(),
     }
@@ -87,15 +117,16 @@ def _render_markdown(summary: dict[str, Any]) -> str:
         "## Scenario Results",
         "",
         f"- Config ID: `{summary['config_id']}`",
+        f"- Evaluation Profiles: `{', '.join(summary['evaluation_profiles'])}`",
         f"- Software revision: `{summary['software_revision']}`",
         "",
-        "| Scenario | GNSS State | Trust Score | Mission Confidence | Mission State | ATE RMSE |",
-        "| --- | --- | ---: | ---: | --- | ---: |",
+        "| Scenario | GNSS State | GNSS | VIO | Sync | Mission | EW Level | Tactical | Advisory | Eval Verdict | Replay | Eval Reason | Transitions | Effective VIO | Mission State | Loc Mode | Loc Conf | VIO Profile | ATE RMSE |",
+        "| --- | --- | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | ---: | --- | ---: |",
     ]
 
     for scenario in summary["scenarios"]:
         lines.append(
-            "| {scenario_id} | {gnss_state} | {gnss_trust_score:.3f} | {mission_confidence:.3f} | {mission_state} | {ate_rmse:.3f} |".format(
+            "| {scenario_id} | {gnss_state} | {gnss_trust:.3f} | {vio_trust:.3f} | {sync_quality:.3f} | {mission_confidence:.3f} | {ew_risk_level} | {tactical_primary_reason_code} | {tactical_advisory_code} | {evaluation_verdict} | {deterministic_replay_passed} | {evaluation_primary_reason_code} | {mission_transition_count} | {effective_vio_state} | {mission_state} | {localization_mode} | {localization_confidence:.3f} | {vio_profile_id} | {ate_rmse:.3f} |".format(
                 **scenario
             )
         )

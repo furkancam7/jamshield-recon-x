@@ -1,0 +1,15 @@
+scenario_id: s12_fusion_dead_reckoning
+map_name: open_field
+vehicle_spawn: {"x": 0.0, "y": 0.0, "z": 30.0}
+route_waypoints:
+  - {"x": 60.0, "y": 0.0, "z": 30.0}
+  - {"x": 120.0, "y": 20.0, "z": 30.0}
+gnss_condition: denied
+run_seed: 1201
+evaluation_profile: denial_corridor_profile_v1
+vio:
+  profile_id: lost_tracking_v1
+metadata:
+  title: Fusion Hold Last Safe Mode
+  description: Denied GNSS with lost VIO should produce HOLD_LAST_SAFE localization mode.
+  owner: autonomy-sim

@@ -179,3 +179,41 @@ A scenario manifest is invalid if:
 - `clock.max_duration_s` is smaller than route completion lower bound
 - evaluation recording is disabled for a benchmarked scenario
 - event targets or noise models are not recognized
+
+## Current Baseline Slice
+
+The repository currently implements a narrower baseline-friendly manifest subset for deterministic regression:
+
+- `scenario_id`
+- `map_name`
+- `vehicle_spawn`
+- `route_waypoints`
+- `gnss_condition`
+- `run_seed`
+- `evaluation_profile`
+- `metadata`
+- optional `runtime_health.sync_quality`
+- optional `vio.profile_id`
+- optional `vio.reported_state`
+- optional `vio.health_score_override`
+- optional `config_override`
+- optional `mission_timeline`
+
+The current `mission_timeline` form is:
+
+```yaml
+mission_timeline:
+  tick_period_s: 1.0
+  steps:
+    - {"repeats": 1, "gnss_condition": "denied"}
+    - {"repeats": 2, "gnss_condition": "nominal", "vio": {"profile_id": "nominal_v1"}}
+```
+
+Rules for the current slice:
+
+- If `mission_timeline` is omitted, the top-level manifest values are executed as a single deterministic tick.
+- `evaluation_profile` is required and must reference a named profile from `configs/eval/default.yaml`.
+- Each step must include `repeats >= 1`.
+- Step fields are overrides; omitted fields inherit from the top-level manifest.
+- `runtime_health.sync_quality` defaults to `1.0`.
+- P9 EW risk-map generation derives deterministic pseudo-position samples from `vehicle_spawn`, `route_waypoints`, and the resolved `mission_timeline`.

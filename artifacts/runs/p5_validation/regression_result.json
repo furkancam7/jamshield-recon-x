@@ -1,0 +1,76 @@
+{
+  "checks": [
+    {
+      "detail": "Expected nominal trust score > degraded trust score > denied trust score.",
+      "name": "trust_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must not end in MISSION_NORMAL.",
+      "name": "denied_not_normal",
+      "passed": true
+    },
+    {
+      "detail": "Degraded scenario must not be classified as denied.",
+      "name": "degraded_not_denied",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario must not collapse to MISSION_EMERGENCY_LAND.",
+      "name": "nominal_not_emergency",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario trust score must remain at or above 0.90.",
+      "name": "nominal_minimum_trust_threshold",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must end in the allowed denied-state set.",
+      "name": "denied_allowed_mission_states",
+      "passed": true
+    },
+    {
+      "detail": "Denied + nominal VIO pipeline must stay in fallback-capable state.",
+      "name": "p4_vio_good_fallback",
+      "passed": true
+    },
+    {
+      "detail": "Denied + weak-texture VIO pipeline must produce weak VIO and safe hold.",
+      "name": "p4_vio_weak_safe_hold",
+      "passed": true
+    },
+    {
+      "detail": "Denied + lost-tracking VIO pipeline must force emergency landing path.",
+      "name": "p4_vio_lost_emergency",
+      "passed": true
+    },
+    {
+      "detail": "Conflict case with reported good state and lost pipeline score must resolve to lost.",
+      "name": "p4_conflict_score_dominates",
+      "passed": true
+    },
+    {
+      "detail": "Conflict case with lost reported state must preserve lost effective state.",
+      "name": "p4_conflict_state_dominates",
+      "passed": true
+    },
+    {
+      "detail": "All regression artifacts must record pipeline_v1 VIO metrics.",
+      "name": "vio_metrics_source_pipeline_v1",
+      "passed": true
+    }
+  ],
+  "overall_result": "PASS",
+  "run_id": "p5_validation",
+  "scenario_ids": [
+    "s1_nominal",
+    "s2_gnss_degraded_corridor",
+    "s3_gnss_denied_zone",
+    "s4_denied_vio_good",
+    "s5_denied_vio_weak",
+    "s6_denied_vio_lost",
+    "s7_conflict_score_dominates",
+    "s8_conflict_state_dominates"
+  ]
+}

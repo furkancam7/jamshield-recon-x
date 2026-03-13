@@ -1,0 +1,20 @@
+scenario_id: s16_recovery_dwell_delays_resume
+map_name: industrial_corridor
+vehicle_spawn: {"x": 0.0, "y": 0.0, "z": 28.0}
+route_waypoints:
+  - {"x": 45.0, "y": 8.0, "z": 28.0}
+  - {"x": 130.0, "y": 35.0, "z": 28.0}
+gnss_condition: denied
+run_seed: 1616
+evaluation_profile: baseline_nominal_profile_v1
+vio:
+  profile_id: nominal_v1
+mission_timeline:
+  tick_period_s: 1.0
+  steps:
+    - {"repeats": 1, "gnss_condition": "denied"}
+    - {"repeats": 2, "gnss_condition": "nominal"}
+metadata:
+  title: Recovery Dwell Delays Resume
+  description: Mission recovery should wait for dwell confirmation before returning from fallback to execute.
+  owner: autonomy-sim

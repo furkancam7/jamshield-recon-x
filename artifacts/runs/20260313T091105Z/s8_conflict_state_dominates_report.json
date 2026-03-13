@@ -1,0 +1,52 @@
+{
+  "ate_m": 8.0,
+  "config_id": "sim-v1",
+  "effective_vio_state": "lost",
+  "gnss_condition": "denied",
+  "gnss_state": "denied",
+  "gnss_trust": 0.05,
+  "gnss_weight": 0.08333333333333333,
+  "ground_truth_usage": "evaluation_only",
+  "localization_confidence": 0.7604166666666666,
+  "localization_mode": "HOLD_LAST_SAFE",
+  "map_name": "industrial_corridor",
+  "mission_confidence": 0.45,
+  "mission_state": "MISSION_SAFE_HOLD",
+  "route_length_m": 145.859,
+  "run_id": "20260313T091105Z",
+  "run_seed": 888,
+  "scenario_id": "s8_conflict_state_dominates",
+  "scenario_metadata": {
+    "description": "VIO score is high but state reports lost. Worst-case rule preserves lost.",
+    "owner": "autonomy-sim",
+    "title": "VIO Conflict - State Dominates"
+  },
+  "schema_version": "2.0",
+  "software_revision": "2e31a5ba1f7682acf36fe0201cdbf92769173b61",
+  "sync_quality": 1.0,
+  "timestamp": "2026-03-13T06:11:17Z",
+  "trust_primary_reason_code": "gnss_denial_suspected",
+  "trust_reason_codes": [
+    "gnss_denial_suspected"
+  ],
+  "vio_health_score": 0.825,
+  "vio_metrics": {
+    "effective_vio_state": "good",
+    "feature_count": 24,
+    "imu_alignment_error": 0.351,
+    "matched_feature_count": 24,
+    "pose_delta_xy_m": 0.342,
+    "profile_id": "nominal_v1",
+    "reason_codes": [],
+    "reprojection_error_px": 0.556,
+    "timestamp_ns": 938000000,
+    "track_continuity": 1.0,
+    "vio_health_score": 0.825,
+    "vio_state": "good",
+    "yaw_delta_rad": 0.03
+  },
+  "vio_metrics_source": "pipeline_v1",
+  "vio_state": "lost",
+  "vio_trust": 0.825,
+  "vio_weight": 0.9166666666666667
+}

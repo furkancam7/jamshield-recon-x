@@ -1,0 +1,73 @@
+{
+  "ate_m": 3.0,
+  "config_id": "sim-v1",
+  "effective_vio_state": "good",
+  "ew_affected_cell_count": 1,
+  "ew_corridor_cost": 0.048,
+  "ew_max_risk": 0.35,
+  "ew_primary_reason_code": "ew_gnss_degraded_corridor",
+  "ew_reason_codes": [
+    "ew_gnss_degraded_corridor"
+  ],
+  "ew_risk_level": "medium",
+  "ew_risk_map_path": "C:\\Users\\Furkan\\Desktop\\jamshield-recon-x\\jamshield-recon-x\\artifacts\\runs\\20260313T105100Z\\s10_fusion_degraded_fused_ew_risk_map.json",
+  "gnss_condition": "degraded",
+  "gnss_state": "degraded",
+  "gnss_trust": 0.59,
+  "gnss_weight": 0.5181498829039812,
+  "ground_truth_usage": "evaluation_only",
+  "localization_confidence": 0.7022710772833722,
+  "localization_mode": "BLENDED",
+  "map_name": "open_field",
+  "mission_audit_path": "C:\\Users\\Furkan\\Desktop\\jamshield-recon-x\\jamshield-recon-x\\artifacts\\runs\\20260313T105100Z\\s10_fusion_degraded_fused_mission_audit.json",
+  "mission_confidence": 0.676,
+  "mission_primary_reason_code": "mission_degraded_gnss_reduced",
+  "mission_reason_codes": [
+    "mission_degraded_gnss_reduced"
+  ],
+  "mission_state": "MISSION_DEGRADED",
+  "mission_transition_count": 1,
+  "route_length_m": 123.246,
+  "run_id": "20260313T105100Z",
+  "run_seed": 1001,
+  "scenario_id": "s10_fusion_degraded_fused",
+  "scenario_metadata": {
+    "description": "Degraded GNSS with good VIO should produce BLENDED localization mode.",
+    "owner": "autonomy-sim",
+    "title": "Fusion Degraded GNSS Blended Mode"
+  },
+  "schema_version": "2.3",
+  "software_revision": "2e31a5ba1f7682acf36fe0201cdbf92769173b61",
+  "sync_quality": 1.0,
+  "tactical_advisory_code": "operator_continue_with_caution",
+  "tactical_advisory_text": "Continue with caution and monitor localization confidence.",
+  "tactical_primary_reason_code": "tactical_mission_degraded",
+  "tactical_reason_codes": [
+    "tactical_mission_degraded"
+  ],
+  "tactical_summary_path": "C:\\Users\\Furkan\\Desktop\\jamshield-recon-x\\jamshield-recon-x\\artifacts\\runs\\20260313T105100Z\\s10_fusion_degraded_fused_tactical_summary.json",
+  "tactical_summary_text": "Mission is degraded with blended localization; EW risk is medium. Continue with caution and monitor localization confidence.",
+  "timestamp": "2026-03-13T07:50:01Z",
+  "trust_primary_reason_code": "trust_inputs_nominal",
+  "trust_reason_codes": [],
+  "vio_health_score": 0.823,
+  "vio_metrics": {
+    "effective_vio_state": "good",
+    "feature_count": 24,
+    "imu_alignment_error": 0.349,
+    "matched_feature_count": 23,
+    "pose_delta_xy_m": 0.34,
+    "profile_id": "nominal_v1",
+    "reason_codes": [],
+    "reprojection_error_px": 0.575,
+    "timestamp_ns": 1051000000,
+    "track_continuity": 1.0,
+    "vio_health_score": 0.823,
+    "vio_state": "good",
+    "yaw_delta_rad": 0.03
+  },
+  "vio_metrics_source": "pipeline_v1",
+  "vio_state": "good",
+  "vio_trust": 0.823,
+  "vio_weight": 0.4818501170960187
+}

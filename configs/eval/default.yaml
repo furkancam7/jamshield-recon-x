@@ -1,0 +1,36 @@
+profiles:
+  baseline_nominal_profile_v1:
+    ate_rmse_m_max: 2.0
+    rpe_rmse_m_max: 1.0
+    drift_pct_max: 2.0
+    localization_continuity_pct_min: 95.0
+    fallback_reaction_time_s_max: 2.0
+    require_mission_success: true
+  urban_canyon_profile_v1:
+    ate_rmse_m_max: 4.0
+    rpe_rmse_m_max: 2.0
+    drift_pct_max: 4.0
+    localization_continuity_pct_min: 90.0
+    fallback_reaction_time_s_max: 2.0
+    require_mission_success: true
+  denial_corridor_profile_v1:
+    ate_rmse_m_max: 10.0
+    rpe_rmse_m_max: 3.0
+    drift_pct_max: 8.0
+    localization_continuity_pct_min: 60.0
+    fallback_reaction_time_s_max: 1.5
+    require_mission_success: true
+  spoof_like_drift_profile_v1:
+    ate_rmse_m_max: 8.0
+    rpe_rmse_m_max: 3.0
+    drift_pct_max: 6.0
+    localization_continuity_pct_min: 70.0
+    fallback_reaction_time_s_max: 1.5
+    require_mission_success: true
+  comms_instability_profile_v1:
+    ate_rmse_m_max: 8.0
+    rpe_rmse_m_max: 3.0
+    drift_pct_max: 6.0
+    localization_continuity_pct_min: 70.0
+    fallback_reaction_time_s_max: 2.5
+    require_mission_success: true

@@ -1,0 +1,77 @@
+{
+  "entries": [
+    {
+      "candidate_state": "MISSION_FALLBACK",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_FALLBACK",
+      "gnss_state": "denied",
+      "mission_confidence": 0.45,
+      "primary_reason_code": "mission_fallback_vio_primary",
+      "reason_codes": [
+        "mission_fallback_vio_primary"
+      ],
+      "step_inputs": {
+        "gnss_condition": "denied",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 0,
+      "transition_count": 1,
+      "trust_primary_reason_code": "gnss_denial_suspected"
+    },
+    {
+      "candidate_state": "MISSION_EXECUTE",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_FALLBACK",
+      "gnss_state": "nominal",
+      "mission_confidence": 0.92,
+      "primary_reason_code": "mission_recovery_dwell_active",
+      "reason_codes": [
+        "mission_recovery_dwell_active",
+        "mission_execute_nominal"
+      ],
+      "step_inputs": {
+        "gnss_condition": "nominal",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 1,
+      "transition_count": 1,
+      "trust_primary_reason_code": "trust_inputs_nominal"
+    },
+    {
+      "candidate_state": "MISSION_EXECUTE",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_EXECUTE",
+      "gnss_state": "nominal",
+      "mission_confidence": 0.92,
+      "primary_reason_code": "mission_execute_nominal",
+      "reason_codes": [
+        "mission_execute_nominal"
+      ],
+      "step_inputs": {
+        "gnss_condition": "nominal",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 2,
+      "transition_count": 2,
+      "trust_primary_reason_code": "trust_inputs_nominal"
+    }
+  ],
+  "run_id": "20260313T093520Z",
+  "scenario_id": "s16_recovery_dwell_delays_resume",
+  "schema_version": "1.0"
+}

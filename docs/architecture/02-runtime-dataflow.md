@@ -10,9 +10,9 @@ The runtime graph is organized around a single deterministic simulation clock.
 4. `gnss_trust_node` consumes `/sensors/gnss/fix` and the non-GNSS motion context needed for residual checks, then publishes `/trust/gnss`.
 5. `vio_node` consumes camera and IMU data and publishes `/localization/vio/estimate`.
 6. `gnss_adapter_node` also publishes a GNSS-derived navigation estimate on `/localization/gnss/estimate`.
-7. `trust_engine_node` consumes `/trust/gnss`, `/localization/vio/estimate`, `/localization/source_status`, and `/mission/health`, then publishes `/trust/source_confidence` and `/trust/decision`.
+7. `trust_engine_node` consumes `/trust/gnss`, `/localization/vio/estimate`, `/localization/source_status`, and the current-slice sync/runtime-health inputs, then publishes `/trust/source_confidence` and `/trust/decision`.
 8. `fusion_node` consumes GNSS and VIO estimates plus `/trust/source_confidence`, applies confidence-aware localization rules, and publishes `/localization/fused/estimate` and `/localization/source_status`.
-9. `mission_continuity_node` consumes `/localization/fused/estimate`, `/trust/decision`, `/mission/health`, and scenario route progress, then publishes `/mission/state`, `/mission/action`, and `/mission/explanation`.
+9. `mission_continuity_node` consumes `/localization/fused/estimate`, `/trust/decision`, and scenario route progress, then publishes `/mission/state`, `/mission/action`, and `/mission/explanation`.
 10. `sitl_bridge_node` translates `/mission/action` into simulator commands.
 11. `ew_risk_map_node` consumes trust and localization degradation signals and publishes `/tactical/ew_risk_map`.
 12. `tactical_summary_node` merges mission state, trust status, and EW risk map outputs into `/tactical/summary`.
@@ -94,6 +94,12 @@ It publishes:
 
 - `/mission/health` for deterministic mission continuity decisions
 - `/events/faults` for logging and investigation
+
+Current slice note:
+
+- `health_monitor_node` is still deferred in the executable vertical slice.
+- P10 tactical summary does not consume `/mission/health` yet.
+- Health-driven tactical wording remains a follow-on phase after a real runtime health publisher exists.
 
 ## Deterministic Replay Flow
 

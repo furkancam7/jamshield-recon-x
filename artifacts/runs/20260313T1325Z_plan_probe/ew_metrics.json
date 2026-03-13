@@ -1,0 +1,408 @@
+{
+  "checks_snapshot": [
+    {
+      "detail": "Expected nominal gnss_trust > degraded gnss_trust > denied gnss_trust.",
+      "name": "gnss_trust_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must not end in MISSION_EXECUTE.",
+      "name": "denied_not_execute",
+      "passed": true
+    },
+    {
+      "detail": "Degraded scenario must not be classified as denied.",
+      "name": "degraded_not_denied",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario must not collapse to MISSION_ABORT.",
+      "name": "nominal_not_abort",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario gnss_trust must remain at or above 0.90.",
+      "name": "nominal_minimum_gnss_trust_threshold",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must end in the allowed denied-state set.",
+      "name": "denied_allowed_mission_states",
+      "passed": true
+    },
+    {
+      "detail": "Denied + nominal VIO pipeline must stay in fallback-capable state.",
+      "name": "p4_vio_good_fallback",
+      "passed": true
+    },
+    {
+      "detail": "Denied + weak-texture VIO pipeline must produce weak VIO and safe hold.",
+      "name": "p4_vio_weak_safe_hold",
+      "passed": true
+    },
+    {
+      "detail": "Denied + lost-tracking VIO pipeline must force abort path.",
+      "name": "p4_vio_lost_emergency",
+      "passed": true
+    },
+    {
+      "detail": "Conflict case with reported good state and lost pipeline score must resolve to lost.",
+      "name": "p4_conflict_score_dominates",
+      "passed": true
+    },
+    {
+      "detail": "Conflict case with lost reported state must preserve lost effective state.",
+      "name": "p4_conflict_state_dominates",
+      "passed": true
+    },
+    {
+      "detail": "All regression artifacts must record pipeline_v1 VIO metrics.",
+      "name": "vio_metrics_source_pipeline_v1",
+      "passed": true
+    },
+    {
+      "detail": "Nominal GNSS + good VIO must produce GNSS_PRIMARY localization mode.",
+      "name": "p6_fusion_gnss_primary",
+      "passed": true
+    },
+    {
+      "detail": "Degraded GNSS + good VIO must produce BLENDED localization mode.",
+      "name": "p6_fusion_degraded_blended",
+      "passed": true
+    },
+    {
+      "detail": "Denied GNSS + good VIO must produce VIO_PRIMARY localization mode.",
+      "name": "p6_fusion_denied_vio_primary",
+      "passed": true
+    },
+    {
+      "detail": "Denied GNSS + lost VIO must produce HOLD_LAST_SAFE localization mode.",
+      "name": "p6_fusion_hold_last_safe",
+      "passed": true
+    },
+    {
+      "detail": "Localization confidence must decrease: GNSS_PRIMARY > BLENDED > HOLD_LAST_SAFE.",
+      "name": "p6_fusion_confidence_ordering",
+      "passed": true
+    },
+    {
+      "detail": "All reports must include fusion fields: localization_mode, localization_confidence, gnss_weight, vio_weight.",
+      "name": "p6_fusion_fields_present",
+      "passed": true
+    },
+    {
+      "detail": "VIO trust must decrease across good > weak > lost scenarios.",
+      "name": "vio_trust_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Mission confidence must monotonically degrade across nominal > degraded > denied-good > denied-lost.",
+      "name": "mission_confidence_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Low-sync scenarios must surface reduced sync_quality and sync_quality_low reasoning.",
+      "name": "sync_quality_response",
+      "passed": true
+    },
+    {
+      "detail": "Trust and mission reason codes must be present and snake_case across all reports.",
+      "name": "reason_code_coverage",
+      "passed": true
+    },
+    {
+      "detail": "Reports must not contain legacy mission-state or localization-mode values.",
+      "name": "no_legacy_enum_values",
+      "passed": true
+    },
+    {
+      "detail": "Recovery from a degraded state must honor recovery_dwell_ticks before resuming safer mission states.",
+      "name": "mission_recovery_dwell_respected",
+      "passed": true
+    },
+    {
+      "detail": "Persistent safe hold must escalate to mission abort after the configured timeout.",
+      "name": "mission_safe_hold_timeout_abort",
+      "passed": true
+    },
+    {
+      "detail": "State flapping beyond the sliding-window threshold must force MISSION_SAFE_HOLD.",
+      "name": "mission_oscillation_detection",
+      "passed": true
+    },
+    {
+      "detail": "Once mission abort is entered, later ticks must remain terminal within the same scenario run.",
+      "name": "mission_abort_terminal",
+      "passed": true
+    },
+    {
+      "detail": "Every scenario must emit a mission audit artifact aligned with the final report state.",
+      "name": "mission_audit_present",
+      "passed": true
+    },
+    {
+      "detail": "Every scenario must emit an EW risk-map artifact aligned with the final report values.",
+      "name": "ew_map_artifact_present",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario must remain below the configured EW false-marking floor.",
+      "name": "ew_nominal_false_marking_ceiling",
+      "passed": true
+    },
+    {
+      "detail": "EW corridor cost must increase from nominal to degraded to denied scenarios.",
+      "name": "ew_corridor_cost_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Mid-route denial scenario must produce a high-risk but localized EW hotspot.",
+      "name": "ew_denial_hotspot_localized",
+      "passed": true
+    },
+    {
+      "detail": "Recovery scenario must show EW risk decay after the denial interval ends.",
+      "name": "ew_temporal_decay_observed",
+      "passed": true
+    },
+    {
+      "detail": "EW report, reason, and evidence codes must be present and snake_case across all scenarios.",
+      "name": "ew_reason_code_coverage",
+      "passed": true
+    },
+    {
+      "detail": "Every scenario must emit a tactical summary artifact aligned with the final report values.",
+      "name": "tactical_summary_artifact_present",
+      "passed": true
+    },
+    {
+      "detail": "Tactical summary artifacts must stay consistent with report mission and EW fields.",
+      "name": "tactical_summary_runtime_consistency",
+      "passed": true
+    },
+    {
+      "detail": "Key baseline scenarios must map to the expected operator advisory codes and texts.",
+      "name": "tactical_advisory_coverage",
+      "passed": true
+    },
+    {
+      "detail": "Tactical summary text must remain deterministic and constrained to the fixed two-sentence template.",
+      "name": "tactical_text_determinism",
+      "passed": true
+    },
+    {
+      "detail": "Tactical reason and advisory codes must be present and snake_case across all scenarios.",
+      "name": "no_legacy_tactical_reason_codes",
+      "passed": true
+    },
+    {
+      "detail": "trust_calibration.json/.md/.csv must all be present.",
+      "name": "calibration_bundle_present",
+      "passed": true
+    }
+  ],
+  "run_id": "20260313T1325Z_plan_probe",
+  "scenarios": [
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.048,
+      "ew_risk_level": "medium",
+      "failed_checks": [],
+      "max_risk": 0.35,
+      "primary_reason_code": "ew_gnss_degraded_corridor",
+      "risk_cells_hash": "70400034fbbfd763e5f26c9b65297075e6ae39260fb354dfcd0a4fd9d2f9d438",
+      "scenario_id": "s10_fusion_degraded_fused"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.129,
+      "ew_risk_level": "high",
+      "failed_checks": [],
+      "max_risk": 0.95,
+      "primary_reason_code": "ew_gnss_denial_hotspot",
+      "risk_cells_hash": "5e94b4313677b769a88754d8c62daa65025e4551b8991635d12b626f5a820b1a",
+      "scenario_id": "s11_fusion_denied_vio_only"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.129,
+      "ew_risk_level": "high",
+      "failed_checks": [],
+      "max_risk": 0.95,
+      "primary_reason_code": "ew_gnss_denial_hotspot",
+      "risk_cells_hash": "5e94b4313677b769a88754d8c62daa65025e4551b8991635d12b626f5a820b1a",
+      "scenario_id": "s12_fusion_dead_reckoning"
+    },
+    {
+      "affected_cell_count": 0,
+      "corridor_cost": 0.027,
+      "ew_risk_level": "low",
+      "failed_checks": [],
+      "max_risk": 0.2,
+      "primary_reason_code": "ew_sync_instability_corridor",
+      "risk_cells_hash": "6602b9eb6157d0ad3ea7d4849b446640d631e0b0f89e56260cdb12d6b73f14e1",
+      "scenario_id": "s13_sync_low_nominal"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.119,
+      "ew_risk_level": "high",
+      "failed_checks": [],
+      "max_risk": 1.0,
+      "primary_reason_code": "ew_gnss_denial_hotspot",
+      "risk_cells_hash": "7585be179a7bfe3115d1a2ad92f11d452541afc71db1342c9a7a9e4819b45a2c",
+      "scenario_id": "s14_sync_low_denied_good"
+    },
+    {
+      "affected_cell_count": 4,
+      "corridor_cost": 0.314,
+      "ew_risk_level": "high",
+      "failed_checks": [],
+      "max_risk": 0.95,
+      "primary_reason_code": "ew_gnss_denial_hotspot",
+      "risk_cells_hash": "ecde7446b18c2d4be7371ae691528d2f56d0fec4bf1400b3b2150c84389127c7",
+      "scenario_id": "s15_safe_hold_timeout_abort"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.139,
+      "ew_risk_level": "high",
+      "failed_checks": [],
+      "max_risk": 0.686,
+      "primary_reason_code": "ew_localization_instability",
+      "risk_cells_hash": "fbf29a42392caeb386f8acd8f983bbe7b2f3424358905f6b6e973fbe346fcc96",
+      "scenario_id": "s16_recovery_dwell_delays_resume"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.095,
+      "ew_risk_level": "medium",
+      "failed_checks": [],
+      "max_risk": 0.251,
+      "primary_reason_code": "ew_gnss_degraded_corridor",
+      "risk_cells_hash": "63074420e489917e16a80de4501d87b089b27f0e8e8afd1414fda5e0e9c51a55",
+      "scenario_id": "s17_state_oscillation_safe_hold"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.136,
+      "ew_risk_level": "high",
+      "failed_checks": [],
+      "max_risk": 0.686,
+      "primary_reason_code": "ew_localization_instability",
+      "risk_cells_hash": "4cee9109b06d29b680fec408916db36588fb24e2d587bf79a93eef70c71cf163",
+      "scenario_id": "s18_abort_terminal"
+    },
+    {
+      "affected_cell_count": 4,
+      "corridor_cost": 0.191,
+      "ew_risk_level": "high",
+      "failed_checks": [],
+      "max_risk": 0.552,
+      "primary_reason_code": "ew_gnss_denial_hotspot",
+      "risk_cells_hash": "2ad92704d02360e1cfc2819641837d1f8acb00a31b1c1cab3183128a6c52e575",
+      "scenario_id": "s19_ew_mid_route_denial_hotspot"
+    },
+    {
+      "affected_cell_count": 0,
+      "corridor_cost": 0.0,
+      "ew_risk_level": "none",
+      "failed_checks": [],
+      "max_risk": 0.0,
+      "primary_reason_code": "ew_risk_nominal",
+      "risk_cells_hash": "84ccd79aeaa00b83e2427e988c2c77bfb56f7aa327cee080980c3c0714cc5944",
+      "scenario_id": "s1_nominal"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.083,
+      "ew_risk_level": "medium",
+      "failed_checks": [],
+      "max_risk": 0.422,
+      "primary_reason_code": "ew_localization_instability",
+      "risk_cells_hash": "055079b0d73bbd873ea8614912e9d07faa142a7936fe65c6e58a106b78a9de2c",
+      "scenario_id": "s20_ew_decay_after_recovery"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.042,
+      "ew_risk_level": "medium",
+      "failed_checks": [],
+      "max_risk": 0.35,
+      "primary_reason_code": "ew_gnss_degraded_corridor",
+      "risk_cells_hash": "61568cb2b22618a9963efbbd07b06f302c151e3e6b46a1d836da6373bdfe587f",
+      "scenario_id": "s2_gnss_degraded_corridor"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.113,
+      "ew_risk_level": "high",
+      "failed_checks": [],
+      "max_risk": 0.95,
+      "primary_reason_code": "ew_gnss_denial_hotspot",
+      "risk_cells_hash": "18d19b5e90a395144bb8b20709c55adffaed208f1cb8b8bc107b375b095797e1",
+      "scenario_id": "s3_gnss_denied_zone"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.113,
+      "ew_risk_level": "high",
+      "failed_checks": [],
+      "max_risk": 0.95,
+      "primary_reason_code": "ew_gnss_denial_hotspot",
+      "risk_cells_hash": "18d19b5e90a395144bb8b20709c55adffaed208f1cb8b8bc107b375b095797e1",
+      "scenario_id": "s4_denied_vio_good"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.113,
+      "ew_risk_level": "high",
+      "failed_checks": [],
+      "max_risk": 0.95,
+      "primary_reason_code": "ew_gnss_denial_hotspot",
+      "risk_cells_hash": "18d19b5e90a395144bb8b20709c55adffaed208f1cb8b8bc107b375b095797e1",
+      "scenario_id": "s5_denied_vio_weak"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.113,
+      "ew_risk_level": "high",
+      "failed_checks": [],
+      "max_risk": 0.95,
+      "primary_reason_code": "ew_gnss_denial_hotspot",
+      "risk_cells_hash": "18d19b5e90a395144bb8b20709c55adffaed208f1cb8b8bc107b375b095797e1",
+      "scenario_id": "s6_denied_vio_lost"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.113,
+      "ew_risk_level": "high",
+      "failed_checks": [],
+      "max_risk": 0.95,
+      "primary_reason_code": "ew_gnss_denial_hotspot",
+      "risk_cells_hash": "18d19b5e90a395144bb8b20709c55adffaed208f1cb8b8bc107b375b095797e1",
+      "scenario_id": "s7_conflict_score_dominates"
+    },
+    {
+      "affected_cell_count": 1,
+      "corridor_cost": 0.113,
+      "ew_risk_level": "high",
+      "failed_checks": [],
+      "max_risk": 0.95,
+      "primary_reason_code": "ew_gnss_denial_hotspot",
+      "risk_cells_hash": "18d19b5e90a395144bb8b20709c55adffaed208f1cb8b8bc107b375b095797e1",
+      "scenario_id": "s8_conflict_state_dominates"
+    },
+    {
+      "affected_cell_count": 0,
+      "corridor_cost": 0.0,
+      "ew_risk_level": "none",
+      "failed_checks": [],
+      "max_risk": 0.0,
+      "primary_reason_code": "ew_risk_nominal",
+      "risk_cells_hash": "84ccd79aeaa00b83e2427e988c2c77bfb56f7aa327cee080980c3c0714cc5944",
+      "scenario_id": "s9_fusion_gnss_primary"
+    }
+  ],
+  "schema_version": "1.0"
+}

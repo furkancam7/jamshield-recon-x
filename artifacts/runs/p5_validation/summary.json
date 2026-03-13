@@ -1,0 +1,170 @@
+{
+  "checks": [
+    {
+      "detail": "Expected nominal trust score > degraded trust score > denied trust score.",
+      "name": "trust_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must not end in MISSION_NORMAL.",
+      "name": "denied_not_normal",
+      "passed": true
+    },
+    {
+      "detail": "Degraded scenario must not be classified as denied.",
+      "name": "degraded_not_denied",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario must not collapse to MISSION_EMERGENCY_LAND.",
+      "name": "nominal_not_emergency",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario trust score must remain at or above 0.90.",
+      "name": "nominal_minimum_trust_threshold",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must end in the allowed denied-state set.",
+      "name": "denied_allowed_mission_states",
+      "passed": true
+    },
+    {
+      "detail": "Denied + nominal VIO pipeline must stay in fallback-capable state.",
+      "name": "p4_vio_good_fallback",
+      "passed": true
+    },
+    {
+      "detail": "Denied + weak-texture VIO pipeline must produce weak VIO and safe hold.",
+      "name": "p4_vio_weak_safe_hold",
+      "passed": true
+    },
+    {
+      "detail": "Denied + lost-tracking VIO pipeline must force emergency landing path.",
+      "name": "p4_vio_lost_emergency",
+      "passed": true
+    },
+    {
+      "detail": "Conflict case with reported good state and lost pipeline score must resolve to lost.",
+      "name": "p4_conflict_score_dominates",
+      "passed": true
+    },
+    {
+      "detail": "Conflict case with lost reported state must preserve lost effective state.",
+      "name": "p4_conflict_state_dominates",
+      "passed": true
+    },
+    {
+      "detail": "All regression artifacts must record pipeline_v1 VIO metrics.",
+      "name": "vio_metrics_source_pipeline_v1",
+      "passed": true
+    }
+  ],
+  "config_id": "sim-v1",
+  "generated_at": "2026-03-11T14:14:54Z",
+  "overall_regression_result": "PASS",
+  "run_id": "p5_validation",
+  "scenario_ids": [
+    "s1_nominal",
+    "s2_gnss_degraded_corridor",
+    "s3_gnss_denied_zone",
+    "s4_denied_vio_good",
+    "s5_denied_vio_weak",
+    "s6_denied_vio_lost",
+    "s7_conflict_score_dominates",
+    "s8_conflict_state_dominates"
+  ],
+  "scenarios": [
+    {
+      "ate_rmse": 0.5,
+      "effective_vio_state": "good",
+      "gnss_state": "nominal",
+      "gnss_trust_score": 0.96,
+      "mission_confidence": 0.97,
+      "mission_state": "MISSION_NORMAL",
+      "scenario_id": "s1_nominal",
+      "timestamp": "2026-03-11T14:14:42Z",
+      "vio_profile_id": "nominal_v1"
+    },
+    {
+      "ate_rmse": 3.0,
+      "effective_vio_state": "good",
+      "gnss_state": "degraded",
+      "gnss_trust_score": 0.59,
+      "mission_confidence": 0.693,
+      "mission_state": "MISSION_DEGRADED",
+      "scenario_id": "s2_gnss_degraded_corridor",
+      "timestamp": "2026-03-11T14:14:43Z",
+      "vio_profile_id": "nominal_v1"
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "good",
+      "gnss_state": "denied",
+      "gnss_trust_score": 0.05,
+      "mission_confidence": 0.287,
+      "mission_state": "MISSION_FALLBACK",
+      "scenario_id": "s3_gnss_denied_zone",
+      "timestamp": "2026-03-11T14:14:46Z",
+      "vio_profile_id": "nominal_v1"
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "good",
+      "gnss_state": "denied",
+      "gnss_trust_score": 0.05,
+      "mission_confidence": 0.287,
+      "mission_state": "MISSION_FALLBACK",
+      "scenario_id": "s4_denied_vio_good",
+      "timestamp": "2026-03-11T14:14:47Z",
+      "vio_profile_id": "nominal_v1"
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "weak",
+      "gnss_state": "denied",
+      "gnss_trust_score": 0.05,
+      "mission_confidence": 0.287,
+      "mission_state": "MISSION_SAFE_HOLD",
+      "scenario_id": "s5_denied_vio_weak",
+      "timestamp": "2026-03-11T14:14:49Z",
+      "vio_profile_id": "weak_texture_v1"
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "lost",
+      "gnss_state": "denied",
+      "gnss_trust_score": 0.05,
+      "mission_confidence": 0.038,
+      "mission_state": "MISSION_EMERGENCY_LAND",
+      "scenario_id": "s6_denied_vio_lost",
+      "timestamp": "2026-03-11T14:14:50Z",
+      "vio_profile_id": "lost_tracking_v1"
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "lost",
+      "gnss_state": "denied",
+      "gnss_trust_score": 0.05,
+      "mission_confidence": 0.038,
+      "mission_state": "MISSION_EMERGENCY_LAND",
+      "scenario_id": "s7_conflict_score_dominates",
+      "timestamp": "2026-03-11T14:14:51Z",
+      "vio_profile_id": "lost_tracking_v1"
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "lost",
+      "gnss_state": "denied",
+      "gnss_trust_score": 0.05,
+      "mission_confidence": 0.038,
+      "mission_state": "MISSION_EMERGENCY_LAND",
+      "scenario_id": "s8_conflict_state_dominates",
+      "timestamp": "2026-03-11T14:14:52Z",
+      "vio_profile_id": "nominal_v1"
+    }
+  ],
+  "schema_version": "1.0",
+  "software_revision": "2e31a5ba1f7682acf36fe0201cdbf92769173b61"
+}

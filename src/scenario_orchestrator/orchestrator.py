@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from math import sqrt
 
-from .manifest_loader import Position3D, ScenarioManifest
+from .manifest_loader import MissionTimelineStep, Position3D, ScenarioManifest
 
 
 @dataclass(frozen=True)
@@ -14,9 +14,11 @@ class GnssConditionSnapshot:
     map_name: str
     run_seed: int
     gnss_condition: str
+    vio_profile_id: str
     route_length_m: float
     measurement_quality: float
     outage_ratio: float
+    sync_quality: float
 
 
 class ScenarioOrchestrator:
@@ -25,10 +27,22 @@ class ScenarioOrchestrator:
     def __init__(self, manifest: ScenarioManifest) -> None:
         self._manifest = manifest
 
-    def build_snapshot(self) -> GnssConditionSnapshot:
-        measurement_quality, outage_ratio = _condition_profile(
-            self._manifest.gnss_condition
+    def build_snapshot(
+        self,
+        step: MissionTimelineStep | None = None,
+    ) -> GnssConditionSnapshot:
+        gnss_condition = (
+            self._manifest.gnss_condition if step is None else step.gnss_condition
         )
+        vio_profile_id = (
+            self._manifest.vio_profile_id if step is None else step.vio_profile_id
+        )
+        sync_quality = (
+            self._manifest.runtime_sync_quality
+            if step is None
+            else step.runtime_sync_quality
+        )
+        measurement_quality, outage_ratio = _condition_profile(gnss_condition)
         route_length_m = _compute_route_length(
             self._manifest.vehicle_spawn, self._manifest.route_waypoints
         )
@@ -37,10 +51,12 @@ class ScenarioOrchestrator:
             scenario_id=self._manifest.scenario_id,
             map_name=self._manifest.map_name,
             run_seed=self._manifest.run_seed,
-            gnss_condition=self._manifest.gnss_condition,
+            gnss_condition=gnss_condition,
+            vio_profile_id=vio_profile_id,
             route_length_m=route_length_m,
             measurement_quality=measurement_quality,
             outage_ratio=outage_ratio,
+            sync_quality=sync_quality,
         )
 
 
@@ -69,4 +85,3 @@ def _distance(a: Position3D, b: Position3D) -> float:
     dy = b.y - a.y
     dz = b.z - a.z
     return sqrt(dx * dx + dy * dy + dz * dz)
-

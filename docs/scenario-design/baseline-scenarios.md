@@ -24,7 +24,7 @@ Expected localization modes:
 
 Expected mission states:
 
-- `MISSION_PREPARE -> MISSION_EXECUTE -> MISSION_COMPLETE`
+- Current executable slice: `MISSION_EXECUTE`
 
 ## GNSS Degraded Corridor
 
@@ -38,7 +38,7 @@ Expected localization modes:
 
 Expected mission states:
 
-- `MISSION_PREPARE -> MISSION_EXECUTE -> MISSION_DEGRADED -> MISSION_EXECUTE -> MISSION_COMPLETE`
+- Current executable slice: `MISSION_EXECUTE -> MISSION_DEGRADED -> MISSION_EXECUTE`
 
 ## GNSS Denied Zone
 
@@ -52,7 +52,7 @@ Expected localization modes:
 
 Expected mission states:
 
-- `MISSION_PREPARE -> MISSION_EXECUTE -> MISSION_FALLBACK -> MISSION_EXECUTE -> MISSION_COMPLETE`
+- Current executable slice: `MISSION_EXECUTE -> MISSION_FALLBACK`
 
 ## Spoof-like Drift Scenario
 
@@ -66,7 +66,7 @@ Expected localization modes:
 
 Expected mission states:
 
-- `MISSION_PREPARE -> MISSION_EXECUTE -> MISSION_DEGRADED`
+- Current executable slice: `MISSION_DEGRADED` or `MISSION_FALLBACK`, depending on resolved trust and VIO state
 
 ## GNSS Denied + Communication Degradation
 
@@ -81,4 +81,4 @@ Expected localization modes:
 
 Expected mission states:
 
-- `MISSION_PREPARE -> MISSION_EXECUTE -> MISSION_FALLBACK -> MISSION_SAFE_HOLD`
+- Current executable slice: `MISSION_FALLBACK -> MISSION_SAFE_HOLD` or `MISSION_ABORT`, depending on continuity guards

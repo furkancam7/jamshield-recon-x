@@ -21,19 +21,21 @@ Mission-level acceptance evaluates only deterministic mission continuity behavio
 
 ### Accepted mission states
 
-- `MISSION_PREPARE`
 - `MISSION_EXECUTE`
 - `MISSION_DEGRADED`
 - `MISSION_FALLBACK`
 - `MISSION_SAFE_HOLD`
 - `MISSION_ABORT`
-- `MISSION_COMPLETE`
+
+Current executable slice note:
+
+- `MISSION_PREPARE` and `MISSION_COMPLETE` remain architecture targets, but they are not emitted by the current executable slice.
 
 ### Mission behavior requirements
 
 - Mission state transitions must be deterministic under deterministic replay.
 - Mission continuity decisions must be explainable from recorded runtime outputs.
-- A nominal mission must progress from `MISSION_PREPARE` to `MISSION_EXECUTE` and then to `MISSION_COMPLETE`.
+- A nominal mission must remain in `MISSION_EXECUTE` in the current executable slice.
 - `MISSION_DEGRADED` is acceptable when mission continuity remains controlled under degraded localization conditions.
 - `MISSION_FALLBACK` is acceptable when fallback localization is required and valid.
 - `MISSION_SAFE_HOLD` is acceptable when localization continuity is temporarily insufficient for forward progress.
@@ -92,7 +94,7 @@ Scenario validation categories describe controlled scenario conditions. They are
 ### Nominal mission
 
 - Scenario condition: nominal route execution with no induced GNSS degradation
-- Expected mission behavior: `MISSION_PREPARE -> MISSION_EXECUTE -> MISSION_COMPLETE`
+- Expected mission behavior in the current slice: remain in `MISSION_EXECUTE`
 - Expected localization behavior: remain primarily in `GNSS_PRIMARY`
 
 ### GNSS degraded corridor

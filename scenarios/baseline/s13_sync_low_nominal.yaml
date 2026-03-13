@@ -1,0 +1,17 @@
+scenario_id: s13_sync_low_nominal
+map_name: open_field
+vehicle_spawn: {"x": 0.0, "y": 0.0, "z": 30.0}
+route_waypoints:
+  - {"x": 60.0, "y": 0.0, "z": 30.0}
+  - {"x": 120.0, "y": 20.0, "z": 30.0}
+gnss_condition: nominal
+run_seed: 1301
+evaluation_profile: comms_instability_profile_v1
+runtime_health:
+  sync_quality: 0.2
+vio:
+  profile_id: nominal_v1
+metadata:
+  title: Sync Low Nominal
+  description: Nominal GNSS with low sync quality should surface sync_quality_low reasoning.
+  owner: autonomy-sim

@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from common.config import TrustConfig
+from common.config import GnssTrustConfig
 
 
 def classify_gnss_state(
-    trust_score: float, outage_ratio: float, config: TrustConfig
+    trust_score: float, outage_ratio: float, config: GnssTrustConfig
 ) -> str:
     if (
         outage_ratio >= config.denied_outage_ratio_threshold

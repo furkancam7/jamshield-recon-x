@@ -41,9 +41,9 @@ It complements the higher-level architecture documents by describing how runtime
 
 ### Verification and Operations Nodes
 
-- `health_monitor_node`
-- `logger_node`
-- `evaluation_node`
+- `health_monitor_node` (architecture target, deferred in executable slice)
+- `logger_node` (architecture target; current slice uses file artifacts instead)
+- `evaluation_node` (architecture target; current slice uses file-based replay/evaluation instead)
 
 ### Operator Interface Node
 
@@ -57,12 +57,12 @@ It complements the higher-level architecture documents by describing how runtime
 4. `gnss_trust_node` evaluates GNSS behavior using GNSS observations, sync status, and non-GNSS motion context, then publishes GNSS trust on `/trust/*`.
 5. `vio_node` consumes camera and IMU data and publishes VIO localization outputs on `/localization/*`.
 6. `fusion_node` receives GNSS localization, VIO localization, sync state, and trust-derived source confidence, then publishes the fused localization estimate and source status on `/localization/*`.
-7. `trust_engine_node` aggregates trust signals, estimator condition, and mission health into source confidence, localization confidence, and `mission_confidence` outputs on `/trust/*`.
-8. `mission_continuity_node` consumes fused localization, trust confidence outputs, mission health, and scenario progress, then publishes deterministic mission state, action, and explanation on `/mission/*`.
+7. `trust_engine_node` aggregates GNSS trust, localization confidence, VIO trust, and sync quality into `mission_confidence` outputs on `/trust/*`.
+8. `mission_continuity_node` consumes trust confidence outputs, effective VIO state, GNSS state, and scenario progress, then publishes deterministic mission state, action, and explanation on `/mission/*`.
 9. `sitl_bridge_node` consumes mission actions and sends simulator control inputs to the simulated vehicle.
 10. The simulator responds to those inputs, producing the next sensor cycle for the runtime loop.
 11. In parallel, `ew_risk_map_node` and `tactical_summary_node` consume runtime state and produce tactical outputs on `/tactical/*`.
-12. `logger_node` records runtime, tactical, event, and truth streams without affecting runtime decisions.
+12. In the current executable slice, file artifacts under `artifacts/runs/<run_id>/` play the observer role that future `logger_node` and `evaluation_node` instances will own in ROS2.
 
 ## Topic-Level Dataflow
 

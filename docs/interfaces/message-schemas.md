@@ -231,11 +231,15 @@ EwRiskMap:
 TacticalSummary:
   timestamp_ns: uint64
   mission_state: string
+  mission_confidence: float32
   localization_mode: string
   ew_risk_level: string
   affected_area_count: uint32
+  ew_corridor_cost: float32
   primary_reason_code: string
   reason_codes: [string]
+  advisory_code: string
+  advisory_text: string
   summary_text: string
 ```
 

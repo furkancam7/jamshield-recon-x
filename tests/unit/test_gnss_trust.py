@@ -2,7 +2,7 @@ from pathlib import Path
 import unittest
 
 from common.config import load_app_config
-from gnss_trust.trust_service import TrustService
+from gnss_trust.trust_service import GnssTrustService
 from scenario_orchestrator.manifest_loader import load_manifest
 from scenario_orchestrator.orchestrator import ScenarioOrchestrator
 
@@ -17,7 +17,7 @@ class GnssTrustTests(unittest.TestCase):
         manifest = load_manifest(SCENARIO_DIR / scenario_name)
         snapshot = ScenarioOrchestrator(manifest).build_snapshot()
         config = load_app_config(CONFIG_PATH)
-        return TrustService(config.trust).evaluate(snapshot, vio_healthy=True)
+        return GnssTrustService(config.gnss_trust).evaluate(snapshot)
 
     def test_nominal_has_highest_trust(self) -> None:
         nominal = self._evaluate("s1_nominal.yaml")
@@ -27,8 +27,12 @@ class GnssTrustTests(unittest.TestCase):
         self.assertEqual(nominal.gnss_state, "nominal")
         self.assertEqual(degraded.gnss_state, "degraded")
         self.assertEqual(denied.gnss_state, "denied")
-        self.assertGreater(nominal.trust_score, degraded.trust_score)
-        self.assertGreater(degraded.trust_score, denied.trust_score)
+        self.assertGreater(nominal.gnss_trust, degraded.gnss_trust)
+        self.assertGreater(degraded.gnss_trust, denied.gnss_trust)
+
+    def test_assessment_no_longer_exposes_mission_confidence(self) -> None:
+        nominal = self._evaluate("s1_nominal.yaml")
+        self.assertFalse(hasattr(nominal, "mission_confidence"))
 
 
 if __name__ == "__main__":

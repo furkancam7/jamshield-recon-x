@@ -1,0 +1,45 @@
+{
+  "ate_m": 8.0,
+  "config_id": "sim-v1",
+  "effective_vio_state": "weak",
+  "gnss_condition": "denied",
+  "gnss_state": "denied",
+  "ground_truth_usage": "evaluation_only",
+  "map_name": "industrial_corridor",
+  "mission_confidence": 0.287,
+  "mission_state": "MISSION_SAFE_HOLD",
+  "route_length_m": 145.859,
+  "run_id": "p5_validation",
+  "run_seed": 555,
+  "scenario_id": "s5_denied_vio_weak",
+  "scenario_metadata": {
+    "description": "GNSS denied scenario with degraded VIO producing cautious hold.",
+    "owner": "autonomy-sim",
+    "title": "Denied with Weak VIO Fallback"
+  },
+  "schema_version": "1.2",
+  "software_revision": "2e31a5ba1f7682acf36fe0201cdbf92769173b61",
+  "timestamp": "2026-03-11T14:14:49Z",
+  "trust_score": 0.05,
+  "vio_health_score": 0.611,
+  "vio_healthy": true,
+  "vio_metrics": {
+    "effective_vio_state": "weak",
+    "feature_count": 12,
+    "imu_alignment_error": 0.358,
+    "matched_feature_count": 5,
+    "pose_delta_xy_m": 0.297,
+    "profile_id": "weak_texture_v1",
+    "reason_codes": [
+      "track_continuity_drop"
+    ],
+    "reprojection_error_px": 1.384,
+    "timestamp_ns": 605000000,
+    "track_continuity": 0.417,
+    "vio_health_score": 0.611,
+    "vio_state": "weak",
+    "yaw_delta_rad": 0.02
+  },
+  "vio_metrics_source": "pipeline_v1",
+  "vio_state": "weak"
+}

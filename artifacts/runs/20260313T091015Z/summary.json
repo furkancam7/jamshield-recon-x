@@ -1,0 +1,372 @@
+{
+  "checks": [
+    {
+      "detail": "Expected nominal gnss_trust > degraded gnss_trust > denied gnss_trust.",
+      "name": "gnss_trust_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must not end in MISSION_EXECUTE.",
+      "name": "denied_not_execute",
+      "passed": true
+    },
+    {
+      "detail": "Degraded scenario must not be classified as denied.",
+      "name": "degraded_not_denied",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario must not collapse to MISSION_ABORT.",
+      "name": "nominal_not_abort",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario gnss_trust must remain at or above 0.90.",
+      "name": "nominal_minimum_gnss_trust_threshold",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must end in the allowed denied-state set.",
+      "name": "denied_allowed_mission_states",
+      "passed": true
+    },
+    {
+      "detail": "Denied + nominal VIO pipeline must stay in fallback-capable state.",
+      "name": "p4_vio_good_fallback",
+      "passed": true
+    },
+    {
+      "detail": "Denied + weak-texture VIO pipeline must produce weak VIO and safe hold.",
+      "name": "p4_vio_weak_safe_hold",
+      "passed": true
+    },
+    {
+      "detail": "Denied + lost-tracking VIO pipeline must force abort path.",
+      "name": "p4_vio_lost_emergency",
+      "passed": true
+    },
+    {
+      "detail": "Conflict case with reported good state and lost pipeline score must resolve to lost.",
+      "name": "p4_conflict_score_dominates",
+      "passed": true
+    },
+    {
+      "detail": "Conflict case with lost reported state must preserve lost effective state.",
+      "name": "p4_conflict_state_dominates",
+      "passed": true
+    },
+    {
+      "detail": "All regression artifacts must record pipeline_v1 VIO metrics.",
+      "name": "vio_metrics_source_pipeline_v1",
+      "passed": true
+    },
+    {
+      "detail": "Nominal GNSS + good VIO must produce GNSS_PRIMARY localization mode.",
+      "name": "p6_fusion_gnss_primary",
+      "passed": true
+    },
+    {
+      "detail": "Degraded GNSS + good VIO must produce BLENDED localization mode.",
+      "name": "p6_fusion_degraded_blended",
+      "passed": true
+    },
+    {
+      "detail": "Denied GNSS + good VIO must produce VIO_PRIMARY localization mode.",
+      "name": "p6_fusion_denied_vio_primary",
+      "passed": true
+    },
+    {
+      "detail": "Denied GNSS + lost VIO must produce HOLD_LAST_SAFE localization mode.",
+      "name": "p6_fusion_hold_last_safe",
+      "passed": true
+    },
+    {
+      "detail": "Localization confidence must decrease: GNSS_PRIMARY > BLENDED > HOLD_LAST_SAFE.",
+      "name": "p6_fusion_confidence_ordering",
+      "passed": true
+    },
+    {
+      "detail": "All reports must include fusion fields: localization_mode, localization_confidence, gnss_weight, vio_weight.",
+      "name": "p6_fusion_fields_present",
+      "passed": true
+    },
+    {
+      "detail": "VIO trust must decrease across good > weak > lost scenarios.",
+      "name": "vio_trust_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Mission confidence must monotonically degrade across nominal > degraded > denied-good > denied-lost.",
+      "name": "mission_confidence_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Low-sync scenarios must surface reduced sync_quality and sync_quality_low reasoning.",
+      "name": "sync_quality_response",
+      "passed": false
+    },
+    {
+      "detail": "Trust reason codes must be present and snake_case across all reports.",
+      "name": "reason_code_coverage",
+      "passed": true
+    },
+    {
+      "detail": "Reports must not contain legacy mission-state or localization-mode values.",
+      "name": "no_legacy_enum_values",
+      "passed": true
+    },
+    {
+      "detail": "trust_calibration.json/.md/.csv must all be present.",
+      "name": "calibration_bundle_present",
+      "passed": true
+    }
+  ],
+  "config_id": "sim-v1",
+  "generated_at": "2026-03-13T06:10:33Z",
+  "overall_regression_result": "FAIL",
+  "run_id": "20260313T091015Z",
+  "scenario_ids": [
+    "s1_nominal",
+    "s2_gnss_degraded_corridor",
+    "s3_gnss_denied_zone",
+    "s4_denied_vio_good",
+    "s5_denied_vio_weak",
+    "s6_denied_vio_lost",
+    "s7_conflict_score_dominates",
+    "s8_conflict_state_dominates",
+    "s9_fusion_gnss_primary",
+    "s10_fusion_degraded_fused",
+    "s11_fusion_denied_vio_only",
+    "s12_fusion_dead_reckoning",
+    "s13_sync_low_nominal",
+    "s14_sync_low_denied_good"
+  ],
+  "scenarios": [
+    {
+      "ate_rmse": 0.5,
+      "effective_vio_state": "good",
+      "gnss_state": "nominal",
+      "gnss_trust": 0.96,
+      "localization_confidence": 0.9025462259937472,
+      "localization_mode": "GNSS_PRIMARY",
+      "mission_confidence": 0.913,
+      "mission_state": "MISSION_EXECUTE",
+      "scenario_id": "s1_nominal",
+      "sync_quality": 1.0,
+      "timestamp": "2026-03-13T06:10:18Z",
+      "trust_primary_reason_code": "trust_inputs_nominal",
+      "vio_profile_id": "nominal_v1",
+      "vio_trust": 0.799
+    },
+    {
+      "ate_rmse": 3.0,
+      "effective_vio_state": "good",
+      "gnss_state": "degraded",
+      "gnss_trust": 0.59,
+      "localization_confidence": 0.6875466983938132,
+      "localization_mode": "BLENDED",
+      "mission_confidence": 0.666,
+      "mission_state": "MISSION_DEGRADED",
+      "scenario_id": "s2_gnss_degraded_corridor",
+      "sync_quality": 1.0,
+      "timestamp": "2026-03-13T06:10:19Z",
+      "trust_primary_reason_code": "trust_inputs_nominal",
+      "vio_profile_id": "nominal_v1",
+      "vio_trust": 0.796
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "good",
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.7604166666666666,
+      "localization_mode": "VIO_PRIMARY",
+      "mission_confidence": 0.45,
+      "mission_state": "MISSION_FALLBACK",
+      "scenario_id": "s3_gnss_denied_zone",
+      "sync_quality": 1.0,
+      "timestamp": "2026-03-13T06:10:20Z",
+      "trust_primary_reason_code": "gnss_denial_suspected",
+      "vio_profile_id": "nominal_v1",
+      "vio_trust": 0.825
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "good",
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.7416413166855845,
+      "localization_mode": "VIO_PRIMARY",
+      "mission_confidence": 0.441,
+      "mission_state": "MISSION_FALLBACK",
+      "scenario_id": "s4_denied_vio_good",
+      "sync_quality": 1.0,
+      "timestamp": "2026-03-13T06:10:21Z",
+      "trust_primary_reason_code": "gnss_denial_suspected",
+      "vio_profile_id": "nominal_v1",
+      "vio_trust": 0.806
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "weak",
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.5496661807580175,
+      "localization_mode": "VIO_PRIMARY",
+      "mission_confidence": 0.345,
+      "mission_state": "MISSION_SAFE_HOLD",
+      "scenario_id": "s5_denied_vio_weak",
+      "sync_quality": 1.0,
+      "timestamp": "2026-03-13T06:10:22Z",
+      "trust_primary_reason_code": "gnss_denial_suspected",
+      "vio_profile_id": "weak_texture_v1",
+      "vio_trust": 0.611
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "lost",
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.0731377245508982,
+      "localization_mode": "HOLD_LAST_SAFE",
+      "mission_confidence": 0.098,
+      "mission_state": "MISSION_ABORT",
+      "scenario_id": "s6_denied_vio_lost",
+      "sync_quality": 1.0,
+      "timestamp": "2026-03-13T06:10:23Z",
+      "trust_primary_reason_code": "localization_confidence_low",
+      "vio_profile_id": "lost_tracking_v1",
+      "vio_trust": 0.092
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "lost",
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.061344594594594584,
+      "localization_mode": "HOLD_LAST_SAFE",
+      "mission_confidence": 0.09,
+      "mission_state": "MISSION_ABORT",
+      "scenario_id": "s7_conflict_score_dominates",
+      "sync_quality": 1.0,
+      "timestamp": "2026-03-13T06:10:24Z",
+      "trust_primary_reason_code": "localization_confidence_low",
+      "vio_profile_id": "lost_tracking_v1",
+      "vio_trust": 0.073
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "lost",
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.7604166666666666,
+      "localization_mode": "HOLD_LAST_SAFE",
+      "mission_confidence": 0.45,
+      "mission_state": "MISSION_SAFE_HOLD",
+      "scenario_id": "s8_conflict_state_dominates",
+      "sync_quality": 1.0,
+      "timestamp": "2026-03-13T06:10:25Z",
+      "trust_primary_reason_code": "gnss_denial_suspected",
+      "vio_profile_id": "nominal_v1",
+      "vio_trust": 0.825
+    },
+    {
+      "ate_rmse": 0.5,
+      "effective_vio_state": "good",
+      "gnss_state": "nominal",
+      "gnss_trust": 0.96,
+      "localization_confidence": 0.9108278145695364,
+      "localization_mode": "GNSS_PRIMARY",
+      "mission_confidence": 0.92,
+      "mission_state": "MISSION_EXECUTE",
+      "scenario_id": "s9_fusion_gnss_primary",
+      "sync_quality": 1.0,
+      "timestamp": "2026-03-13T06:10:26Z",
+      "trust_primary_reason_code": "trust_inputs_nominal",
+      "vio_profile_id": "nominal_v1",
+      "vio_trust": 0.825
+    },
+    {
+      "ate_rmse": 3.0,
+      "effective_vio_state": "good",
+      "gnss_state": "degraded",
+      "gnss_trust": 0.59,
+      "localization_confidence": 0.7022710772833722,
+      "localization_mode": "BLENDED",
+      "mission_confidence": 0.676,
+      "mission_state": "MISSION_DEGRADED",
+      "scenario_id": "s10_fusion_degraded_fused",
+      "sync_quality": 1.0,
+      "timestamp": "2026-03-13T06:10:27Z",
+      "trust_primary_reason_code": "trust_inputs_nominal",
+      "vio_profile_id": "nominal_v1",
+      "vio_trust": 0.823
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "good",
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.7604166666666666,
+      "localization_mode": "VIO_PRIMARY",
+      "mission_confidence": 0.45,
+      "mission_state": "MISSION_FALLBACK",
+      "scenario_id": "s11_fusion_denied_vio_only",
+      "sync_quality": 1.0,
+      "timestamp": "2026-03-13T06:10:28Z",
+      "trust_primary_reason_code": "gnss_denial_suspected",
+      "vio_profile_id": "nominal_v1",
+      "vio_trust": 0.825
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "lost",
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.0731377245508982,
+      "localization_mode": "HOLD_LAST_SAFE",
+      "mission_confidence": 0.098,
+      "mission_state": "MISSION_ABORT",
+      "scenario_id": "s12_fusion_dead_reckoning",
+      "sync_quality": 1.0,
+      "timestamp": "2026-03-13T06:10:29Z",
+      "trust_primary_reason_code": "localization_confidence_low",
+      "vio_profile_id": "lost_tracking_v1",
+      "vio_trust": 0.092
+    },
+    {
+      "ate_rmse": 0.5,
+      "effective_vio_state": "good",
+      "gnss_state": "nominal",
+      "gnss_trust": 0.96,
+      "localization_confidence": 0.9134575450945885,
+      "localization_mode": "GNSS_PRIMARY",
+      "mission_confidence": 0.882,
+      "mission_state": "MISSION_EXECUTE",
+      "scenario_id": "s13_sync_low_nominal",
+      "sync_quality": 0.2,
+      "timestamp": "2026-03-13T06:10:30Z",
+      "trust_primary_reason_code": "sync_quality_low",
+      "vio_profile_id": "nominal_v1",
+      "vio_trust": 0.833
+    },
+    {
+      "ate_rmse": 8.0,
+      "effective_vio_state": "good",
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.7584398663697105,
+      "localization_mode": "VIO_PRIMARY",
+      "mission_confidence": 0.409,
+      "mission_state": "MISSION_FALLBACK",
+      "scenario_id": "s14_sync_low_denied_good",
+      "sync_quality": 0.2,
+      "timestamp": "2026-03-13T06:10:31Z",
+      "trust_primary_reason_code": "gnss_denial_suspected",
+      "vio_profile_id": "nominal_v1",
+      "vio_trust": 0.823
+    }
+  ],
+  "schema_version": "2.0",
+  "software_revision": "2e31a5ba1f7682acf36fe0201cdbf92769173b61"
+}

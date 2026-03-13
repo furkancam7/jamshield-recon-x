@@ -2,28 +2,30 @@
 
 ## Purpose
 
-`mission_continuity_node` implements deterministic mission continuity. It consumes localization confidence, trust decisions, and health status, then emits a single mission state, a bounded mission action, and an explanation with reason codes.
+`mission_continuity_node` implements deterministic mission continuity. In the current executable slice it consumes mission confidence, GNSS state, effective VIO state, and scenario progression derived from the manifest-driven timeline.
 
 ## States
 
-| State | Meaning | Default Action |
+| State | Meaning | Current Slice Action |
 | --- | --- | --- |
-| `PREPARE` | Sensors are starting, route is loaded, localization authority not yet declared | `HOLD_POSITION` |
-| `GNSS_PRIMARY` | GNSS trust is high enough for GNSS-led localization | `CONTINUE_ROUTE` |
-| `GNSS_DEGRADED` | GNSS trust is reduced but not yet fully rejected | `REDUCE_SPEED` |
-| `VIO_PRIMARY` | GNSS is untrusted and VIO is the active localization source | `CONTINUE_ROUTE` |
-| `LOCALIZATION_CONTINGENCY` | Neither GNSS nor VIO currently satisfies operational confidence limits | `HOLD_POSITION` |
-| `MISSION_ABORT` | Localization or system health is insufficient to continue safely | `TERMINATE_MISSION` |
-| `MISSION_COMPLETE` | Route completed without violating terminal conditions | `HOLD_POSITION` |
+| `MISSION_EXECUTE` | Mission is proceeding with acceptable confidence | `CONTINUE_ROUTE` |
+| `MISSION_DEGRADED` | Mission remains active but under reduced confidence | `REDUCE_SPEED` |
+| `MISSION_FALLBACK` | Mission is continuing on fallback localization authority | `CONTINUE_ROUTE` |
+| `MISSION_SAFE_HOLD` | Forward progress is halted until continuity recovers or timeout escalates | `HOLD_POSITION` |
+| `MISSION_ABORT` | Mission continuity entered a terminal unsafe state | `TERMINATE_MISSION` |
+
+Current slice note:
+
+- `MISSION_PREPARE`, `MISSION_COMPLETE`, and `LOCALIZATION_CONTINGENCY` remain architecture goals but are not emitted by the current executable implementation.
 
 ## Transition Inputs
 
-The state machine uses only:
+The current executable state machine uses only:
 
-- `/trust/decision`
-- `/localization/fused/estimate`
-- `/mission/health`
-- scenario route progress from `/events/scenario`
+- `mission_confidence`
+- `gnss_state`
+- `effective_vio_state`
+- scenario route progress from the manifest-driven timeline
 
 Operator commands are intentionally excluded from deterministic runs.
 
@@ -40,22 +42,12 @@ Operator commands are intentionally excluded from deterministic runs.
 
 ## Transition Table
 
-| From | To | Trigger |
-| --- | --- | --- |
-| `PREPARE` | `GNSS_PRIMARY` | GNSS nominal entry threshold satisfied |
-| `PREPARE` | `VIO_PRIMARY` | VIO fallback entry threshold satisfied before GNSS nominal entry |
-| `GNSS_PRIMARY` | `GNSS_DEGRADED` | GNSS degrade entry threshold satisfied |
-| `GNSS_DEGRADED` | `GNSS_PRIMARY` | GNSS nominal entry threshold satisfied |
-| `GNSS_DEGRADED` | `VIO_PRIMARY` | VIO fallback entry threshold satisfied |
-| `GNSS_PRIMARY` | `VIO_PRIMARY` | Immediate fallback if spoof-like behavior is confirmed and VIO is healthy |
-| `GNSS_PRIMARY` | `LOCALIZATION_CONTINGENCY` | Contingency entry threshold satisfied |
-| `GNSS_DEGRADED` | `LOCALIZATION_CONTINGENCY` | Contingency entry threshold satisfied |
-| `VIO_PRIMARY` | `GNSS_PRIMARY` | Recovery from VIO threshold satisfied |
-| `VIO_PRIMARY` | `LOCALIZATION_CONTINGENCY` | VIO freshness, tracking, or sync health drops below limits |
-| `LOCALIZATION_CONTINGENCY` | `VIO_PRIMARY` | VIO becomes healthy before abort timeout |
-| `LOCALIZATION_CONTINGENCY` | `GNSS_PRIMARY` | GNSS becomes healthy before abort timeout |
-| `LOCALIZATION_CONTINGENCY` | `MISSION_ABORT` | Abort entry threshold satisfied |
-| any non-terminal state | `MISSION_COMPLETE` | Final waypoint reached with valid localization |
+The current executable implementation does not expose the full architecture transition table. Instead it evaluates a candidate state from trust and VIO inputs, then applies:
+
+- recovery dwell before returning to a safer state
+- safe-hold escalation timeout to `MISSION_ABORT`
+- terminal abort latching
+- oscillation detection that forces `MISSION_SAFE_HOLD`
 
 ## Explainability Requirements
 
@@ -74,8 +66,8 @@ This record is emitted on `/mission/explanation` and must be stable under determ
 
 - State transitions are edge-triggered and monotonic with respect to simulation time.
 - A single timestamp cannot produce more than one state transition.
-- `MISSION_ABORT` and `MISSION_COMPLETE` are terminal states for the run.
-- `LOCALIZATION_CONTINGENCY` is the only holding state allowed to delay abort.
+- `MISSION_ABORT` is terminal for the run.
+- `MISSION_SAFE_HOLD` is the executable holding state that may delay abort in the current slice.
 
 ## Tactical Coupling
 

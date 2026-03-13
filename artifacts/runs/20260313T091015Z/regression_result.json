@@ -1,0 +1,142 @@
+{
+  "checks": [
+    {
+      "detail": "Expected nominal gnss_trust > degraded gnss_trust > denied gnss_trust.",
+      "name": "gnss_trust_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must not end in MISSION_EXECUTE.",
+      "name": "denied_not_execute",
+      "passed": true
+    },
+    {
+      "detail": "Degraded scenario must not be classified as denied.",
+      "name": "degraded_not_denied",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario must not collapse to MISSION_ABORT.",
+      "name": "nominal_not_abort",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario gnss_trust must remain at or above 0.90.",
+      "name": "nominal_minimum_gnss_trust_threshold",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must end in the allowed denied-state set.",
+      "name": "denied_allowed_mission_states",
+      "passed": true
+    },
+    {
+      "detail": "Denied + nominal VIO pipeline must stay in fallback-capable state.",
+      "name": "p4_vio_good_fallback",
+      "passed": true
+    },
+    {
+      "detail": "Denied + weak-texture VIO pipeline must produce weak VIO and safe hold.",
+      "name": "p4_vio_weak_safe_hold",
+      "passed": true
+    },
+    {
+      "detail": "Denied + lost-tracking VIO pipeline must force abort path.",
+      "name": "p4_vio_lost_emergency",
+      "passed": true
+    },
+    {
+      "detail": "Conflict case with reported good state and lost pipeline score must resolve to lost.",
+      "name": "p4_conflict_score_dominates",
+      "passed": true
+    },
+    {
+      "detail": "Conflict case with lost reported state must preserve lost effective state.",
+      "name": "p4_conflict_state_dominates",
+      "passed": true
+    },
+    {
+      "detail": "All regression artifacts must record pipeline_v1 VIO metrics.",
+      "name": "vio_metrics_source_pipeline_v1",
+      "passed": true
+    },
+    {
+      "detail": "Nominal GNSS + good VIO must produce GNSS_PRIMARY localization mode.",
+      "name": "p6_fusion_gnss_primary",
+      "passed": true
+    },
+    {
+      "detail": "Degraded GNSS + good VIO must produce BLENDED localization mode.",
+      "name": "p6_fusion_degraded_blended",
+      "passed": true
+    },
+    {
+      "detail": "Denied GNSS + good VIO must produce VIO_PRIMARY localization mode.",
+      "name": "p6_fusion_denied_vio_primary",
+      "passed": true
+    },
+    {
+      "detail": "Denied GNSS + lost VIO must produce HOLD_LAST_SAFE localization mode.",
+      "name": "p6_fusion_hold_last_safe",
+      "passed": true
+    },
+    {
+      "detail": "Localization confidence must decrease: GNSS_PRIMARY > BLENDED > HOLD_LAST_SAFE.",
+      "name": "p6_fusion_confidence_ordering",
+      "passed": true
+    },
+    {
+      "detail": "All reports must include fusion fields: localization_mode, localization_confidence, gnss_weight, vio_weight.",
+      "name": "p6_fusion_fields_present",
+      "passed": true
+    },
+    {
+      "detail": "VIO trust must decrease across good > weak > lost scenarios.",
+      "name": "vio_trust_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Mission confidence must monotonically degrade across nominal > degraded > denied-good > denied-lost.",
+      "name": "mission_confidence_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Low-sync scenarios must surface reduced sync_quality and sync_quality_low reasoning.",
+      "name": "sync_quality_response",
+      "passed": false
+    },
+    {
+      "detail": "Trust reason codes must be present and snake_case across all reports.",
+      "name": "reason_code_coverage",
+      "passed": true
+    },
+    {
+      "detail": "Reports must not contain legacy mission-state or localization-mode values.",
+      "name": "no_legacy_enum_values",
+      "passed": true
+    },
+    {
+      "detail": "trust_calibration.json/.md/.csv must all be present.",
+      "name": "calibration_bundle_present",
+      "passed": true
+    }
+  ],
+  "overall_result": "FAIL",
+  "run_id": "20260313T091015Z",
+  "scenario_ids": [
+    "s1_nominal",
+    "s2_gnss_degraded_corridor",
+    "s3_gnss_denied_zone",
+    "s4_denied_vio_good",
+    "s5_denied_vio_weak",
+    "s6_denied_vio_lost",
+    "s7_conflict_score_dominates",
+    "s8_conflict_state_dominates",
+    "s9_fusion_gnss_primary",
+    "s10_fusion_degraded_fused",
+    "s11_fusion_denied_vio_only",
+    "s12_fusion_dead_reckoning",
+    "s13_sync_low_nominal",
+    "s14_sync_low_denied_good"
+  ]
+}

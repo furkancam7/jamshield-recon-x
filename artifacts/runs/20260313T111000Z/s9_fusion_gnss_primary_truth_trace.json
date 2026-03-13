@@ -1,0 +1,17 @@
+{
+  "entries": [
+    {
+      "position_m": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 30.0
+      },
+      "route_progress_pct": 100.0,
+      "tick_index": 0,
+      "timestamp_ns": 0
+    }
+  ],
+  "run_id": "20260313T111000Z",
+  "scenario_id": "s9_fusion_gnss_primary",
+  "schema_version": "1.0"
+}

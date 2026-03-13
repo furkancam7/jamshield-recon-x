@@ -1,0 +1,15 @@
+scenario_id: s11_fusion_denied_vio_only
+map_name: open_field
+vehicle_spawn: {"x": 0.0, "y": 0.0, "z": 30.0}
+route_waypoints:
+  - {"x": 60.0, "y": 0.0, "z": 30.0}
+  - {"x": 120.0, "y": 20.0, "z": 30.0}
+gnss_condition: denied
+run_seed: 1101
+evaluation_profile: denial_corridor_profile_v1
+vio:
+  profile_id: nominal_v1
+metadata:
+  title: Fusion Denied GNSS VIO Primary Mode
+  description: Denied GNSS with good VIO should produce VIO_PRIMARY localization mode.
+  owner: autonomy-sim

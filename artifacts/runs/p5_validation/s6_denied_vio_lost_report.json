@@ -1,0 +1,47 @@
+{
+  "ate_m": 8.0,
+  "config_id": "sim-v1",
+  "effective_vio_state": "lost",
+  "gnss_condition": "denied",
+  "gnss_state": "denied",
+  "ground_truth_usage": "evaluation_only",
+  "map_name": "industrial_corridor",
+  "mission_confidence": 0.038,
+  "mission_state": "MISSION_EMERGENCY_LAND",
+  "route_length_m": 145.859,
+  "run_id": "p5_validation",
+  "run_seed": 666,
+  "scenario_id": "s6_denied_vio_lost",
+  "scenario_metadata": {
+    "description": "GNSS denied scenario with failed VIO triggering emergency land.",
+    "owner": "autonomy-sim",
+    "title": "Denied with Lost VIO"
+  },
+  "schema_version": "1.2",
+  "software_revision": "2e31a5ba1f7682acf36fe0201cdbf92769173b61",
+  "timestamp": "2026-03-11T14:14:50Z",
+  "trust_score": 0.05,
+  "vio_health_score": 0.092,
+  "vio_healthy": false,
+  "vio_metrics": {
+    "effective_vio_state": "lost",
+    "feature_count": 6,
+    "imu_alignment_error": 0.566,
+    "matched_feature_count": 1,
+    "pose_delta_xy_m": 0.268,
+    "profile_id": "lost_tracking_v1",
+    "reason_codes": [
+      "low_feature_count",
+      "track_continuity_drop",
+      "high_reprojection_error"
+    ],
+    "reprojection_error_px": 3.7,
+    "timestamp_ns": 716000000,
+    "track_continuity": 0.167,
+    "vio_health_score": 0.092,
+    "vio_state": "lost",
+    "yaw_delta_rad": -0.16
+  },
+  "vio_metrics_source": "pipeline_v1",
+  "vio_state": "lost"
+}

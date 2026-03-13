@@ -4,21 +4,35 @@ from __future__ import annotations
 
 from copy import deepcopy
 import json
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from math import isfinite
 from pathlib import Path
 from typing import Any
 
 
 @dataclass(frozen=True)
-class TrustConfig:
+class GnssTrustConfig:
     quality_weight: float
     availability_weight: float
-    mission_confidence_weight: float
-    vio_bonus: float
     denied_outage_ratio_threshold: float
     denied_trust_threshold: float
     degraded_trust_threshold: float
+
+
+@dataclass(frozen=True)
+class TrustEngineConfig:
+    gnss_trust_weight: float
+    localization_confidence_weight: float
+    vio_trust_weight: float
+    sync_quality_weight: float
+    gnss_low_threshold: float
+    localization_low_threshold: float
+    vio_low_threshold: float
+    sync_low_threshold: float
+    default_sync_quality: float
+    mode_unstable_penalty: float
+    calibration_high_floor: float
+    calibration_medium_floor: float
 
 
 @dataclass(frozen=True)
@@ -28,14 +42,83 @@ class MissionConfig:
     denied_fallback_confidence_threshold: float
     emergency_land_confidence_threshold: float
     denied_allowed_states: tuple[str, ...]
+    recovery_dwell_ticks: int
+    safe_hold_escalation_ticks: int
+    oscillation_window_ticks: int
+    max_state_transitions_in_window: int
+
+
+@dataclass(frozen=True)
+class VioHealthConfig:
+    good_threshold: float
+    weak_threshold: float
+
+
+@dataclass(frozen=True)
+class VioPipelineConfig:
+    max_features: int
+    gradient_threshold: float
+    match_distance_px: float
+    continuity_window: int
+    imu_gain: float
+
+
+@dataclass(frozen=True)
+class VioMetricWeights:
+    feature_count: float
+    track_continuity: float
+    reprojection_error: float
+    imu_alignment: float
+
+
+@dataclass(frozen=True)
+class VioTrustConfig:
+    feature_count_floor: int
+    track_continuity_floor: float
+    reprojection_error_ceiling_px: float
+    imu_alignment_ceiling: float
+    metric_weights: VioMetricWeights
+
+
+@dataclass(frozen=True)
+class LocalizationFusionConfig:
+    gnss_base_weight: float
+    vio_base_weight: float
+    fused_confidence_floor: float
+    hysteresis_ticks: int
+
+
+@dataclass(frozen=True)
+class EwRiskMapConfig:
+    cell_size_m: float
+    grid_padding_m: float
+    stamp_radius_m: float
+    global_decay_per_tick: float
+    corridor_sample_step_m: float
+    corridor_band_half_width_m: float
+    risk_low_floor: float
+    risk_medium_floor: float
+    weight_gnss_denied: float
+    weight_gnss_degraded: float
+    weight_sync_low: float
+    weight_localization_unstable: float
 
 
 @dataclass(frozen=True)
 class AppConfig:
     config_id: str
     schema_version: str
-    trust: TrustConfig
+    gnss_trust: GnssTrustConfig
+    trust_engine: TrustEngineConfig
     mission: MissionConfig
+    vio_health: VioHealthConfig
+    vio_pipeline: VioPipelineConfig
+    vio_trust: VioTrustConfig
+    localization_fusion: LocalizationFusionConfig
+    ew_risk_map: EwRiskMapConfig
+
+
+CANONICAL_CONFIG_EXCLUDED_FIELDS = frozenset({"config_id"})
 
 
 def load_yaml_file(path: str | Path) -> dict[str, Any]:
@@ -76,6 +159,37 @@ def resolve_app_config(
         cli_override_path=cli_override_path,
     )
     return _validate_app_config(payload, Path(base_path))
+
+
+def serialize_canonical_config(
+    base_path: str | Path,
+    scenario_override_path: str | Path | None = None,
+    cli_override_path: str | Path | None = None,
+) -> str:
+    payload = resolve_app_config_payload(
+        base_path=base_path,
+        scenario_override_path=scenario_override_path,
+        cli_override_path=cli_override_path,
+    )
+    return canonicalize_config_payload(payload)
+
+
+def canonicalize_config_payload(payload: dict[str, Any]) -> str:
+    normalized = _normalize_canonical_value(
+        _strip_canonical_excluded_fields(payload)
+    )
+    return json.dumps(
+        normalized,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+    )
+
+
+def canonicalize_app_config(config: AppConfig) -> str:
+    return canonicalize_config_payload(asdict(config))
+
+
 def resolve_app_config_payload(
     base_path: str | Path,
     scenario_override_path: str | Path | None = None,
@@ -94,7 +208,18 @@ def resolve_app_config_payload(
 
 
 def _validate_app_config(payload: dict[str, Any], source_path: Path) -> AppConfig:
-    required_fields = {"config_id", "schema_version", "trust", "mission"}
+    required_fields = {
+        "config_id",
+        "schema_version",
+        "gnss_trust",
+        "trust_engine",
+        "mission",
+        "vio_health",
+        "vio_pipeline",
+        "vio_trust",
+        "localization_fusion",
+        "ew_risk_map",
+    }
     missing = required_fields.difference(payload)
     if missing:
         missing_list = ", ".join(sorted(missing))
@@ -102,27 +227,97 @@ def _validate_app_config(payload: dict[str, Any], source_path: Path) -> AppConfi
             f"Config missing required fields in {source_path}: {missing_list}"
         )
 
-    trust_payload = _require_mapping(payload["trust"], "trust")
+    gnss_trust_payload = _require_mapping(payload["gnss_trust"], "gnss_trust")
+    trust_engine_payload = _require_mapping(payload["trust_engine"], "trust_engine")
     mission_payload = _require_mapping(payload["mission"], "mission")
+    vio_health_payload = _require_mapping(payload["vio_health"], "vio_health")
+    vio_pipeline_payload = _require_mapping(payload["vio_pipeline"], "vio_pipeline")
+    vio_trust_payload = _require_mapping(payload["vio_trust"], "vio_trust")
+    vio_metric_weights_payload = _require_mapping(
+        vio_trust_payload["metric_weights"],
+        "vio_trust.metric_weights",
+    )
+    fusion_payload = _require_mapping(
+        payload["localization_fusion"], "localization_fusion"
+    )
+    ew_risk_map_payload = _require_mapping(payload["ew_risk_map"], "ew_risk_map")
+
+    ew_risk_map = EwRiskMapConfig(
+        cell_size_m=_read_float(ew_risk_map_payload, "cell_size_m"),
+        grid_padding_m=_read_float(ew_risk_map_payload, "grid_padding_m"),
+        stamp_radius_m=_read_float(ew_risk_map_payload, "stamp_radius_m"),
+        global_decay_per_tick=_read_float(
+            ew_risk_map_payload, "global_decay_per_tick"
+        ),
+        corridor_sample_step_m=_read_float(
+            ew_risk_map_payload, "corridor_sample_step_m"
+        ),
+        corridor_band_half_width_m=_read_float(
+            ew_risk_map_payload, "corridor_band_half_width_m"
+        ),
+        risk_low_floor=_read_float(ew_risk_map_payload, "risk_low_floor"),
+        risk_medium_floor=_read_float(ew_risk_map_payload, "risk_medium_floor"),
+        weight_gnss_denied=_read_float(ew_risk_map_payload, "weight_gnss_denied"),
+        weight_gnss_degraded=_read_float(
+            ew_risk_map_payload, "weight_gnss_degraded"
+        ),
+        weight_sync_low=_read_float(ew_risk_map_payload, "weight_sync_low"),
+        weight_localization_unstable=_read_float(
+            ew_risk_map_payload, "weight_localization_unstable"
+        ),
+    )
+    _validate_ew_risk_map_config(ew_risk_map)
 
     return AppConfig(
         config_id=_read_string(payload, "config_id"),
         schema_version=_read_string(payload, "schema_version"),
-        trust=TrustConfig(
-            quality_weight=_read_float(trust_payload, "quality_weight"),
-            availability_weight=_read_float(trust_payload, "availability_weight"),
-            mission_confidence_weight=_read_float(
-                trust_payload, "mission_confidence_weight"
+        gnss_trust=GnssTrustConfig(
+            quality_weight=_read_float(gnss_trust_payload, "quality_weight"),
+            availability_weight=_read_float(
+                gnss_trust_payload, "availability_weight"
             ),
-            vio_bonus=_read_float(trust_payload, "vio_bonus"),
             denied_outage_ratio_threshold=_read_float(
-                trust_payload, "denied_outage_ratio_threshold"
+                gnss_trust_payload, "denied_outage_ratio_threshold"
             ),
             denied_trust_threshold=_read_float(
-                trust_payload, "denied_trust_threshold"
+                gnss_trust_payload, "denied_trust_threshold"
             ),
             degraded_trust_threshold=_read_float(
-                trust_payload, "degraded_trust_threshold"
+                gnss_trust_payload, "degraded_trust_threshold"
+            ),
+        ),
+        trust_engine=TrustEngineConfig(
+            gnss_trust_weight=_read_float(
+                trust_engine_payload, "gnss_trust_weight"
+            ),
+            localization_confidence_weight=_read_float(
+                trust_engine_payload, "localization_confidence_weight"
+            ),
+            vio_trust_weight=_read_float(trust_engine_payload, "vio_trust_weight"),
+            sync_quality_weight=_read_float(
+                trust_engine_payload, "sync_quality_weight"
+            ),
+            gnss_low_threshold=_read_float(
+                trust_engine_payload, "gnss_low_threshold"
+            ),
+            localization_low_threshold=_read_float(
+                trust_engine_payload, "localization_low_threshold"
+            ),
+            vio_low_threshold=_read_float(trust_engine_payload, "vio_low_threshold"),
+            sync_low_threshold=_read_float(
+                trust_engine_payload, "sync_low_threshold"
+            ),
+            default_sync_quality=_read_float(
+                trust_engine_payload, "default_sync_quality"
+            ),
+            mode_unstable_penalty=_read_float(
+                trust_engine_payload, "mode_unstable_penalty"
+            ),
+            calibration_high_floor=_read_float(
+                trust_engine_payload, "calibration_high_floor"
+            ),
+            calibration_medium_floor=_read_float(
+                trust_engine_payload, "calibration_medium_floor"
             ),
         ),
         mission=MissionConfig(
@@ -142,7 +337,71 @@ def _validate_app_config(payload: dict[str, Any], source_path: Path) -> AppConfi
                 mission_payload,
                 "denied_allowed_states",
             ),
+            recovery_dwell_ticks=_read_int(
+                mission_payload,
+                "recovery_dwell_ticks",
+            ),
+            safe_hold_escalation_ticks=_read_int(
+                mission_payload,
+                "safe_hold_escalation_ticks",
+            ),
+            oscillation_window_ticks=_read_int(
+                mission_payload,
+                "oscillation_window_ticks",
+            ),
+            max_state_transitions_in_window=_read_int(
+                mission_payload,
+                "max_state_transitions_in_window",
+            ),
         ),
+        vio_health=VioHealthConfig(
+            good_threshold=_read_float(vio_health_payload, "good_threshold"),
+            weak_threshold=_read_float(vio_health_payload, "weak_threshold"),
+        ),
+        vio_pipeline=VioPipelineConfig(
+            max_features=_read_int(vio_pipeline_payload, "max_features"),
+            gradient_threshold=_read_float(vio_pipeline_payload, "gradient_threshold"),
+            match_distance_px=_read_float(vio_pipeline_payload, "match_distance_px"),
+            continuity_window=_read_int(vio_pipeline_payload, "continuity_window"),
+            imu_gain=_read_float(vio_pipeline_payload, "imu_gain"),
+        ),
+        vio_trust=VioTrustConfig(
+            feature_count_floor=_read_int(vio_trust_payload, "feature_count_floor"),
+            track_continuity_floor=_read_float(
+                vio_trust_payload,
+                "track_continuity_floor",
+            ),
+            reprojection_error_ceiling_px=_read_float(
+                vio_trust_payload,
+                "reprojection_error_ceiling_px",
+            ),
+            imu_alignment_ceiling=_read_float(
+                vio_trust_payload,
+                "imu_alignment_ceiling",
+            ),
+            metric_weights=VioMetricWeights(
+                feature_count=_read_float(vio_metric_weights_payload, "feature_count"),
+                track_continuity=_read_float(
+                    vio_metric_weights_payload,
+                    "track_continuity",
+                ),
+                reprojection_error=_read_float(
+                    vio_metric_weights_payload,
+                    "reprojection_error",
+                ),
+                imu_alignment=_read_float(
+                    vio_metric_weights_payload,
+                    "imu_alignment",
+                ),
+            ),
+        ),
+        localization_fusion=LocalizationFusionConfig(
+            gnss_base_weight=_read_float(fusion_payload, "gnss_base_weight"),
+            vio_base_weight=_read_float(fusion_payload, "vio_base_weight"),
+            fused_confidence_floor=_read_float(fusion_payload, "fused_confidence_floor"),
+            hysteresis_ticks=_read_int(fusion_payload, "hysteresis_ticks"),
+        ),
+        ew_risk_map=ew_risk_map,
     )
 
 
@@ -201,6 +460,28 @@ def _merge_config_mappings(
         merged[key] = deepcopy(override_value)
 
     return merged
+
+
+def _strip_canonical_excluded_fields(payload: dict[str, Any]) -> dict[str, Any]:
+    normalized = deepcopy(payload)
+    for field_name in CANONICAL_CONFIG_EXCLUDED_FIELDS:
+        normalized.pop(field_name, None)
+    return normalized
+
+
+def _normalize_canonical_value(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {
+            key: _normalize_canonical_value(value[key])
+            for key in sorted(value)
+        }
+    if isinstance(value, tuple):
+        return [_normalize_canonical_value(item) for item in value]
+    if isinstance(value, list):
+        return [_normalize_canonical_value(item) for item in value]
+    return value
+
+
 def _require_mapping(value: Any, field_name: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"{field_name} must be a mapping.")
@@ -222,6 +503,22 @@ def _read_float(payload: dict[str, Any], field_name: str) -> float:
 
     if not isfinite(value):
         raise ValueError(f"Config field {field_name} must be finite.")
+
+    return value
+
+
+def _read_int(payload: dict[str, Any], field_name: str) -> int:
+    if field_name not in payload:
+        raise ValueError(f"Missing config field: {field_name}")
+
+    raw_value = payload[field_name]
+    if isinstance(raw_value, bool):
+        raise ValueError(f"Config field {field_name} must be an integer, got boolean.")
+
+    try:
+        value = int(raw_value)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"Config field {field_name} must be an integer.") from exc
 
     return value
 
@@ -259,6 +556,35 @@ def _read_string_list(payload: dict[str, Any], field_name: str) -> tuple[str, ..
         values.append(value)
 
     return tuple(values)
+
+
+def _validate_ew_risk_map_config(config: EwRiskMapConfig) -> None:
+    positive_fields = {
+        "cell_size_m": config.cell_size_m,
+        "grid_padding_m": config.grid_padding_m,
+        "stamp_radius_m": config.stamp_radius_m,
+        "corridor_sample_step_m": config.corridor_sample_step_m,
+        "corridor_band_half_width_m": config.corridor_band_half_width_m,
+    }
+    for field_name, value in positive_fields.items():
+        if value <= 0.0:
+            raise ValueError(f"ew_risk_map.{field_name} must be positive.")
+
+    bounded_fields = {
+        "global_decay_per_tick": config.global_decay_per_tick,
+        "risk_low_floor": config.risk_low_floor,
+        "risk_medium_floor": config.risk_medium_floor,
+        "weight_gnss_denied": config.weight_gnss_denied,
+        "weight_gnss_degraded": config.weight_gnss_degraded,
+        "weight_sync_low": config.weight_sync_low,
+        "weight_localization_unstable": config.weight_localization_unstable,
+    }
+    for field_name, value in bounded_fields.items():
+        if not (0.0 <= value <= 1.0):
+            raise ValueError(f"ew_risk_map.{field_name} must be within 0.0-1.0.")
+
+    if config.risk_low_floor > config.risk_medium_floor:
+        raise ValueError("ew_risk_map.risk_low_floor must not exceed risk_medium_floor.")
 
 
 def _parse_simple_yaml(text: str) -> dict[str, Any]:
