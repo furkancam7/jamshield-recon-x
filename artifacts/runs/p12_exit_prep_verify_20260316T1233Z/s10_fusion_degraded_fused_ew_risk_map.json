@@ -1,0 +1,63 @@
+{
+  "affected_cell_count": 1,
+  "cell_size_m": 20.0,
+  "corridor_cost": 0.048,
+  "evidence_codes": [
+    "gnss_measurement_quality_low"
+  ],
+  "frame_id": "map",
+  "height_cells": 4,
+  "max_risk": 0.35,
+  "origin": {
+    "x_m": -20.0,
+    "y_m": -20.0
+  },
+  "primary_reason_code": "ew_gnss_degraded_corridor",
+  "reason_codes": [
+    "ew_gnss_degraded_corridor"
+  ],
+  "risk_cells": [
+    0.0,
+    0.07,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.07,
+    0.35,
+    0.07,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.07,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "risk_cells_hash": "70400034fbbfd763e5f26c9b65297075e6ae39260fb354dfcd0a4fd9d2f9d438",
+  "run_id": "p12_exit_prep_verify_20260316T1233Z",
+  "scenario_id": "s10_fusion_degraded_fused",
+  "schema_version": "1.0",
+  "timestamp_ns": 0,
+  "width_cells": 9
+}

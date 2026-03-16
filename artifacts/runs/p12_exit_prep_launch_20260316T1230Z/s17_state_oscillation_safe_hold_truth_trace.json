@@ -1,0 +1,47 @@
+{
+  "entries": [
+    {
+      "position_m": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 32.0
+      },
+      "route_progress_pct": 0.0,
+      "tick_index": 0,
+      "timestamp_ns": 0
+    },
+    {
+      "position_m": {
+        "x": 32.287,
+        "y": 5.704,
+        "z": 32.0
+      },
+      "route_progress_pct": 33.333,
+      "tick_index": 1,
+      "timestamp_ns": 1000000000
+    },
+    {
+      "position_m": {
+        "x": 63.644,
+        "y": 15.352,
+        "z": 32.0
+      },
+      "route_progress_pct": 66.667,
+      "tick_index": 2,
+      "timestamp_ns": 2000000000
+    },
+    {
+      "position_m": {
+        "x": 95.0,
+        "y": 25.0,
+        "z": 32.0
+      },
+      "route_progress_pct": 100.0,
+      "tick_index": 3,
+      "timestamp_ns": 3000000000
+    }
+  ],
+  "run_id": "p12_exit_prep_launch_20260316T1230Z",
+  "scenario_id": "s17_state_oscillation_safe_hold",
+  "schema_version": "1.0"
+}

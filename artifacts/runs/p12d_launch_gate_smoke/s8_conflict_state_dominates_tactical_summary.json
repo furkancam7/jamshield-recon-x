@@ -1,0 +1,21 @@
+{
+  "advisory_code": "operator_hold_position_and_investigate",
+  "advisory_text": "Hold position and investigate navigation degradation before resuming.",
+  "affected_area_count": 1,
+  "ew_corridor_cost": 0.113,
+  "ew_risk_level": "high",
+  "localization_mode": "HOLD_LAST_SAFE",
+  "mission_confidence": 0.45,
+  "mission_state": "MISSION_SAFE_HOLD",
+  "primary_reason_code": "tactical_safe_hold_active",
+  "reason_codes": [
+    "tactical_safe_hold_active",
+    "tactical_ew_hotspot_detected",
+    "tactical_localization_instability_observed"
+  ],
+  "run_id": "p12d_launch_gate_smoke",
+  "scenario_id": "s8_conflict_state_dominates",
+  "schema_version": "1.0",
+  "summary_text": "Mission is safe hold with hold-last-safe localization; EW risk is high. Hold position and investigate navigation degradation before resuming.",
+  "timestamp_ns": 0
+}

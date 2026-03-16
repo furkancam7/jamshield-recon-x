@@ -1,0 +1,28 @@
+{
+  "baseline_run_id": "p12_exit_prep_verify_20260316T1233Z",
+  "overall_result": "PASS",
+  "scenario_ids": [
+    "s1_nominal",
+    "s3_gnss_denied_zone"
+  ],
+  "scenarios": [
+    {
+      "divergence": null,
+      "evaluation_node_result": "PASS",
+      "failed_checks": [],
+      "logger_node_result": "PASS",
+      "probe_result": "PASS",
+      "scenario_id": "s1_nominal"
+    },
+    {
+      "divergence": null,
+      "evaluation_node_result": "PASS",
+      "failed_checks": [],
+      "logger_node_result": "PASS",
+      "probe_result": "PASS",
+      "scenario_id": "s3_gnss_denied_zone"
+    }
+  ],
+  "schema_version": "1.0",
+  "verification_run_id": "ros2_verification_runtime"
+}

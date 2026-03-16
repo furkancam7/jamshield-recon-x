@@ -1,0 +1,16 @@
+{
+  "entries": [
+    {
+      "primary_reason_code": "trust_inputs_nominal",
+      "reason_codes": [],
+      "severity": "nominal",
+      "stale_duration_ms": 0.0,
+      "subsystem": "navigation_runtime",
+      "tick_index": 0,
+      "timestamp_ns": 0
+    }
+  ],
+  "run_id": "p12f_smoke",
+  "scenario_id": "s1_nominal",
+  "schema_version": "1.0"
+}

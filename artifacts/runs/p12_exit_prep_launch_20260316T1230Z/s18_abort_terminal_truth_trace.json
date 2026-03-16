@@ -1,0 +1,37 @@
+{
+  "entries": [
+    {
+      "position_m": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 28.0
+      },
+      "route_progress_pct": 0.0,
+      "tick_index": 0,
+      "timestamp_ns": 0
+    },
+    {
+      "position_m": {
+        "x": 73.297,
+        "y": 18.099,
+        "z": 28.0
+      },
+      "route_progress_pct": 50.0,
+      "tick_index": 1,
+      "timestamp_ns": 1000000000
+    },
+    {
+      "position_m": {
+        "x": 145.0,
+        "y": 42.0,
+        "z": 28.0
+      },
+      "route_progress_pct": 100.0,
+      "tick_index": 2,
+      "timestamp_ns": 2000000000
+    }
+  ],
+  "run_id": "p12_exit_prep_launch_20260316T1230Z",
+  "scenario_id": "s18_abort_terminal",
+  "schema_version": "1.0"
+}

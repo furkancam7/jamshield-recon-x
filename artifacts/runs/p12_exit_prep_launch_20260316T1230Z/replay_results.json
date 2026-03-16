@@ -1,0 +1,106 @@
+{
+  "run_id": "p12_exit_prep_launch_20260316T1230Z",
+  "scenarios": [
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s1_nominal"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s2_gnss_degraded_corridor"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s3_gnss_denied_zone"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s4_denied_vio_good"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s5_denied_vio_weak"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s6_denied_vio_lost"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s7_conflict_score_dominates"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s8_conflict_state_dominates"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s9_fusion_gnss_primary"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s10_fusion_degraded_fused"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s11_fusion_denied_vio_only"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s12_fusion_dead_reckoning"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s13_sync_low_nominal"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s14_sync_low_denied_good"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s15_safe_hold_timeout_abort"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s16_recovery_dwell_delays_resume"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s17_state_oscillation_safe_hold"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s18_abort_terminal"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s19_ew_mid_route_denial_hotspot"
+    },
+    {
+      "divergence": null,
+      "replay_result": "PASS",
+      "scenario_id": "s20_ew_decay_after_recovery"
+    }
+  ],
+  "schema_version": "1.0"
+}

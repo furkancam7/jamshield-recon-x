@@ -1,0 +1,20 @@
+{
+  "advisory_code": "operator_abort_and_retask",
+  "advisory_text": "Abort the current route and retask before continuing.",
+  "affected_area_count": 4,
+  "ew_corridor_cost": 0.314,
+  "ew_risk_level": "high",
+  "localization_mode": "VIO_PRIMARY",
+  "mission_confidence": 0.433,
+  "mission_state": "MISSION_ABORT",
+  "primary_reason_code": "tactical_abort_active",
+  "reason_codes": [
+    "tactical_abort_active",
+    "tactical_ew_hotspot_detected"
+  ],
+  "run_id": "p12_exit_prep_launch_20260316T1230Z",
+  "scenario_id": "s15_safe_hold_timeout_abort",
+  "schema_version": "1.0",
+  "summary_text": "Mission is abort with VIO-primary localization; EW risk is high. Abort the current route and retask before continuing.",
+  "timestamp_ns": 2000000000
+}

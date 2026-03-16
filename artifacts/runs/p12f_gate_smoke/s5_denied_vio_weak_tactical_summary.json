@@ -1,0 +1,20 @@
+{
+  "advisory_code": "operator_hold_position_and_investigate",
+  "advisory_text": "Hold position and investigate navigation degradation before resuming.",
+  "affected_area_count": 1,
+  "ew_corridor_cost": 0.113,
+  "ew_risk_level": "high",
+  "localization_mode": "VIO_PRIMARY",
+  "mission_confidence": 0.345,
+  "mission_state": "MISSION_SAFE_HOLD",
+  "primary_reason_code": "tactical_safe_hold_active",
+  "reason_codes": [
+    "tactical_safe_hold_active",
+    "tactical_ew_hotspot_detected"
+  ],
+  "run_id": "p12f_gate_smoke",
+  "scenario_id": "s5_denied_vio_weak",
+  "schema_version": "1.0",
+  "summary_text": "Mission is safe hold with VIO-primary localization; EW risk is high. Hold position and investigate navigation degradation before resuming.",
+  "timestamp_ns": 0
+}

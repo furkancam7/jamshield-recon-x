@@ -1,0 +1,65 @@
+{
+  "evaluation_node": {
+    "divergence": null,
+    "evaluation_profile": "denial_corridor_profile_v1",
+    "failed_checks": [],
+    "failed_metrics": [],
+    "invalid_run": false,
+    "metrics": {
+      "ATE_RMSE_M": 8.0,
+      "DRIFT_PCT": 5.485,
+      "FALLBACK_REACTION_TIME_S": 0.0,
+      "LOCALIZATION_CONTINUITY_PCT": 100.0,
+      "MISSION_SUCCESS": true,
+      "RPE_RMSE_M": 0.0
+    },
+    "mission_success": true,
+    "node_name": "evaluation_node",
+    "primary_reason_code": "evaluation_acceptance_passed",
+    "reason_codes": [
+      "evaluation_acceptance_passed"
+    ],
+    "replay_result": "PASS",
+    "result": "PASS",
+    "scenario_id": "s3_gnss_denied_zone",
+    "schema_version": "1.0",
+    "verdict": "PASS"
+  },
+  "logger_node": {
+    "checks": [
+      {
+        "artifact": "s3_gnss_denied_zone_report.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "s3_gnss_denied_zone_mission_audit.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "s3_gnss_denied_zone_runtime_trace.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "s3_gnss_denied_zone_truth_trace.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "s3_gnss_denied_zone_ew_risk_map.json",
+        "status": "PASS"
+      },
+      {
+        "artifact": "s3_gnss_denied_zone_tactical_summary.json",
+        "status": "PASS"
+      }
+    ],
+    "failed_checks": [],
+    "node_name": "logger_node",
+    "result": "PASS",
+    "scenario_id": "s3_gnss_denied_zone",
+    "schema_version": "1.0"
+  },
+  "overall_result": "PASS",
+  "run_id": "ros2_verification_runtime",
+  "scenario_id": "s3_gnss_denied_zone",
+  "schema_version": "1.0"
+}

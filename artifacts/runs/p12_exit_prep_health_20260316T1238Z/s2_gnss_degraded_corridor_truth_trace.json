@@ -1,0 +1,17 @@
+{
+  "entries": [
+    {
+      "position_m": {
+        "x": 5.0,
+        "y": -10.0,
+        "z": 32.0
+      },
+      "route_progress_pct": 100.0,
+      "tick_index": 0,
+      "timestamp_ns": 0
+    }
+  ],
+  "run_id": "p12_exit_prep_health_20260316T1238Z",
+  "scenario_id": "s2_gnss_degraded_corridor",
+  "schema_version": "1.0"
+}

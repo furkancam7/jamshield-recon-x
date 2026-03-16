@@ -1,0 +1,78 @@
+{
+  "entries": [
+    {
+      "candidate_state": "MISSION_ABORT",
+      "effective_vio_state": "lost",
+      "final_state": "MISSION_ABORT",
+      "gnss_state": "denied",
+      "mission_confidence": 0.178,
+      "primary_reason_code": "mission_abort_vio_lost",
+      "reason_codes": [
+        "mission_abort_vio_lost"
+      ],
+      "step_inputs": {
+        "gnss_condition": "denied",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "lost_tracking_v1"
+        }
+      },
+      "tick_index": 0,
+      "transition_count": 1,
+      "trust_primary_reason_code": "gnss_denial_suspected"
+    },
+    {
+      "candidate_state": "MISSION_EXECUTE",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_ABORT",
+      "gnss_state": "nominal",
+      "mission_confidence": 0.92,
+      "primary_reason_code": "mission_abort_terminal_latched",
+      "reason_codes": [
+        "mission_abort_terminal_latched",
+        "mission_execute_nominal"
+      ],
+      "step_inputs": {
+        "gnss_condition": "nominal",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 1,
+      "transition_count": 1,
+      "trust_primary_reason_code": "trust_inputs_nominal"
+    },
+    {
+      "candidate_state": "MISSION_EXECUTE",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_ABORT",
+      "gnss_state": "nominal",
+      "mission_confidence": 0.92,
+      "primary_reason_code": "mission_abort_terminal_latched",
+      "reason_codes": [
+        "mission_abort_terminal_latched",
+        "mission_execute_nominal"
+      ],
+      "step_inputs": {
+        "gnss_condition": "nominal",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 2,
+      "transition_count": 1,
+      "trust_primary_reason_code": "trust_inputs_nominal"
+    }
+  ],
+  "run_id": "p12_exit_prep_launch_20260316T1230Z",
+  "scenario_id": "s18_abort_terminal",
+  "schema_version": "1.0"
+}

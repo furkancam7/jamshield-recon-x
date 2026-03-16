@@ -97,7 +97,7 @@ It publishes:
 
 Current slice note:
 
-- `health_monitor_node` is still deferred in the executable vertical slice.
+- `health_monitor_node` publication is now available in the executable simulation slice.
 - P10 tactical summary does not consume `/mission/health` yet.
 - Health-driven tactical wording remains a follow-on phase after a real runtime health publisher exists.
 

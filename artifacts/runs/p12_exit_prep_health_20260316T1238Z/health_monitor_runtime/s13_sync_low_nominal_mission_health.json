@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "primary_reason_code": "sync_quality_low",
+      "reason_codes": [
+        "sync_quality_low"
+      ],
+      "severity": "warning",
+      "stale_duration_ms": 400.0,
+      "subsystem": "navigation_runtime",
+      "tick_index": 0,
+      "timestamp_ns": 0
+    }
+  ],
+  "run_id": "p12_exit_prep_health_20260316T1238Z-health",
+  "scenario_id": "s13_sync_low_nominal",
+  "schema_version": "1.0"
+}

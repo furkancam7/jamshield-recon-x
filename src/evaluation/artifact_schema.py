@@ -17,6 +17,12 @@ TRUTH_TRACE_SCHEMA_VERSION = "1.0"
 REPLAY_RESULTS_SCHEMA_VERSION = "1.0"
 EVALUATION_METRICS_SCHEMA_VERSION = "1.0"
 EVALUATION_VERDICTS_SCHEMA_VERSION = "1.0"
+NODE_PARITY_RESULTS_SCHEMA_VERSION = "1.0"
+ROS2_LAUNCH_PROBE_RESULTS_SCHEMA_VERSION = "1.0"
+ROS2_VERIFICATION_PROBE_RESULTS_SCHEMA_VERSION = "1.0"
+HEALTH_TIMELINE_SCHEMA_VERSION = "1.0"
+FAULT_EVENTS_SCHEMA_VERSION = "1.0"
+HEALTH_MONITOR_PROBE_RESULTS_SCHEMA_VERSION = "1.0"
 
 REQUIRED_REPORT_FIELDS = {
     "schema_version",
@@ -205,6 +211,50 @@ REQUIRED_EVALUATION_VERDICTS_FIELDS = {
     "run_id",
     "scenarios",
 }
+REQUIRED_NODE_PARITY_RESULTS_FIELDS = {
+    "schema_version",
+    "baseline_run_id",
+    "node_run_id",
+    "scenario_ids",
+    "scenarios",
+    "overall_result",
+}
+REQUIRED_ROS2_LAUNCH_PROBE_RESULTS_FIELDS = {
+    "schema_version",
+    "baseline_run_id",
+    "launch_run_id",
+    "scenario_ids",
+    "scenarios",
+    "overall_result",
+}
+REQUIRED_ROS2_VERIFICATION_PROBE_RESULTS_FIELDS = {
+    "schema_version",
+    "baseline_run_id",
+    "verification_run_id",
+    "scenario_ids",
+    "scenarios",
+    "overall_result",
+}
+REQUIRED_HEALTH_TIMELINE_FIELDS = {
+    "schema_version",
+    "run_id",
+    "scenario_id",
+    "entries",
+}
+REQUIRED_FAULT_EVENTS_FIELDS = {
+    "schema_version",
+    "run_id",
+    "scenario_id",
+    "events",
+}
+REQUIRED_HEALTH_MONITOR_PROBE_RESULTS_FIELDS = {
+    "schema_version",
+    "baseline_run_id",
+    "health_probe_run_id",
+    "scenario_ids",
+    "scenarios",
+    "overall_result",
+}
 MISSION_AUDIT_ENTRY_FIELDS = {
     "tick_index",
     "step_inputs",
@@ -241,6 +291,24 @@ TRUTH_TRACE_ENTRY_FIELDS = {
     "timestamp_ns",
     "position_m",
     "route_progress_pct",
+}
+HEALTH_TIMELINE_ENTRY_FIELDS = {
+    "tick_index",
+    "timestamp_ns",
+    "subsystem",
+    "severity",
+    "stale_duration_ms",
+    "primary_reason_code",
+    "reason_codes",
+}
+FAULT_EVENT_ENTRY_FIELDS = {
+    "timestamp_ns",
+    "event_id",
+    "subsystem",
+    "severity",
+    "primary_reason_code",
+    "reason_codes",
+    "details",
 }
 REQUIRED_SUMMARY_SCENARIO_FIELDS = {
     "scenario_id",
@@ -629,6 +697,105 @@ def validate_truth_trace(payload: dict[str, Any]) -> None:
         _validate_truth_trace_entry(entry)
 
 
+def validate_mission_health_timeline(payload: dict[str, Any]) -> None:
+    missing = REQUIRED_HEALTH_TIMELINE_FIELDS.difference(payload)
+    if missing:
+        missing_list = ", ".join(sorted(missing))
+        raise ValueError(
+            f"Mission health timeline missing required fields: {missing_list}"
+        )
+    if payload["schema_version"] != HEALTH_TIMELINE_SCHEMA_VERSION:
+        raise ValueError(
+            "Unsupported mission health timeline schema_version: "
+            f"{payload['schema_version']}"
+        )
+    entries = payload["entries"]
+    if not isinstance(entries, list) or not entries:
+        raise ValueError("mission_health.entries must be a non-empty list.")
+    for entry in entries:
+        if not isinstance(entry, dict):
+            raise ValueError("mission_health.entries must be mappings.")
+        missing_fields = HEALTH_TIMELINE_ENTRY_FIELDS.difference(entry)
+        if missing_fields:
+            missing_list = ", ".join(sorted(missing_fields))
+            raise ValueError(
+                "mission_health entry missing required fields: "
+                f"{missing_list}"
+            )
+        if not isinstance(entry["tick_index"], int) or entry["tick_index"] < 0:
+            raise ValueError("mission_health.tick_index must be a non-negative integer.")
+        if not isinstance(entry["timestamp_ns"], int) or entry["timestamp_ns"] < 0:
+            raise ValueError("mission_health.timestamp_ns must be a non-negative integer.")
+        if not isinstance(entry["subsystem"], str) or not entry["subsystem"].strip():
+            raise ValueError("mission_health.subsystem must be a non-empty string.")
+        _validate_health_severity(
+            entry["severity"],
+            context="mission_health",
+            allow_nominal=True,
+        )
+        if not isinstance(entry["stale_duration_ms"], (int, float)):
+            raise ValueError("mission_health.stale_duration_ms must be numeric.")
+        if float(entry["stale_duration_ms"]) < 0.0:
+            raise ValueError("mission_health.stale_duration_ms must be non-negative.")
+        _validate_reason_code(entry["primary_reason_code"])
+        _validate_reason_code_list(entry["reason_codes"], "mission_health.reason_codes")
+        if entry["severity"] == "nominal":
+            if entry["primary_reason_code"] != "trust_inputs_nominal":
+                raise ValueError(
+                    "mission_health nominal entries must use trust_inputs_nominal."
+                )
+            if entry["reason_codes"]:
+                raise ValueError(
+                    "mission_health nominal entries must not include reason_codes."
+                )
+        elif entry["primary_reason_code"] == "trust_inputs_nominal":
+            raise ValueError(
+                "mission_health warning/critical entries must not use trust_inputs_nominal."
+            )
+
+
+def validate_fault_events(payload: dict[str, Any]) -> None:
+    missing = REQUIRED_FAULT_EVENTS_FIELDS.difference(payload)
+    if missing:
+        missing_list = ", ".join(sorted(missing))
+        raise ValueError(f"Fault events missing required fields: {missing_list}")
+    if payload["schema_version"] != FAULT_EVENTS_SCHEMA_VERSION:
+        raise ValueError(
+            f"Unsupported fault events schema_version: {payload['schema_version']}"
+        )
+    events = payload["events"]
+    if not isinstance(events, list):
+        raise ValueError("fault_events.events must be a list.")
+    for event in events:
+        if not isinstance(event, dict):
+            raise ValueError("fault_events.events entries must be mappings.")
+        missing_fields = FAULT_EVENT_ENTRY_FIELDS.difference(event)
+        if missing_fields:
+            missing_list = ", ".join(sorted(missing_fields))
+            raise ValueError(
+                f"fault_events entry missing required fields: {missing_list}"
+            )
+        if not isinstance(event["timestamp_ns"], int) or event["timestamp_ns"] < 0:
+            raise ValueError("fault_events.timestamp_ns must be a non-negative integer.")
+        if not isinstance(event["event_id"], str) or not event["event_id"].strip():
+            raise ValueError("fault_events.event_id must be a non-empty string.")
+        if not isinstance(event["subsystem"], str) or not event["subsystem"].strip():
+            raise ValueError("fault_events.subsystem must be a non-empty string.")
+        _validate_health_severity(
+            event["severity"],
+            context="fault_events",
+            allow_nominal=False,
+        )
+        _validate_reason_code(event["primary_reason_code"])
+        _validate_reason_code_list(event["reason_codes"], "fault_events.reason_codes")
+        if not event["reason_codes"]:
+            raise ValueError("fault_events.reason_codes must include at least one code.")
+        if event["primary_reason_code"] == "trust_inputs_nominal":
+            raise ValueError("fault_events primary_reason_code must be fault-specific.")
+        if not isinstance(event["details"], str) or not event["details"].strip():
+            raise ValueError("fault_events.details must be a non-empty string.")
+
+
 def validate_replay_results_bundle(payload: dict[str, Any]) -> None:
     missing = REQUIRED_REPLAY_RESULTS_FIELDS.difference(payload)
     if missing:
@@ -751,6 +918,309 @@ def validate_evaluation_verdicts_bundle(payload: dict[str, Any]) -> None:
             raise ValueError("evaluation_verdicts.failed_checks must be a list.")
 
 
+def validate_node_parity_results(payload: dict[str, Any]) -> None:
+    missing = REQUIRED_NODE_PARITY_RESULTS_FIELDS.difference(payload)
+    if missing:
+        missing_list = ", ".join(sorted(missing))
+        raise ValueError(f"Node parity results missing required fields: {missing_list}")
+    if payload["schema_version"] != NODE_PARITY_RESULTS_SCHEMA_VERSION:
+        raise ValueError(
+            "Unsupported node parity schema_version: "
+            f"{payload['schema_version']}"
+        )
+    if payload["overall_result"] not in {"PASS", "FAIL"}:
+        raise ValueError(
+            f"Unsupported node parity overall_result: {payload['overall_result']}"
+        )
+
+    scenario_ids = payload["scenario_ids"]
+    if not isinstance(scenario_ids, list) or not scenario_ids:
+        raise ValueError("node_parity.scenario_ids must be a non-empty list.")
+    if not all(isinstance(item, str) and item.strip() for item in scenario_ids):
+        raise ValueError("node_parity.scenario_ids entries must be non-empty strings.")
+
+    scenarios = payload["scenarios"]
+    if not isinstance(scenarios, list) or not scenarios:
+        raise ValueError("node_parity.scenarios must be a non-empty list.")
+    required_scenario_fields = {"scenario_id", "parity_result", "divergence"}
+    for scenario in scenarios:
+        if not isinstance(scenario, dict):
+            raise ValueError("node_parity.scenarios entries must be mappings.")
+        missing_fields = required_scenario_fields.difference(scenario)
+        if missing_fields:
+            missing_list = ", ".join(sorted(missing_fields))
+            raise ValueError(
+                f"node_parity scenario missing required fields: {missing_list}"
+            )
+        if scenario["parity_result"] not in {"PASS", "FAIL"}:
+            raise ValueError(
+                f"Unsupported node parity scenario result: {scenario['parity_result']}"
+            )
+        _validate_parity_divergence(
+            scenario["divergence"],
+            scenario_result=scenario["parity_result"],
+            context="node_parity",
+        )
+
+    scenario_ids_set = set(scenario_ids)
+    payload_ids = {
+        scenario["scenario_id"]
+        for scenario in scenarios
+        if isinstance(scenario["scenario_id"], str) and scenario["scenario_id"].strip()
+    }
+    if scenario_ids_set != payload_ids:
+        raise ValueError(
+            "node_parity scenario_ids must match scenario payload ids exactly."
+        )
+
+
+def validate_ros2_launch_probe_results(payload: dict[str, Any]) -> None:
+    missing = REQUIRED_ROS2_LAUNCH_PROBE_RESULTS_FIELDS.difference(payload)
+    if missing:
+        missing_list = ", ".join(sorted(missing))
+        raise ValueError(
+            f"ROS2 launch probe results missing required fields: {missing_list}"
+        )
+    if payload["schema_version"] != ROS2_LAUNCH_PROBE_RESULTS_SCHEMA_VERSION:
+        raise ValueError(
+            "Unsupported ROS2 launch probe schema_version: "
+            f"{payload['schema_version']}"
+        )
+    if payload["overall_result"] not in {"PASS", "FAIL"}:
+        raise ValueError(
+            "Unsupported ROS2 launch probe overall_result: "
+            f"{payload['overall_result']}"
+        )
+
+    scenario_ids = payload["scenario_ids"]
+    if not isinstance(scenario_ids, list) or not scenario_ids:
+        raise ValueError("ros2_launch_probe.scenario_ids must be a non-empty list.")
+    if not all(isinstance(item, str) and item.strip() for item in scenario_ids):
+        raise ValueError(
+            "ros2_launch_probe.scenario_ids entries must be non-empty strings."
+        )
+
+    scenarios = payload["scenarios"]
+    if not isinstance(scenarios, list) or not scenarios:
+        raise ValueError("ros2_launch_probe.scenarios must be a non-empty list.")
+    required_scenario_fields = {"scenario_id", "probe_result", "divergence"}
+    for scenario in scenarios:
+        if not isinstance(scenario, dict):
+            raise ValueError("ros2_launch_probe.scenarios entries must be mappings.")
+        missing_fields = required_scenario_fields.difference(scenario)
+        if missing_fields:
+            missing_list = ", ".join(sorted(missing_fields))
+            raise ValueError(
+                "ros2_launch_probe scenario missing required fields: "
+                f"{missing_list}"
+            )
+        if scenario["probe_result"] not in {"PASS", "FAIL"}:
+            raise ValueError(
+                "Unsupported ros2_launch_probe scenario result: "
+                f"{scenario['probe_result']}"
+            )
+        _validate_parity_divergence(
+            scenario["divergence"],
+            scenario_result=scenario["probe_result"],
+            context="ros2_launch_probe",
+        )
+
+    scenario_ids_set = set(scenario_ids)
+    payload_ids = {
+        scenario["scenario_id"]
+        for scenario in scenarios
+        if isinstance(scenario["scenario_id"], str) and scenario["scenario_id"].strip()
+    }
+    if scenario_ids_set != payload_ids:
+        raise ValueError(
+            "ros2_launch_probe scenario_ids must match scenario payload ids exactly."
+        )
+
+
+def validate_ros2_verification_probe_results(payload: dict[str, Any]) -> None:
+    missing = REQUIRED_ROS2_VERIFICATION_PROBE_RESULTS_FIELDS.difference(payload)
+    if missing:
+        missing_list = ", ".join(sorted(missing))
+        raise ValueError(
+            "ROS2 verification probe results missing required fields: "
+            f"{missing_list}"
+        )
+    if payload["schema_version"] != ROS2_VERIFICATION_PROBE_RESULTS_SCHEMA_VERSION:
+        raise ValueError(
+            "Unsupported ROS2 verification probe schema_version: "
+            f"{payload['schema_version']}"
+        )
+    if payload["overall_result"] not in {"PASS", "FAIL"}:
+        raise ValueError(
+            "Unsupported ROS2 verification probe overall_result: "
+            f"{payload['overall_result']}"
+        )
+
+    scenario_ids = payload["scenario_ids"]
+    if not isinstance(scenario_ids, list) or not scenario_ids:
+        raise ValueError(
+            "ros2_verification_probe.scenario_ids must be a non-empty list."
+        )
+    if not all(isinstance(item, str) and item.strip() for item in scenario_ids):
+        raise ValueError(
+            "ros2_verification_probe.scenario_ids entries must be non-empty strings."
+        )
+
+    scenarios = payload["scenarios"]
+    if not isinstance(scenarios, list) or not scenarios:
+        raise ValueError("ros2_verification_probe.scenarios must be a non-empty list.")
+    required_scenario_fields = {
+        "scenario_id",
+        "logger_node_result",
+        "evaluation_node_result",
+        "probe_result",
+        "failed_checks",
+        "divergence",
+    }
+    for scenario in scenarios:
+        if not isinstance(scenario, dict):
+            raise ValueError("ros2_verification_probe.scenarios entries must be mappings.")
+        missing_fields = required_scenario_fields.difference(scenario)
+        if missing_fields:
+            missing_list = ", ".join(sorted(missing_fields))
+            raise ValueError(
+                "ros2_verification_probe scenario missing required fields: "
+                f"{missing_list}"
+            )
+        if scenario["logger_node_result"] not in {"PASS", "FAIL"}:
+            raise ValueError(
+                "Unsupported ros2_verification_probe logger_node_result: "
+                f"{scenario['logger_node_result']}"
+            )
+        if scenario["evaluation_node_result"] not in {"PASS", "FAIL"}:
+            raise ValueError(
+                "Unsupported ros2_verification_probe evaluation_node_result: "
+                f"{scenario['evaluation_node_result']}"
+            )
+        if scenario["probe_result"] not in {"PASS", "FAIL"}:
+            raise ValueError(
+                "Unsupported ros2_verification_probe probe_result: "
+                f"{scenario['probe_result']}"
+            )
+        if not isinstance(scenario["failed_checks"], list):
+            raise ValueError(
+                "ros2_verification_probe.failed_checks must be a list."
+            )
+        if scenario["probe_result"] == "FAIL" and not scenario["failed_checks"] and scenario["divergence"] is None:
+            raise ValueError(
+                "ros2_verification_probe FAIL scenarios must include failed_checks "
+                "or divergence details."
+            )
+        _validate_optional_divergence(
+            scenario["divergence"],
+            context="ros2_verification_probe",
+        )
+
+    scenario_ids_set = set(scenario_ids)
+    payload_ids = {
+        scenario["scenario_id"]
+        for scenario in scenarios
+        if isinstance(scenario["scenario_id"], str) and scenario["scenario_id"].strip()
+    }
+    if scenario_ids_set != payload_ids:
+        raise ValueError(
+            "ros2_verification_probe scenario_ids must match scenario payload ids exactly."
+        )
+
+
+def validate_health_monitor_probe_results(payload: dict[str, Any]) -> None:
+    missing = REQUIRED_HEALTH_MONITOR_PROBE_RESULTS_FIELDS.difference(payload)
+    if missing:
+        missing_list = ", ".join(sorted(missing))
+        raise ValueError(
+            "Health monitor probe results missing required fields: "
+            f"{missing_list}"
+        )
+    if payload["schema_version"] != HEALTH_MONITOR_PROBE_RESULTS_SCHEMA_VERSION:
+        raise ValueError(
+            "Unsupported health monitor probe schema_version: "
+            f"{payload['schema_version']}"
+        )
+    if payload["overall_result"] not in {"PASS", "FAIL"}:
+        raise ValueError(
+            "Unsupported health monitor probe overall_result: "
+            f"{payload['overall_result']}"
+        )
+
+    scenario_ids = payload["scenario_ids"]
+    if not isinstance(scenario_ids, list) or not scenario_ids:
+        raise ValueError(
+            "health_monitor_probe.scenario_ids must be a non-empty list."
+        )
+    if not all(isinstance(item, str) and item.strip() for item in scenario_ids):
+        raise ValueError(
+            "health_monitor_probe.scenario_ids entries must be non-empty strings."
+        )
+
+    scenarios = payload["scenarios"]
+    if not isinstance(scenarios, list) or not scenarios:
+        raise ValueError("health_monitor_probe.scenarios must be a non-empty list.")
+    required_scenario_fields = {
+        "scenario_id",
+        "health_artifact_result",
+        "parity_result",
+        "probe_result",
+        "failed_checks",
+        "divergence",
+    }
+    for scenario in scenarios:
+        if not isinstance(scenario, dict):
+            raise ValueError("health_monitor_probe.scenarios entries must be mappings.")
+        missing_fields = required_scenario_fields.difference(scenario)
+        if missing_fields:
+            missing_list = ", ".join(sorted(missing_fields))
+            raise ValueError(
+                "health_monitor_probe scenario missing required fields: "
+                f"{missing_list}"
+            )
+        if scenario["health_artifact_result"] not in {"PASS", "FAIL"}:
+            raise ValueError(
+                "Unsupported health_monitor_probe health_artifact_result: "
+                f"{scenario['health_artifact_result']}"
+            )
+        if scenario["parity_result"] not in {"PASS", "FAIL"}:
+            raise ValueError(
+                "Unsupported health_monitor_probe parity_result: "
+                f"{scenario['parity_result']}"
+            )
+        if scenario["probe_result"] not in {"PASS", "FAIL"}:
+            raise ValueError(
+                "Unsupported health_monitor_probe probe_result: "
+                f"{scenario['probe_result']}"
+            )
+        if not isinstance(scenario["failed_checks"], list):
+            raise ValueError("health_monitor_probe.failed_checks must be a list.")
+        if (
+            scenario["probe_result"] == "FAIL"
+            and not scenario["failed_checks"]
+            and scenario["divergence"] is None
+        ):
+            raise ValueError(
+                "health_monitor_probe FAIL scenarios must include failed_checks "
+                "or divergence details."
+            )
+        _validate_optional_divergence(
+            scenario["divergence"],
+            context="health_monitor_probe",
+        )
+
+    scenario_ids_set = set(scenario_ids)
+    payload_ids = {
+        scenario["scenario_id"]
+        for scenario in scenarios
+        if isinstance(scenario["scenario_id"], str) and scenario["scenario_id"].strip()
+    }
+    if scenario_ids_set != payload_ids:
+        raise ValueError(
+            "health_monitor_probe scenario_ids must match scenario payload ids exactly."
+        )
+
+
 def validate_mission_audit(payload: dict[str, Any]) -> None:
     missing = REQUIRED_MISSION_AUDIT_FIELDS.difference(payload)
     if missing:
@@ -845,6 +1315,20 @@ def _validate_position_mapping(value: Any, field_name: str) -> None:
         )
 
 
+def _validate_health_severity(
+    value: Any,
+    *,
+    context: str,
+    allow_nominal: bool,
+) -> None:
+    allowed = {"warning", "critical"}
+    if allow_nominal:
+        allowed.add("nominal")
+    if value not in allowed:
+        allowed_text = ", ".join(sorted(allowed))
+        raise ValueError(f"{context}.severity must be one of: {allowed_text}.")
+
+
 def _validate_reason_code(value: Any) -> None:
     if not isinstance(value, str) or not value.strip():
         raise ValueError("Primary reason code must be a non-empty string.")
@@ -860,3 +1344,60 @@ def _validate_reason_code_list(value: Any, field_name: str) -> None:
             raise ValueError(f"{field_name} entries must be strings.")
         if not SNAKE_CASE_RE.fullmatch(item):
             raise ValueError(f"{field_name} entries must be snake_case: {item!r}")
+
+
+def _validate_parity_divergence(
+    divergence: Any,
+    *,
+    scenario_result: str,
+    context: str,
+) -> None:
+    if divergence is None:
+        if scenario_result != "PASS":
+            raise ValueError(
+                f"{context} FAIL scenarios must include divergence details."
+            )
+        return
+    if not isinstance(divergence, dict):
+        raise ValueError(f"{context} divergence must be a mapping or null.")
+    required_fields = {"tick_index", "field_name", "original_value", "replay_value"}
+    missing = required_fields.difference(divergence)
+    if missing:
+        missing_list = ", ".join(sorted(missing))
+        raise ValueError(
+            f"{context} divergence missing required fields: {missing_list}"
+        )
+    if divergence["tick_index"] is not None and not isinstance(
+        divergence["tick_index"], int
+    ):
+        raise ValueError(f"{context} divergence.tick_index must be int or null.")
+    if not isinstance(divergence["field_name"], str) or not divergence["field_name"].strip():
+        raise ValueError(
+            f"{context} divergence.field_name must be a non-empty string."
+        )
+
+
+def _validate_optional_divergence(
+    divergence: Any,
+    *,
+    context: str,
+) -> None:
+    if divergence is None:
+        return
+    if not isinstance(divergence, dict):
+        raise ValueError(f"{context} divergence must be a mapping or null.")
+    required_fields = {"tick_index", "field_name", "original_value", "replay_value"}
+    missing = required_fields.difference(divergence)
+    if missing:
+        missing_list = ", ".join(sorted(missing))
+        raise ValueError(
+            f"{context} divergence missing required fields: {missing_list}"
+        )
+    if divergence["tick_index"] is not None and not isinstance(
+        divergence["tick_index"], int
+    ):
+        raise ValueError(f"{context} divergence.tick_index must be int or null.")
+    if not isinstance(divergence["field_name"], str) or not divergence["field_name"].strip():
+        raise ValueError(
+            f"{context} divergence.field_name must be a non-empty string."
+        )

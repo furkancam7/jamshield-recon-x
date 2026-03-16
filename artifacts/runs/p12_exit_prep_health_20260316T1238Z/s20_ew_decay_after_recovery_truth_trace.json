@@ -1,0 +1,67 @@
+{
+  "entries": [
+    {
+      "position_m": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 28.0
+      },
+      "route_progress_pct": 0.0,
+      "tick_index": 0,
+      "timestamp_ns": 0
+    },
+    {
+      "position_m": {
+        "x": 28.856,
+        "y": 4.809,
+        "z": 28.0
+      },
+      "route_progress_pct": 20.0,
+      "tick_index": 1,
+      "timestamp_ns": 1000000000
+    },
+    {
+      "position_m": {
+        "x": 57.711,
+        "y": 9.619,
+        "z": 28.0
+      },
+      "route_progress_pct": 40.0,
+      "tick_index": 2,
+      "timestamp_ns": 2000000000
+    },
+    {
+      "position_m": {
+        "x": 85.218,
+        "y": 19.457,
+        "z": 28.0
+      },
+      "route_progress_pct": 60.0,
+      "tick_index": 3,
+      "timestamp_ns": 3000000000
+    },
+    {
+      "position_m": {
+        "x": 112.609,
+        "y": 29.728,
+        "z": 28.0
+      },
+      "route_progress_pct": 80.0,
+      "tick_index": 4,
+      "timestamp_ns": 4000000000
+    },
+    {
+      "position_m": {
+        "x": 140.0,
+        "y": 40.0,
+        "z": 28.0
+      },
+      "route_progress_pct": 100.0,
+      "tick_index": 5,
+      "timestamp_ns": 5000000000
+    }
+  ],
+  "run_id": "p12_exit_prep_health_20260316T1238Z",
+  "scenario_id": "s20_ew_decay_after_recovery",
+  "schema_version": "1.0"
+}

@@ -1,0 +1,93 @@
+{
+  "ate_m": 8.0,
+  "config_hash": "af8bc2bfee5ea41e49ca4b845f8f453a94662b91a0fc150e60d729996decbb1f",
+  "config_id": "sim-v1",
+  "deterministic_replay_passed": true,
+  "effective_vio_state": "lost",
+  "evaluation_primary_reason_code": "evaluation_threshold_exceeded",
+  "evaluation_profile": "denial_corridor_profile_v1",
+  "evaluation_verdict": "FAIL",
+  "ew_affected_cell_count": 1,
+  "ew_corridor_cost": 0.113,
+  "ew_max_risk": 0.95,
+  "ew_primary_reason_code": "ew_gnss_denial_hotspot",
+  "ew_reason_codes": [
+    "ew_gnss_denial_hotspot",
+    "ew_localization_instability"
+  ],
+  "ew_risk_level": "high",
+  "ew_risk_map_path": "/mnt/c/Users/Furkan/Desktop/jamshield-recon-x/jamshield-recon-x/artifacts/runs/p12_exit_prep_health_20260316T1238Z/s6_denied_vio_lost_ew_risk_map.json",
+  "gnss_condition": "denied",
+  "gnss_state": "denied",
+  "gnss_trust": 0.05,
+  "gnss_weight": 0.4491017964071856,
+  "ground_truth_usage": "evaluation_only",
+  "invalid_run": false,
+  "localization_confidence": 0.0731377245508982,
+  "localization_mode": "HOLD_LAST_SAFE",
+  "manifest_hash": "fcc193386a79e147468fe7a31083144febae658c42b981959e32ffa8ecb208a2",
+  "map_name": "industrial_corridor",
+  "mission_audit_path": "/mnt/c/Users/Furkan/Desktop/jamshield-recon-x/jamshield-recon-x/artifacts/runs/p12_exit_prep_health_20260316T1238Z/s6_denied_vio_lost_mission_audit.json",
+  "mission_confidence": 0.098,
+  "mission_primary_reason_code": "mission_abort_vio_lost",
+  "mission_reason_codes": [
+    "mission_abort_vio_lost"
+  ],
+  "mission_state": "MISSION_ABORT",
+  "mission_transition_count": 1,
+  "route_length_m": 145.859,
+  "run_id": "p12_exit_prep_health_20260316T1238Z",
+  "run_seed": 666,
+  "runtime_trace_path": "/mnt/c/Users/Furkan/Desktop/jamshield-recon-x/jamshield-recon-x/artifacts/runs/p12_exit_prep_health_20260316T1238Z/s6_denied_vio_lost_runtime_trace.json",
+  "scenario_id": "s6_denied_vio_lost",
+  "scenario_metadata": {
+    "description": "GNSS denied scenario with failed VIO triggering emergency land.",
+    "owner": "autonomy-sim",
+    "title": "Denied with Lost VIO"
+  },
+  "schema_version": "2.4",
+  "software_revision": "7fc4307e2b0552aec40db120d0817c956bfe06fd",
+  "sync_quality": 1.0,
+  "tactical_advisory_code": "operator_abort_and_retask",
+  "tactical_advisory_text": "Abort the current route and retask before continuing.",
+  "tactical_primary_reason_code": "tactical_abort_active",
+  "tactical_reason_codes": [
+    "tactical_abort_active",
+    "tactical_ew_hotspot_detected",
+    "tactical_localization_instability_observed"
+  ],
+  "tactical_summary_path": "/mnt/c/Users/Furkan/Desktop/jamshield-recon-x/jamshield-recon-x/artifacts/runs/p12_exit_prep_health_20260316T1238Z/s6_denied_vio_lost_tactical_summary.json",
+  "tactical_summary_text": "Mission is abort with hold-last-safe localization; EW risk is high. Abort the current route and retask before continuing.",
+  "timestamp": "2026-03-16T12:37:25Z",
+  "trust_primary_reason_code": "localization_confidence_low",
+  "trust_reason_codes": [
+    "gnss_denial_suspected",
+    "vio_trust_low",
+    "localization_confidence_low"
+  ],
+  "truth_trace_path": "/mnt/c/Users/Furkan/Desktop/jamshield-recon-x/jamshield-recon-x/artifacts/runs/p12_exit_prep_health_20260316T1238Z/s6_denied_vio_lost_truth_trace.json",
+  "vio_health_score": 0.092,
+  "vio_metrics": {
+    "effective_vio_state": "lost",
+    "feature_count": 6,
+    "imu_alignment_error": 0.566,
+    "matched_feature_count": 1,
+    "pose_delta_xy_m": 0.268,
+    "profile_id": "lost_tracking_v1",
+    "reason_codes": [
+      "low_feature_count",
+      "track_continuity_drop",
+      "high_reprojection_error"
+    ],
+    "reprojection_error_px": 3.7,
+    "timestamp_ns": 716000000,
+    "track_continuity": 0.167,
+    "vio_health_score": 0.092,
+    "vio_state": "lost",
+    "yaw_delta_rad": -0.16
+  },
+  "vio_metrics_source": "pipeline_v1",
+  "vio_state": "lost",
+  "vio_trust": 0.092,
+  "vio_weight": 0.5508982035928144
+}

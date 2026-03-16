@@ -1,0 +1,37 @@
+{
+  "entries": [
+    {
+      "effective_vio_state": "good",
+      "estimated_position_m": {
+        "x": 0.5,
+        "y": 0.0,
+        "z": 30.0
+      },
+      "gnss_state": "nominal",
+      "gnss_trust": 0.96,
+      "localization_confidence": 0.9108278145695364,
+      "localization_mode": "GNSS_PRIMARY",
+      "mission_confidence": 0.92,
+      "mission_primary_reason_code": "mission_execute_nominal",
+      "mission_state": "MISSION_EXECUTE",
+      "route_progress_pct": 100.0,
+      "step_inputs": {
+        "gnss_condition": "nominal",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "sync_quality": 1.0,
+      "tick_index": 0,
+      "timestamp_ns": 0,
+      "trust_primary_reason_code": "trust_inputs_nominal",
+      "vio_trust": 0.825
+    }
+  ],
+  "run_id": "p12f_gate_smoke",
+  "scenario_id": "s9_fusion_gnss_primary",
+  "schema_version": "1.0"
+}

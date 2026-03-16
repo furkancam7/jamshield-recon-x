@@ -7,7 +7,8 @@ This runbook covers simulation, replay, and evaluation failures. It does not cov
 Current-slice note:
 
 - Troubleshooting is artifact-first (`*_report.json`, `*_runtime_trace.json`, `*_mission_audit.json`, replay/evaluation bundles).
-- ROS2 `health_monitor_node`, `logger_node`, and `evaluation_node` are architecture targets and not executable runtime nodes yet.
+- ROS2 `logger_node` and `evaluation_node` run through the hybrid bridge in launch probe flows.
+- `health_monitor_node` publication is available through node and launch probe execution (`*_mission_health.json`, `*_fault_events.json`).
 
 ## Symptom: No Fused Localization Output
 

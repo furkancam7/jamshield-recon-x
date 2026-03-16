@@ -1,0 +1,22 @@
+{
+  "baseline_run_id": "p12_exit_prep_launch_20260316T1230Z",
+  "launch_run_id": "ros2_launch_runtime",
+  "overall_result": "PASS",
+  "scenario_ids": [
+    "s1_nominal",
+    "s3_gnss_denied_zone"
+  ],
+  "scenarios": [
+    {
+      "divergence": null,
+      "probe_result": "PASS",
+      "scenario_id": "s1_nominal"
+    },
+    {
+      "divergence": null,
+      "probe_result": "PASS",
+      "scenario_id": "s3_gnss_denied_zone"
+    }
+  ],
+  "schema_version": "1.0"
+}

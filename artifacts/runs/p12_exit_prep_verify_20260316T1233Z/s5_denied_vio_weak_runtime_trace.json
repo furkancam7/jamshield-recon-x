@@ -1,0 +1,37 @@
+{
+  "entries": [
+    {
+      "effective_vio_state": "weak",
+      "estimated_position_m": {
+        "x": 8.0,
+        "y": 0.0,
+        "z": 28.0
+      },
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.5496661807580175,
+      "localization_mode": "VIO_PRIMARY",
+      "mission_confidence": 0.345,
+      "mission_primary_reason_code": "mission_safe_hold_vio_weak",
+      "mission_state": "MISSION_SAFE_HOLD",
+      "route_progress_pct": 100.0,
+      "step_inputs": {
+        "gnss_condition": "denied",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "weak_texture_v1"
+        }
+      },
+      "sync_quality": 1.0,
+      "tick_index": 0,
+      "timestamp_ns": 0,
+      "trust_primary_reason_code": "gnss_denial_suspected",
+      "vio_trust": 0.611
+    }
+  ],
+  "run_id": "p12_exit_prep_verify_20260316T1233Z",
+  "scenario_id": "s5_denied_vio_weak",
+  "schema_version": "1.0"
+}

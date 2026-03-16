@@ -1,0 +1,18 @@
+{
+  "events": [
+    {
+      "details": "sync_quality=0.200; mission_confidence=0.882; gnss_state=nominal; effective_vio_state=good; localization_mode=GNSS_PRIMARY; mission_state=MISSION_EXECUTE",
+      "event_id": "s13_sync_low_nominal_fault_0000",
+      "primary_reason_code": "sync_quality_low",
+      "reason_codes": [
+        "sync_quality_low"
+      ],
+      "severity": "warning",
+      "subsystem": "health_monitor_node",
+      "timestamp_ns": 0
+    }
+  ],
+  "run_id": "p12_exit_prep_health_20260316T1238Z-health",
+  "scenario_id": "s13_sync_low_nominal",
+  "schema_version": "1.0"
+}

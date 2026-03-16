@@ -80,8 +80,8 @@ Naming rules:
 ## Current Slice Note
 
 - The current executable slice publishes `/tactical/summary` from mission, trust, and EW outputs only.
-- `/mission/health` remains part of the architecture contract, but no `health_monitor_node` runtime producer exists yet.
-- Tactical summary wording must therefore remain independent from health-status inputs until that publisher is implemented.
+- `/mission/health` and `/events/faults` are published through deterministic `health_monitor_node` runtime execution.
+- Tactical summary wording remains independent from health-status inputs in the current executable slice.
 - The current executable slice does not run ROS2 `logger_node` or `evaluation_node`; equivalent observer responsibilities are currently fulfilled by file-based artifacts such as `*_runtime_trace.json`, `*_truth_trace.json`, `replay_results.json`, `evaluation_metrics.json`, and `evaluation_verdicts.json`.
 
 ## Separation Constraints

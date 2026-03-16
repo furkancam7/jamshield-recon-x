@@ -1,0 +1,278 @@
+{
+  "checks": [
+    {
+      "detail": "Expected nominal gnss_trust > degraded gnss_trust > denied gnss_trust.",
+      "name": "gnss_trust_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must not end in MISSION_EXECUTE.",
+      "name": "denied_not_execute",
+      "passed": true
+    },
+    {
+      "detail": "Degraded scenario must not be classified as denied.",
+      "name": "degraded_not_denied",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario must not collapse to MISSION_ABORT.",
+      "name": "nominal_not_abort",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario gnss_trust must remain at or above 0.90.",
+      "name": "nominal_minimum_gnss_trust_threshold",
+      "passed": true
+    },
+    {
+      "detail": "Denied scenario must end in the allowed denied-state set.",
+      "name": "denied_allowed_mission_states",
+      "passed": true
+    },
+    {
+      "detail": "Denied + nominal VIO pipeline must stay in fallback-capable state.",
+      "name": "p4_vio_good_fallback",
+      "passed": true
+    },
+    {
+      "detail": "Denied + weak-texture VIO pipeline must produce weak VIO and safe hold.",
+      "name": "p4_vio_weak_safe_hold",
+      "passed": true
+    },
+    {
+      "detail": "Denied + lost-tracking VIO pipeline must force abort path.",
+      "name": "p4_vio_lost_emergency",
+      "passed": true
+    },
+    {
+      "detail": "Conflict case with reported good state and lost pipeline score must resolve to lost.",
+      "name": "p4_conflict_score_dominates",
+      "passed": true
+    },
+    {
+      "detail": "Conflict case with lost reported state must preserve lost effective state.",
+      "name": "p4_conflict_state_dominates",
+      "passed": true
+    },
+    {
+      "detail": "All regression artifacts must record pipeline_v1 VIO metrics.",
+      "name": "vio_metrics_source_pipeline_v1",
+      "passed": true
+    },
+    {
+      "detail": "Nominal GNSS + good VIO must produce GNSS_PRIMARY localization mode.",
+      "name": "p6_fusion_gnss_primary",
+      "passed": true
+    },
+    {
+      "detail": "Degraded GNSS + good VIO must produce BLENDED localization mode.",
+      "name": "p6_fusion_degraded_blended",
+      "passed": true
+    },
+    {
+      "detail": "Denied GNSS + good VIO must produce VIO_PRIMARY localization mode.",
+      "name": "p6_fusion_denied_vio_primary",
+      "passed": true
+    },
+    {
+      "detail": "Denied GNSS + lost VIO must produce HOLD_LAST_SAFE localization mode.",
+      "name": "p6_fusion_hold_last_safe",
+      "passed": true
+    },
+    {
+      "detail": "Localization confidence must decrease: GNSS_PRIMARY > BLENDED > HOLD_LAST_SAFE.",
+      "name": "p6_fusion_confidence_ordering",
+      "passed": true
+    },
+    {
+      "detail": "All reports must include fusion fields: localization_mode, localization_confidence, gnss_weight, vio_weight.",
+      "name": "p6_fusion_fields_present",
+      "passed": true
+    },
+    {
+      "detail": "VIO trust must decrease across good > weak > lost scenarios.",
+      "name": "vio_trust_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Mission confidence must monotonically degrade across nominal > degraded > denied-good > denied-lost.",
+      "name": "mission_confidence_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Low-sync scenarios must surface reduced sync_quality and sync_quality_low reasoning.",
+      "name": "sync_quality_response",
+      "passed": true
+    },
+    {
+      "detail": "Trust and mission reason codes must be present and snake_case across all reports.",
+      "name": "reason_code_coverage",
+      "passed": true
+    },
+    {
+      "detail": "Reports must not contain legacy mission-state or localization-mode values.",
+      "name": "no_legacy_enum_values",
+      "passed": true
+    },
+    {
+      "detail": "Recovery from a degraded state must honor recovery_dwell_ticks before resuming safer mission states.",
+      "name": "mission_recovery_dwell_respected",
+      "passed": true
+    },
+    {
+      "detail": "Persistent safe hold must escalate to mission abort after the configured timeout.",
+      "name": "mission_safe_hold_timeout_abort",
+      "passed": true
+    },
+    {
+      "detail": "State flapping beyond the sliding-window threshold must force MISSION_SAFE_HOLD.",
+      "name": "mission_oscillation_detection",
+      "passed": true
+    },
+    {
+      "detail": "Once mission abort is entered, later ticks must remain terminal within the same scenario run.",
+      "name": "mission_abort_terminal",
+      "passed": true
+    },
+    {
+      "detail": "Every scenario must emit a mission audit artifact aligned with the final report state.",
+      "name": "mission_audit_present",
+      "passed": true
+    },
+    {
+      "detail": "Every scenario must emit an EW risk-map artifact aligned with the final report values.",
+      "name": "ew_map_artifact_present",
+      "passed": true
+    },
+    {
+      "detail": "Nominal scenario must remain below the configured EW false-marking floor.",
+      "name": "ew_nominal_false_marking_ceiling",
+      "passed": true
+    },
+    {
+      "detail": "EW corridor cost must increase from nominal to degraded to denied scenarios.",
+      "name": "ew_corridor_cost_ordering",
+      "passed": true
+    },
+    {
+      "detail": "Mid-route denial scenario must produce a high-risk but localized EW hotspot.",
+      "name": "ew_denial_hotspot_localized",
+      "passed": true
+    },
+    {
+      "detail": "Recovery scenario must show EW risk decay after the denial interval ends.",
+      "name": "ew_temporal_decay_observed",
+      "passed": true
+    },
+    {
+      "detail": "EW report, reason, and evidence codes must be present and snake_case across all scenarios.",
+      "name": "ew_reason_code_coverage",
+      "passed": true
+    },
+    {
+      "detail": "Every scenario must emit a tactical summary artifact aligned with the final report values.",
+      "name": "tactical_summary_artifact_present",
+      "passed": true
+    },
+    {
+      "detail": "Tactical summary artifacts must stay consistent with report mission and EW fields.",
+      "name": "tactical_summary_runtime_consistency",
+      "passed": true
+    },
+    {
+      "detail": "Key baseline scenarios must map to the expected operator advisory codes and texts.",
+      "name": "tactical_advisory_coverage",
+      "passed": true
+    },
+    {
+      "detail": "Tactical summary text must remain deterministic and constrained to the fixed two-sentence template.",
+      "name": "tactical_text_determinism",
+      "passed": true
+    },
+    {
+      "detail": "Tactical reason and advisory codes must be present and snake_case across all scenarios.",
+      "name": "no_legacy_tactical_reason_codes",
+      "passed": true
+    },
+    {
+      "detail": "trust_calibration.json/.md/.csv must all be present.",
+      "name": "calibration_bundle_present",
+      "passed": true
+    },
+    {
+      "detail": "ew_metrics.json/.md/.csv must all be present.",
+      "name": "ew_metrics_bundle_present",
+      "passed": true
+    },
+    {
+      "detail": "tactical_summary_bundle.json/.md/.csv must all be present.",
+      "name": "tactical_bundle_present",
+      "passed": true
+    },
+    {
+      "detail": "Every scenario must emit a runtime trace artifact.",
+      "name": "runtime_trace_present",
+      "passed": true
+    },
+    {
+      "detail": "Every scenario must emit a pseudo-truth trace artifact.",
+      "name": "truth_trace_present",
+      "passed": true
+    },
+    {
+      "detail": "replay_results.json/.md/.csv must all be present.",
+      "name": "replay_results_present",
+      "passed": true
+    },
+    {
+      "detail": "evaluation_metrics.json/.md/.csv must all be present.",
+      "name": "evaluation_metrics_bundle_present",
+      "passed": true
+    },
+    {
+      "detail": "evaluation_verdicts.json/.md/.csv must all be present.",
+      "name": "evaluation_verdicts_present",
+      "passed": true
+    },
+    {
+      "detail": "All baseline scenarios must match deterministic replay.",
+      "name": "deterministic_replay_passed",
+      "passed": true
+    },
+    {
+      "detail": "All reports must record manifest_hash.",
+      "name": "manifest_hash_recorded",
+      "passed": true
+    },
+    {
+      "detail": "All reports must record config_hash.",
+      "name": "config_hash_recorded",
+      "passed": true
+    }
+  ],
+  "overall_result": "PASS",
+  "run_id": "p12_exit_prep_health_20260316T1238Z",
+  "scenario_ids": [
+    "s1_nominal",
+    "s2_gnss_degraded_corridor",
+    "s3_gnss_denied_zone",
+    "s4_denied_vio_good",
+    "s5_denied_vio_weak",
+    "s6_denied_vio_lost",
+    "s7_conflict_score_dominates",
+    "s8_conflict_state_dominates",
+    "s9_fusion_gnss_primary",
+    "s10_fusion_degraded_fused",
+    "s11_fusion_denied_vio_only",
+    "s12_fusion_dead_reckoning",
+    "s13_sync_low_nominal",
+    "s14_sync_low_denied_good",
+    "s15_safe_hold_timeout_abort",
+    "s16_recovery_dwell_delays_resume",
+    "s17_state_oscillation_safe_hold",
+    "s18_abort_terminal",
+    "s19_ew_mid_route_denial_hotspot",
+    "s20_ew_decay_after_recovery"
+  ]
+}

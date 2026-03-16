@@ -1,0 +1,37 @@
+{
+  "entries": [
+    {
+      "effective_vio_state": "good",
+      "estimated_position_m": {
+        "x": 8.0,
+        "y": 0.0,
+        "z": 30.0
+      },
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.7604166666666666,
+      "localization_mode": "VIO_PRIMARY",
+      "mission_confidence": 0.45,
+      "mission_primary_reason_code": "mission_fallback_vio_primary",
+      "mission_state": "MISSION_FALLBACK",
+      "route_progress_pct": 100.0,
+      "step_inputs": {
+        "gnss_condition": "denied",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "sync_quality": 1.0,
+      "tick_index": 0,
+      "timestamp_ns": 0,
+      "trust_primary_reason_code": "gnss_denial_suspected",
+      "vio_trust": 0.825
+    }
+  ],
+  "run_id": "p12f_gate_smoke",
+  "scenario_id": "s11_fusion_denied_vio_only",
+  "schema_version": "1.0"
+}

@@ -1,0 +1,146 @@
+{
+  "entries": [
+    {
+      "candidate_state": "MISSION_FALLBACK",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_FALLBACK",
+      "gnss_state": "denied",
+      "mission_confidence": 0.454,
+      "primary_reason_code": "mission_fallback_vio_primary",
+      "reason_codes": [
+        "mission_fallback_vio_primary"
+      ],
+      "step_inputs": {
+        "gnss_condition": "denied",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 0,
+      "transition_count": 1,
+      "trust_primary_reason_code": "gnss_denial_suspected"
+    },
+    {
+      "candidate_state": "MISSION_EXECUTE",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_FALLBACK",
+      "gnss_state": "nominal",
+      "mission_confidence": 0.922,
+      "primary_reason_code": "mission_recovery_dwell_active",
+      "reason_codes": [
+        "mission_recovery_dwell_active",
+        "mission_execute_nominal"
+      ],
+      "step_inputs": {
+        "gnss_condition": "nominal",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 1,
+      "transition_count": 1,
+      "trust_primary_reason_code": "trust_inputs_nominal"
+    },
+    {
+      "candidate_state": "MISSION_EXECUTE",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_EXECUTE",
+      "gnss_state": "nominal",
+      "mission_confidence": 0.922,
+      "primary_reason_code": "mission_execute_nominal",
+      "reason_codes": [
+        "mission_execute_nominal"
+      ],
+      "step_inputs": {
+        "gnss_condition": "nominal",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 2,
+      "transition_count": 2,
+      "trust_primary_reason_code": "trust_inputs_nominal"
+    },
+    {
+      "candidate_state": "MISSION_EXECUTE",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_EXECUTE",
+      "gnss_state": "nominal",
+      "mission_confidence": 0.907,
+      "primary_reason_code": "mission_execute_nominal",
+      "reason_codes": [
+        "mission_execute_nominal"
+      ],
+      "step_inputs": {
+        "gnss_condition": "nominal",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 3,
+      "transition_count": 2,
+      "trust_primary_reason_code": "trust_inputs_nominal"
+    },
+    {
+      "candidate_state": "MISSION_EXECUTE",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_EXECUTE",
+      "gnss_state": "nominal",
+      "mission_confidence": 0.922,
+      "primary_reason_code": "mission_execute_nominal",
+      "reason_codes": [
+        "mission_execute_nominal"
+      ],
+      "step_inputs": {
+        "gnss_condition": "nominal",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 4,
+      "transition_count": 2,
+      "trust_primary_reason_code": "trust_inputs_nominal"
+    },
+    {
+      "candidate_state": "MISSION_EXECUTE",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_EXECUTE",
+      "gnss_state": "nominal",
+      "mission_confidence": 0.922,
+      "primary_reason_code": "mission_execute_nominal",
+      "reason_codes": [
+        "mission_execute_nominal"
+      ],
+      "step_inputs": {
+        "gnss_condition": "nominal",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 5,
+      "transition_count": 2,
+      "trust_primary_reason_code": "trust_inputs_nominal"
+    }
+  ],
+  "run_id": "p12d_launch_gate_smoke",
+  "scenario_id": "s20_ew_decay_after_recovery",
+  "schema_version": "1.0"
+}

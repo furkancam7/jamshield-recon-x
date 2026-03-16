@@ -1,0 +1,19 @@
+{
+  "events": [
+    {
+      "details": "sync_quality=1.000; mission_confidence=0.450; gnss_state=denied; effective_vio_state=good; localization_mode=VIO_PRIMARY; mission_state=MISSION_FALLBACK",
+      "event_id": "s3_gnss_denied_zone_fault_0000",
+      "primary_reason_code": "gnss_denial_suspected",
+      "reason_codes": [
+        "gnss_denial_suspected",
+        "localization_confidence_low"
+      ],
+      "severity": "warning",
+      "subsystem": "health_monitor_node",
+      "timestamp_ns": 0
+    }
+  ],
+  "run_id": "p12_exit_prep_verify_20260316T1233Z-launch",
+  "scenario_id": "s3_gnss_denied_zone",
+  "schema_version": "1.0"
+}

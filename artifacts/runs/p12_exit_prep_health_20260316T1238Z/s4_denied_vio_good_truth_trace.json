@@ -1,0 +1,17 @@
+{
+  "entries": [
+    {
+      "position_m": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 28.0
+      },
+      "route_progress_pct": 100.0,
+      "tick_index": 0,
+      "timestamp_ns": 0
+    }
+  ],
+  "run_id": "p12_exit_prep_health_20260316T1238Z",
+  "scenario_id": "s4_denied_vio_good",
+  "schema_version": "1.0"
+}

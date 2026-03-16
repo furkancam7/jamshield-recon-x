@@ -1,0 +1,19 @@
+{
+  "advisory_code": "operator_hold_position_and_investigate",
+  "advisory_text": "Hold position and investigate navigation degradation before resuming.",
+  "affected_area_count": 1,
+  "ew_corridor_cost": 0.095,
+  "ew_risk_level": "medium",
+  "localization_mode": "BLENDED",
+  "mission_confidence": 0.695,
+  "mission_state": "MISSION_SAFE_HOLD",
+  "primary_reason_code": "tactical_safe_hold_active",
+  "reason_codes": [
+    "tactical_safe_hold_active"
+  ],
+  "run_id": "p12_exit_prep_verify_20260316T1233Z",
+  "scenario_id": "s17_state_oscillation_safe_hold",
+  "schema_version": "1.0",
+  "summary_text": "Mission is safe hold with blended localization; EW risk is medium. Hold position and investigate navigation degradation before resuming.",
+  "timestamp_ns": 3000000000
+}

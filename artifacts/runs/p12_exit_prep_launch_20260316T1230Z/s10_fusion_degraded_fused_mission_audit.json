@@ -1,0 +1,30 @@
+{
+  "entries": [
+    {
+      "candidate_state": "MISSION_DEGRADED",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_DEGRADED",
+      "gnss_state": "degraded",
+      "mission_confidence": 0.676,
+      "primary_reason_code": "mission_degraded_gnss_reduced",
+      "reason_codes": [
+        "mission_degraded_gnss_reduced"
+      ],
+      "step_inputs": {
+        "gnss_condition": "degraded",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 0,
+      "transition_count": 1,
+      "trust_primary_reason_code": "trust_inputs_nominal"
+    }
+  ],
+  "run_id": "p12_exit_prep_launch_20260316T1230Z",
+  "scenario_id": "s10_fusion_degraded_fused",
+  "schema_version": "1.0"
+}

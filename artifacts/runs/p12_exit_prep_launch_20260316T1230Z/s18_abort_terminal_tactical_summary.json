@@ -1,0 +1,20 @@
+{
+  "advisory_code": "operator_abort_and_retask",
+  "advisory_text": "Abort the current route and retask before continuing.",
+  "affected_area_count": 1,
+  "ew_corridor_cost": 0.136,
+  "ew_risk_level": "high",
+  "localization_mode": "HOLD_LAST_SAFE",
+  "mission_confidence": 0.92,
+  "mission_state": "MISSION_ABORT",
+  "primary_reason_code": "tactical_abort_active",
+  "reason_codes": [
+    "tactical_abort_active",
+    "tactical_localization_instability_observed"
+  ],
+  "run_id": "p12_exit_prep_launch_20260316T1230Z",
+  "scenario_id": "s18_abort_terminal",
+  "schema_version": "1.0",
+  "summary_text": "Mission is abort with hold-last-safe localization; EW risk is high. Abort the current route and retask before continuing.",
+  "timestamp_ns": 2000000000
+}

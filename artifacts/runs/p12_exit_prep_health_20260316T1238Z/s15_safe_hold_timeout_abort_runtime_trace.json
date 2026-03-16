@@ -1,0 +1,100 @@
+{
+  "entries": [
+    {
+      "effective_vio_state": "weak",
+      "estimated_position_m": {
+        "x": 8.0,
+        "y": 0.0,
+        "z": 28.0
+      },
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.6952410071942446,
+      "localization_mode": "VIO_PRIMARY",
+      "mission_confidence": 0.418,
+      "mission_primary_reason_code": "mission_safe_hold_vio_weak",
+      "mission_state": "MISSION_SAFE_HOLD",
+      "route_progress_pct": 0.0,
+      "step_inputs": {
+        "gnss_condition": "denied",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "weak_texture_v1",
+          "reported_state": "weak"
+        }
+      },
+      "sync_quality": 1.0,
+      "tick_index": 0,
+      "timestamp_ns": 0,
+      "trust_primary_reason_code": "gnss_denial_suspected",
+      "vio_trust": 0.759
+    },
+    {
+      "effective_vio_state": "weak",
+      "estimated_position_m": {
+        "x": 78.813,
+        "y": 16.938,
+        "z": 28.0
+      },
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.6952410071942446,
+      "localization_mode": "VIO_PRIMARY",
+      "mission_confidence": 0.433,
+      "mission_primary_reason_code": "mission_safe_hold_vio_weak",
+      "mission_state": "MISSION_SAFE_HOLD",
+      "route_progress_pct": 50.0,
+      "step_inputs": {
+        "gnss_condition": "denied",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "weak_texture_v1",
+          "reported_state": "weak"
+        }
+      },
+      "sync_quality": 1.0,
+      "tick_index": 1,
+      "timestamp_ns": 1000000000,
+      "trust_primary_reason_code": "gnss_denial_suspected",
+      "vio_trust": 0.759
+    },
+    {
+      "effective_vio_state": "weak",
+      "estimated_position_m": {
+        "x": 148.0,
+        "y": 40.0,
+        "z": 28.0
+      },
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.6952410071942446,
+      "localization_mode": "VIO_PRIMARY",
+      "mission_confidence": 0.433,
+      "mission_primary_reason_code": "mission_abort_safe_hold_timeout",
+      "mission_state": "MISSION_ABORT",
+      "route_progress_pct": 100.0,
+      "step_inputs": {
+        "gnss_condition": "denied",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "weak_texture_v1",
+          "reported_state": "weak"
+        }
+      },
+      "sync_quality": 1.0,
+      "tick_index": 2,
+      "timestamp_ns": 2000000000,
+      "trust_primary_reason_code": "gnss_denial_suspected",
+      "vio_trust": 0.759
+    }
+  ],
+  "run_id": "p12_exit_prep_health_20260316T1238Z",
+  "scenario_id": "s15_safe_hold_timeout_abort",
+  "schema_version": "1.0"
+}

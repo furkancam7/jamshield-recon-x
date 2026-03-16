@@ -1,0 +1,34 @@
+{
+  "baseline_run_id": "p12_exit_prep_health_20260316T1238Z",
+  "health_probe_run_id": "health_monitor_runtime",
+  "overall_result": "PASS",
+  "scenario_ids": [
+    "s1_nominal",
+    "s13_sync_low_nominal"
+  ],
+  "scenarios": [
+    {
+      "divergence": null,
+      "failed_checks": [],
+      "fault_event_count": 0,
+      "health_artifact_result": "PASS",
+      "health_entry_count": 1,
+      "max_health_severity": "nominal",
+      "parity_result": "PASS",
+      "probe_result": "PASS",
+      "scenario_id": "s1_nominal"
+    },
+    {
+      "divergence": null,
+      "failed_checks": [],
+      "fault_event_count": 1,
+      "health_artifact_result": "PASS",
+      "health_entry_count": 1,
+      "max_health_severity": "warning",
+      "parity_result": "PASS",
+      "probe_result": "PASS",
+      "scenario_id": "s13_sync_low_nominal"
+    }
+  ],
+  "schema_version": "1.0"
+}

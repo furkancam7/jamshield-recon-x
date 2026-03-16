@@ -1,0 +1,2 @@
+scenario_id,health_artifact_result,parity_result,probe_result,health_entry_count,fault_event_count,max_health_severity,failed_checks,divergence_field,divergence_tick_index
+s1_nominal,PASS,PASS,PASS,1,0,nominal,,,

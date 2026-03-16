@@ -4,6 +4,10 @@ set -euo pipefail
 RUN_DIR="${1:?usage: check_artifacts.sh <run_dir>}"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
+REQUIRE_NODE_PARITY="${REQUIRE_NODE_PARITY:-false}"
+REQUIRE_ROS2_LAUNCH_PROBE="${REQUIRE_ROS2_LAUNCH_PROBE:-false}"
+REQUIRE_ROS2_VERIFICATION_PROBE="${REQUIRE_ROS2_VERIFICATION_PROBE:-false}"
+REQUIRE_HEALTH_MONITOR_PROBE="${REQUIRE_HEALTH_MONITOR_PROBE:-false}"
 
 REQUIRED_FILES=(
   "$RUN_DIR/regression_result.json"
@@ -28,6 +32,38 @@ REQUIRED_FILES=(
   "$RUN_DIR/evaluation_verdicts.md"
   "$RUN_DIR/evaluation_verdicts.csv"
 )
+
+if [[ -f "$RUN_DIR/node_parity_results.json" || "$REQUIRE_NODE_PARITY" == "true" ]]; then
+  REQUIRED_FILES+=(
+    "$RUN_DIR/node_parity_results.json"
+    "$RUN_DIR/node_parity_results.md"
+    "$RUN_DIR/node_parity_results.csv"
+  )
+fi
+
+if [[ -f "$RUN_DIR/ros2_launch_probe_results.json" || "$REQUIRE_ROS2_LAUNCH_PROBE" == "true" ]]; then
+  REQUIRED_FILES+=(
+    "$RUN_DIR/ros2_launch_probe_results.json"
+    "$RUN_DIR/ros2_launch_probe_results.md"
+    "$RUN_DIR/ros2_launch_probe_results.csv"
+  )
+fi
+
+if [[ -f "$RUN_DIR/ros2_verification_probe_results.json" || "$REQUIRE_ROS2_VERIFICATION_PROBE" == "true" ]]; then
+  REQUIRED_FILES+=(
+    "$RUN_DIR/ros2_verification_probe_results.json"
+    "$RUN_DIR/ros2_verification_probe_results.md"
+    "$RUN_DIR/ros2_verification_probe_results.csv"
+  )
+fi
+
+if [[ -f "$RUN_DIR/health_monitor_probe_results.json" || "$REQUIRE_HEALTH_MONITOR_PROBE" == "true" ]]; then
+  REQUIRED_FILES+=(
+    "$RUN_DIR/health_monitor_probe_results.json"
+    "$RUN_DIR/health_monitor_probe_results.md"
+    "$RUN_DIR/health_monitor_probe_results.csv"
+  )
+fi
 
 for artifact in "${REQUIRED_FILES[@]}"; do
   if [[ ! -f "$artifact" ]]; then
@@ -56,6 +92,10 @@ from evaluation.artifact_schema import (
     validate_tactical_summary,
     validate_tactical_summary_bundle,
     validate_truth_trace,
+    validate_node_parity_results,
+    validate_ros2_launch_probe_results,
+    validate_ros2_verification_probe_results,
+    validate_health_monitor_probe_results,
 )
 from evaluation.regression_compare import EXPECTED_SCENARIO_IDS
 
@@ -116,6 +156,26 @@ evaluation_verdicts_path = run_dir / "evaluation_verdicts.json"
 validate_evaluation_verdicts_bundle(
     json.loads(evaluation_verdicts_path.read_text(encoding="utf-8"))
 )
+node_parity_path = run_dir / "node_parity_results.json"
+if node_parity_path.exists():
+    validate_node_parity_results(
+        json.loads(node_parity_path.read_text(encoding="utf-8"))
+    )
+ros2_launch_probe_path = run_dir / "ros2_launch_probe_results.json"
+if ros2_launch_probe_path.exists():
+    validate_ros2_launch_probe_results(
+        json.loads(ros2_launch_probe_path.read_text(encoding="utf-8"))
+    )
+ros2_verification_probe_path = run_dir / "ros2_verification_probe_results.json"
+if ros2_verification_probe_path.exists():
+    validate_ros2_verification_probe_results(
+        json.loads(ros2_verification_probe_path.read_text(encoding="utf-8"))
+    )
+health_monitor_probe_path = run_dir / "health_monitor_probe_results.json"
+if health_monitor_probe_path.exists():
+    validate_health_monitor_probe_results(
+        json.loads(health_monitor_probe_path.read_text(encoding="utf-8"))
+    )
 PY
 
 echo "Artifact check passed for $RUN_DIR"

@@ -1,0 +1,30 @@
+{
+  "entries": [
+    {
+      "candidate_state": "MISSION_FALLBACK",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_FALLBACK",
+      "gnss_state": "denied",
+      "mission_confidence": 0.409,
+      "primary_reason_code": "mission_fallback_vio_primary",
+      "reason_codes": [
+        "mission_fallback_vio_primary"
+      ],
+      "step_inputs": {
+        "gnss_condition": "denied",
+        "runtime_health": {
+          "sync_quality": 0.2
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 0,
+      "transition_count": 1,
+      "trust_primary_reason_code": "sync_quality_low"
+    }
+  ],
+  "run_id": "p12f_gate_smoke",
+  "scenario_id": "s14_sync_low_denied_good",
+  "schema_version": "1.0"
+}
