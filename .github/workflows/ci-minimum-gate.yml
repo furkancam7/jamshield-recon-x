@@ -1,0 +1,75 @@
+name: CI Minimum Gate
+
+on:
+  pull_request:
+    branches:
+      - main
+      - prod
+  push:
+    branches:
+      - main
+      - prod
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * *"
+
+jobs:
+  minimum-gate:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Runtime Dependency
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyyaml
+
+      - name: Unit Test Suite
+        env:
+          PYTHONPATH: ${{ github.workspace }}/src
+        run: python -m unittest discover -s tests/unit
+
+      - name: Script Syntax Smoke
+        run: |
+          find scripts -maxdepth 1 -type f -name '*.sh' -print0 | xargs -0 -n1 bash -n
+
+      - name: Artifact Contract Smoke
+        run: bash scripts/check_artifacts.sh artifacts/runs/20260313T1325Z_plan_probe
+
+  full-matrix:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Runtime Dependency
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyyaml
+
+      - name: Full Regression Matrix
+        env:
+          PYTHONPATH: ${{ github.workspace }}/src
+        run: |
+          set -euo pipefail
+          RUN_ROOT="ci_full_${GITHUB_RUN_ID}"
+          bash scripts/run_regression.sh "${RUN_ROOT}_base"
+          ENABLE_ROS2_LAUNCH_PROBE=true ROS2_LAUNCH_SCENARIOS=s1_nominal,s3_gnss_denied_zone bash scripts/run_regression.sh "${RUN_ROOT}_launch"
+          ENABLE_ROS2_LAUNCH_PROBE=true ENABLE_ROS2_VERIFICATION_PROBE=true ROS2_VERIFICATION_SCENARIOS=s1_nominal,s3_gnss_denied_zone bash scripts/run_regression.sh "${RUN_ROOT}_verify"
+          ENABLE_HEALTH_MONITOR_PROBE=true HEALTH_MONITOR_SCENARIOS=s1_nominal,s13_sync_low_nominal bash scripts/run_regression.sh "${RUN_ROOT}_health"
+          bash scripts/check_artifacts.sh "artifacts/runs/${RUN_ROOT}_health"

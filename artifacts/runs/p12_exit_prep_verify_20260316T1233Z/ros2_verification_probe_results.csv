@@ -1,3 +1,0 @@
-scenario_id,logger_node_result,evaluation_node_result,probe_result,failed_checks,divergence_field,divergence_tick_index
-s1_nominal,PASS,PASS,PASS,,,
-s3_gnss_denied_zone,PASS,PASS,PASS,,,

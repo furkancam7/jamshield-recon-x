@@ -221,6 +221,25 @@ Residual after this increment:
 - Trust calibration tuning remains a cross-phase residual and is not changed by P12-F.
 - Consumer-side mission/trust/tactical decision semantics remain unchanged by design; this increment only adds health publication/observation artifacts.
 
+## Phase 12 Exit Closure (2026-03-18)
+
+Phase 12 exit checks were rerun on `prod` HEAD (`software_revision=dd46183357c63c5f5cf6ac937355c3ed1ca57b88`) and recorded as final closure evidence.
+
+Validation matrix (PASS):
+
+- `python -m unittest discover -s tests/unit` (executed with `PYTHONPATH=src`)
+- `bash scripts/run_regression.sh p12_exit_reval_base_20260318T1257Z`
+- `ENABLE_ROS2_LAUNCH_PROBE=true ... bash scripts/run_regression.sh p12_exit_reval_launch_20260318T1259Z`
+- `ENABLE_ROS2_LAUNCH_PROBE=true ENABLE_ROS2_VERIFICATION_PROBE=true ... bash scripts/run_regression.sh p12_exit_reval_verify_20260318T1301Z`
+- `ENABLE_HEALTH_MONITOR_PROBE=true ... bash scripts/run_regression.sh p12_exit_reval_health_20260318T1303Z`
+- `bash scripts/check_artifacts.sh artifacts/runs/p12_exit_reval_health_20260318T1303Z`
+
+Closure outcome:
+
+- Phase 12 is considered complete and handed off to `Phase 13 - Deployment and Ops Hardening`.
+- Runtime/evaluation boundaries and mission authority lock remain unchanged.
+- Residual remains: cross-phase trust calibration tuning.
+
 ## Non-Goals
 
 - Implementing hardware drivers or field-integration behaviors

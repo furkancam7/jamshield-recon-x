@@ -9,9 +9,9 @@
 
 ## Current Status
 
-- Last updated: `2026-03-16`
-- Working reference: `P11 completed / P12 in progress`
-- Active phase: `Phase 12 - ROS2 Runtime Migration`
+- Last updated: `2026-03-18`
+- Working reference: `P12 completed / P13 in progress`
+- Active phase: `Phase 13 - Deployment and Ops Hardening`
 - Program goal: `Simulation Production`
 
 ## Phase Table
@@ -30,14 +30,31 @@
 | 9 | EW Risk Map | Completed | 2026-03-13 | `docs/roadmap/phase-09-closure.md`, `artifacts/runs/20260313T100900Z/` | Tactical summary integration |
 | 10 | Tactical Summary | Completed | 2026-03-13 | `docs/roadmap/phase-10-closure.md`, `artifacts/runs/20260313T105100Z/` | Health-driven wording still deferred |
 | 11 | Replay and Evaluation Hardening | Completed | 2026-03-13 | `docs/roadmap/phase-11-closure.md`, `artifacts/runs/20260313T1325Z_plan_probe/` | ROS2 node-based runtime migration deferred to Phase 12 |
-| 12 | ROS2 Runtime Migration | In Progress | 2026-03-16 | `launch/runtime_probe.launch.py`, `launch/runtime_probe_colcon.launch.py`, `package.xml`, `setup.py`, `setup.cfg`, `src/runtime/node_runner.py`, `src/runtime/ros2_launch_runner.py`, `src/runtime/verification_nodes.py`, `src/health_monitor/service.py`, `src/health_monitor/artifacts.py`, `scripts/run_node_scenario.sh`, `scripts/run_node_parity.sh`, `scripts/run_ros2_launch_scenario.sh`, `scripts/run_regression.sh`, `scripts/check_artifacts.sh`, `src/evaluation/node_parity_compare.py`, `src/evaluation/ros2_launch_probe_compare.py`, `src/evaluation/ros2_verification_probe_compare.py`, `src/evaluation/health_monitor_probe_compare.py`, `tests/unit/test_node_runtime_parity.py`, `tests/unit/test_node_parity_compare.py`, `tests/unit/test_ros2_launch_runner.py`, `tests/unit/test_ros2_launch_probe_compare.py`, `tests/unit/test_verification_nodes.py`, `tests/unit/test_ros2_verification_probe_compare.py`, `tests/unit/test_health_monitor_node.py`, `tests/unit/test_health_monitor_probe_compare.py`, `docs/roadmap/phase-12-backlog.md` | Cross-phase trust calibration tuning residual remains |
-| 13 | Deployment and Operations Hardening | Not Started | - | - | Phase not started |
+| 12 | ROS2 Runtime Migration | Completed | 2026-03-18 | `launch/runtime_probe.launch.py`, `launch/runtime_probe_colcon.launch.py`, `package.xml`, `setup.py`, `setup.cfg`, `src/runtime/node_runner.py`, `src/runtime/ros2_launch_runner.py`, `src/runtime/verification_nodes.py`, `src/health_monitor/service.py`, `src/health_monitor/artifacts.py`, `scripts/run_node_scenario.sh`, `scripts/run_node_parity.sh`, `scripts/run_ros2_launch_scenario.sh`, `scripts/run_regression.sh`, `scripts/check_artifacts.sh`, `src/evaluation/node_parity_compare.py`, `src/evaluation/ros2_launch_probe_compare.py`, `src/evaluation/ros2_verification_probe_compare.py`, `src/evaluation/health_monitor_probe_compare.py`, `tests/unit/test_node_runtime_parity.py`, `tests/unit/test_node_parity_compare.py`, `tests/unit/test_ros2_launch_runner.py`, `tests/unit/test_ros2_launch_probe_compare.py`, `tests/unit/test_verification_nodes.py`, `tests/unit/test_ros2_verification_probe_compare.py`, `tests/unit/test_health_monitor_node.py`, `tests/unit/test_health_monitor_probe_compare.py`, `docs/roadmap/phase-12-backlog.md`, `artifacts/runs/p12_exit_reval_health_20260318T1303Z/` | Cross-phase trust calibration tuning residual remains |
+| 13 | Deployment and Operations Hardening | In Progress | 2026-03-18 | `.github/workflows/ci-minimum-gate.yml`, `.gitignore`, `docs/roadmap/progress-tracker.md` | CI expansion and environment hardening child issues opened |
 | 14 | Hardware-Portability Layer | Not Started | - | - | Phase not started |
 | 15 | Field Transition Preparation | Not Started | - | - | Phase not started |
 
 ## Active Phase Detail
 
-### Phase 12 - ROS2 Runtime Migration
+### Phase 13 - Deployment and Ops Hardening
+
+Purpose:
+
+- Establish reproducible CI and ops baseline gates on `main` and `prod` without changing runtime contracts.
+
+Status:
+
+- `In Progress`
+
+Initial scope in this phase:
+
+- Land `P13-A` minimum CI gate (unit tests, shell syntax smoke, artifact contract smoke).
+- Add optional full-matrix CI lane for scheduled/manual regression gates.
+- Close generated-file tracking drift (`__pycache__` and transient P12 run outputs) using forward cleanup.
+- Keep runtime/evaluation authority boundaries unchanged while improving deployment hygiene.
+
+### Phase 12 - ROS2 Runtime Migration (Closed)
 
 Purpose:
 
@@ -45,7 +62,7 @@ Purpose:
 
 Status:
 
-- `In Progress`
+- `Completed`
 
 Scope in this phase:
 
@@ -176,3 +193,5 @@ Known residuals:
 | 2026-03-14 | Phase 12-D landed with `ament_python`/colcon packaging and `ROS2_LAUNCH_BACKEND` selection for launch probe execution. |
 | 2026-03-16 | Phase 12-E landed with hybrid `logger_node`/`evaluation_node` execution and optional ROS2 verification probe gate. |
 | 2026-03-16 | Phase 12 issue-closure sweep was completed and P12-F landed `health_monitor_node` publication/wiring with optional health-monitor regression gate. |
+| 2026-03-18 | Phase 12 exit matrix was revalidated on `prod` HEAD and Phase 12 was moved to `Completed`; active phase moved to Phase 13. |
+| 2026-03-18 | P13-A kickoff landed `.gitignore` forward-cleanup policy and `main+prod` CI minimum gate workflow with full-matrix manual/scheduled lane. |

@@ -1,0 +1,13 @@
+# Python bytecode and cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Transient local test outputs
+artifacts/test_tmp/
+
+# Transient Phase-12 smoke and exit-prep run outputs
+artifacts/runs/p12*_smoke*/
+artifacts/runs/p12*_gate_smoke/
+artifacts/runs/p12_exit_prep_*/
+artifacts/runs/p12_exit_reval_*/
