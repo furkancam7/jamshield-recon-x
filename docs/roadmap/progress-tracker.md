@@ -10,8 +10,8 @@
 ## Current Status
 
 - Last updated: `2026-03-25`
-- Working reference: `P12 completed / P13 in progress`
-- Active phase: `Phase 13 - Deployment and Ops Hardening`
+- Working reference: `P13 completed / P14 in progress`
+- Active phase: `Phase 14 - Hardware-Portability Layer`
 - Program goal: `Simulation Production`
 
 ## Phase Table
@@ -31,13 +31,39 @@
 | 10 | Tactical Summary | Completed | 2026-03-13 | `docs/roadmap/phase-10-closure.md`, `artifacts/runs/20260313T105100Z/` | Health-driven wording still deferred |
 | 11 | Replay and Evaluation Hardening | Completed | 2026-03-13 | `docs/roadmap/phase-11-closure.md`, `artifacts/runs/20260313T1325Z_plan_probe/` | ROS2 node-based runtime migration deferred to Phase 12 |
 | 12 | ROS2 Runtime Migration | Completed | 2026-03-18 | `launch/runtime_probe.launch.py`, `launch/runtime_probe_colcon.launch.py`, `package.xml`, `setup.py`, `setup.cfg`, `src/runtime/node_runner.py`, `src/runtime/ros2_launch_runner.py`, `src/runtime/verification_nodes.py`, `src/health_monitor/service.py`, `src/health_monitor/artifacts.py`, `scripts/run_node_scenario.sh`, `scripts/run_node_parity.sh`, `scripts/run_ros2_launch_scenario.sh`, `scripts/run_regression.sh`, `scripts/check_artifacts.sh`, `src/evaluation/node_parity_compare.py`, `src/evaluation/ros2_launch_probe_compare.py`, `src/evaluation/ros2_verification_probe_compare.py`, `src/evaluation/health_monitor_probe_compare.py`, `tests/unit/test_node_runtime_parity.py`, `tests/unit/test_node_parity_compare.py`, `tests/unit/test_ros2_launch_runner.py`, `tests/unit/test_ros2_launch_probe_compare.py`, `tests/unit/test_verification_nodes.py`, `tests/unit/test_ros2_verification_probe_compare.py`, `tests/unit/test_health_monitor_node.py`, `tests/unit/test_health_monitor_probe_compare.py`, `docs/roadmap/phase-12-backlog.md`, `artifacts/runs/p12_exit_reval_health_20260318T1303Z/` | Cross-phase trust calibration tuning residual remains |
-| 13 | Deployment and Operations Hardening | In Progress | 2026-03-25 | `.github/workflows/ci-minimum-gate.yml`, `.gitignore`, `scripts/bootstrap.sh`, `docs/runbooks/local-setup.md`, `docs/runbooks/run-simulation.md`, `docs/runbooks/release-ops.md`, `docs/runbooks/known-limitations.md`, `docs/runbooks/troubleshooting.md`, `docs/roadmap/progress-tracker.md` | Phase completion review tracking remains on epic `#14` |
-| 14 | Hardware-Portability Layer | Not Started | - | - | Phase not started |
+| 13 | Deployment and Operations Hardening | Completed | 2026-03-25 | `.github/workflows/ci-minimum-gate.yml`, `.gitignore`, `scripts/bootstrap.sh`, `docs/runbooks/local-setup.md`, `docs/runbooks/run-simulation.md`, `docs/runbooks/release-ops.md`, `docs/runbooks/known-limitations.md`, `docs/runbooks/troubleshooting.md`, `docs/roadmap/progress-tracker.md`, issue `#14` closure evidence | Cross-phase trust calibration residual remains (phase-external) |
+| 14 | Hardware-Portability Layer | In Progress | 2026-03-25 | `docs/roadmap/phase-14-backlog.md`, issue `#15`, issues `#71/#72/#73` | P14-A child issues in progress |
 | 15 | Field Transition Preparation | Not Started | - | - | Phase not started |
 
 ## Active Phase Detail
 
-### Phase 13 - Deployment and Ops Hardening
+### Phase 14 - Hardware-Portability Layer
+
+Purpose:
+
+- Define portability contracts that preserve simulation-first behavior while preparing deterministic adapter boundaries for future hardware integration.
+
+Status:
+
+- `In Progress`
+
+Initial scope in this phase (P14-A):
+
+- Lock sensor adapter interface boundaries for camera/IMU/GNSS.
+- Lock timing/rate assumptions and validation notes.
+- Produce portability runbook/mapping baseline with explicit deferred boundaries.
+- Keep runtime authority and schema/API behavior unchanged.
+
+Phase 14 progress update (2026-03-25):
+
+- P14 kickoff is opened on epic `#15`.
+- Backlog baseline is recorded in `docs/roadmap/phase-14-backlog.md`.
+- P14-A child issues were created:
+  - `#71` adapter interface contracts
+  - `#72` timing/rate assumptions and validation notes
+  - `#73` portability runbook + mapping matrix
+
+### Phase 13 - Deployment and Ops Hardening (Closed)
 
 Purpose:
 
@@ -45,27 +71,14 @@ Purpose:
 
 Status:
 
-- `In Progress`
+- `Completed`
 
-Initial scope in this phase:
+Closure summary:
 
-- Land `P13-A` minimum CI gate (unit tests, shell syntax smoke, artifact contract smoke).
-- Add optional full-matrix CI lane for scheduled/manual regression gates.
-- Close generated-file tracking drift (`__pycache__` and transient P12 run outputs) using forward cleanup.
-- Keep runtime/evaluation authority boundaries unchanged while improving deployment hygiene.
-
-Phase 13 progress update (2026-03-25):
-
-- `P13-A` closure hygiene completed with issue evidence and closure (`#68`).
-- `P13-B` bootstrap/environment standardization landed:
-  - `scripts/bootstrap.sh` now validates `PYTHON_BIN`, standardizes `PYTHONPATH`, and fail-fast checks `pyyaml`.
-  - runbook alignment completed for default file-based flow and optional `ROS2_LAUNCH_BACKEND=colcon`.
-- `P13-C` release/runbook hardening landed:
-  - release template/checklist and decision policy documented in `docs/runbooks/release-ops.md`.
-  - current-slice operational limits documented in `docs/runbooks/known-limitations.md`.
-  - release preflight order and CI lane interpretation clarified in `docs/runbooks/run-simulation.md`.
-  - rollback/recovery playbook documented in `docs/runbooks/troubleshooting.md`.
-- Child issues for this phase are now closed; epic-level phase completion review remains tracked on `#14`.
+- `P13-A` minimum CI gate and full-matrix lane were operationalized.
+- `P13-B` bootstrap/environment standardization was landed.
+- `P13-C` release/runbook hardening was landed.
+- Phase completion review was completed and epic `#14` was closed with evidence.
 
 ### Phase 12 - ROS2 Runtime Migration (Closed)
 
@@ -211,3 +224,5 @@ Known residuals:
 | 2026-03-25 | P13-A issue closure hygiene was completed (`#68`) with CI evidence and epic sync update on `#14`. |
 | 2026-03-25 | P13-B landed bootstrap/env standardization (`scripts/bootstrap.sh`) and runbook alignment for file-based default plus optional `colcon` backend. |
 | 2026-03-25 | P13-C landed release template/checklist, known-limitations runbook, CI-gated release preflight notes, and rollback/recovery troubleshooting playbook. |
+| 2026-03-25 | P13 phase completion review was finalized; epic `#14` was closed and tracker active phase moved to Phase 14. |
+| 2026-03-25 | P14-A kickoff started on epic `#15` with child issues `#71/#72/#73` and `docs/roadmap/phase-14-backlog.md`. |
