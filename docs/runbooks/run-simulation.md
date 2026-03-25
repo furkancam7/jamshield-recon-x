@@ -6,12 +6,27 @@ This runbook describes the current executable-slice workflow for a deterministic
 
 ## Inputs
 
-- Python environment with `PYTHONPATH=src`
+- repo-root shell session (`bash`)
+- Python environment validated by `bash scripts/bootstrap.sh`
 - selected baseline scenario manifest
 - simulation config file
 - writable output directory under `artifacts/runs/`
 
+## Environment Contracts
+
+- `PYTHON_BIN` (optional): Python interpreter for bootstrap; defaults to `python3`.
+- `PYTHONPATH`: standardized to `<repo>/src` by `scripts/bootstrap.sh`.
+- `ROS2_LAUNCH_BACKEND`: launch backend selector for launch probe scripts.
+  - `repo_wrapper` (default)
+  - `colcon` (optional, requires ROS2 workspace + package discovery)
+
 ## Canonical Command Contract
+
+Standardize environment first:
+
+```bash
+bash scripts/bootstrap.sh
+```
 
 Run one scenario:
 
@@ -90,7 +105,8 @@ Current-slice note:
 - The executable flow is file-based.
 - Phase 12 adds a node-oriented in-process runtime probe for parity checks.
 - Phase 12 adds a ROS2 launch-wired probe that emits `ros2_launch_plan.json/.md`.
-- `scripts/run_ros2_launch_scenario.sh` defaults to `ROS2_LAUNCH_BACKEND=repo_wrapper` and supports `ROS2_LAUNCH_BACKEND=colcon` when ROS2 workspace/package setup is available.
+- `scripts/run_ros2_launch_scenario.sh` defaults to `ROS2_LAUNCH_BACKEND=repo_wrapper`.
+- `ROS2_LAUNCH_BACKEND=colcon` is optional and requires ROS2 workspace/package setup.
 - Phase 12 verification-node hybrid bridge can be enabled with `ENABLE_VERIFICATION_NODES=true`.
 - Phase 12 health-monitor publication emits `<scenario>_mission_health.json` and `<scenario>_fault_events.json`.
 
