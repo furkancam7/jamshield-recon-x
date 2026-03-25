@@ -94,3 +94,34 @@ If troubleshooting identifies a structural mismatch between architecture intent 
 - first divergence timestamp
 - relevant reason codes
 - whether the issue is runtime, replay, or evaluation
+
+## Rollback and Recovery Playbook
+
+### Gate Failed (`FAIL`)
+
+1. Stop release promotion for the candidate commit.
+2. Create or update a blocker issue with:
+   - failing gate name
+   - run id / CI run URL
+   - first failing check and related reason codes
+3. Keep `target_commit` unchanged while reproducing once with the same inputs.
+4. Promote only after blocker is resolved and evidence is refreshed.
+
+### Evidence Invalid (`INVALID`)
+
+1. Stop release promotion immediately.
+2. Record integrity failure details:
+   - missing artifact or hash mismatch
+   - first divergence timestamp (if replay-related)
+3. Open blocker issue and label it as evidence-integrity.
+4. Re-run from clean output directory and re-attach complete evidence bundle before retry.
+
+### Blocker Logging Standard
+
+Every blocker entry must include:
+
+- candidate `release_id`
+- commit SHA
+- failing command or workflow run URL
+- artifact/run path
+- explicit next action owner

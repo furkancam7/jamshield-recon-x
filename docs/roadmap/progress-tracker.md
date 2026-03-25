@@ -31,7 +31,7 @@
 | 10 | Tactical Summary | Completed | 2026-03-13 | `docs/roadmap/phase-10-closure.md`, `artifacts/runs/20260313T105100Z/` | Health-driven wording still deferred |
 | 11 | Replay and Evaluation Hardening | Completed | 2026-03-13 | `docs/roadmap/phase-11-closure.md`, `artifacts/runs/20260313T1325Z_plan_probe/` | ROS2 node-based runtime migration deferred to Phase 12 |
 | 12 | ROS2 Runtime Migration | Completed | 2026-03-18 | `launch/runtime_probe.launch.py`, `launch/runtime_probe_colcon.launch.py`, `package.xml`, `setup.py`, `setup.cfg`, `src/runtime/node_runner.py`, `src/runtime/ros2_launch_runner.py`, `src/runtime/verification_nodes.py`, `src/health_monitor/service.py`, `src/health_monitor/artifacts.py`, `scripts/run_node_scenario.sh`, `scripts/run_node_parity.sh`, `scripts/run_ros2_launch_scenario.sh`, `scripts/run_regression.sh`, `scripts/check_artifacts.sh`, `src/evaluation/node_parity_compare.py`, `src/evaluation/ros2_launch_probe_compare.py`, `src/evaluation/ros2_verification_probe_compare.py`, `src/evaluation/health_monitor_probe_compare.py`, `tests/unit/test_node_runtime_parity.py`, `tests/unit/test_node_parity_compare.py`, `tests/unit/test_ros2_launch_runner.py`, `tests/unit/test_ros2_launch_probe_compare.py`, `tests/unit/test_verification_nodes.py`, `tests/unit/test_ros2_verification_probe_compare.py`, `tests/unit/test_health_monitor_node.py`, `tests/unit/test_health_monitor_probe_compare.py`, `docs/roadmap/phase-12-backlog.md`, `artifacts/runs/p12_exit_reval_health_20260318T1303Z/` | Cross-phase trust calibration tuning residual remains |
-| 13 | Deployment and Operations Hardening | In Progress | 2026-03-25 | `.github/workflows/ci-minimum-gate.yml`, `.gitignore`, `scripts/bootstrap.sh`, `docs/runbooks/local-setup.md`, `docs/runbooks/run-simulation.md`, `docs/roadmap/progress-tracker.md` | Release/runbook hardening (`P13-C`) remains open |
+| 13 | Deployment and Operations Hardening | In Progress | 2026-03-25 | `.github/workflows/ci-minimum-gate.yml`, `.gitignore`, `scripts/bootstrap.sh`, `docs/runbooks/local-setup.md`, `docs/runbooks/run-simulation.md`, `docs/runbooks/release-ops.md`, `docs/runbooks/known-limitations.md`, `docs/runbooks/troubleshooting.md`, `docs/roadmap/progress-tracker.md` | Phase completion review tracking remains on epic `#14` |
 | 14 | Hardware-Portability Layer | Not Started | - | - | Phase not started |
 | 15 | Field Transition Preparation | Not Started | - | - | Phase not started |
 
@@ -60,7 +60,12 @@ Phase 13 progress update (2026-03-25):
 - `P13-B` bootstrap/environment standardization landed:
   - `scripts/bootstrap.sh` now validates `PYTHON_BIN`, standardizes `PYTHONPATH`, and fail-fast checks `pyyaml`.
   - runbook alignment completed for default file-based flow and optional `ROS2_LAUNCH_BACKEND=colcon`.
-- Active child scope is now centered on `P13-C` release notes and runbook hardening (`#70`).
+- `P13-C` release/runbook hardening landed:
+  - release template/checklist and decision policy documented in `docs/runbooks/release-ops.md`.
+  - current-slice operational limits documented in `docs/runbooks/known-limitations.md`.
+  - release preflight order and CI lane interpretation clarified in `docs/runbooks/run-simulation.md`.
+  - rollback/recovery playbook documented in `docs/runbooks/troubleshooting.md`.
+- Child issues for this phase are now closed; epic-level phase completion review remains tracked on `#14`.
 
 ### Phase 12 - ROS2 Runtime Migration (Closed)
 
@@ -205,3 +210,4 @@ Known residuals:
 | 2026-03-18 | P13-A kickoff landed `.gitignore` forward-cleanup policy and `main+prod` CI minimum gate workflow with full-matrix manual/scheduled lane. |
 | 2026-03-25 | P13-A issue closure hygiene was completed (`#68`) with CI evidence and epic sync update on `#14`. |
 | 2026-03-25 | P13-B landed bootstrap/env standardization (`scripts/bootstrap.sh`) and runbook alignment for file-based default plus optional `colcon` backend. |
+| 2026-03-25 | P13-C landed release template/checklist, known-limitations runbook, CI-gated release preflight notes, and rollback/recovery troubleshooting playbook. |

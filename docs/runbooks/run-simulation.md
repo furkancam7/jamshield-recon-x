@@ -28,6 +28,23 @@ Standardize environment first:
 bash scripts/bootstrap.sh
 ```
 
+Release preflight order (minimum):
+
+```bash
+bash scripts/bootstrap.sh
+PYTHONPATH=src python -m unittest discover -s tests/unit
+bash scripts/run_regression.sh <run_id>
+bash scripts/check_artifacts.sh artifacts/runs/<run_id>
+```
+
+Optional release gates:
+
+```bash
+ENABLE_ROS2_LAUNCH_PROBE=true ROS2_LAUNCH_SCENARIOS=s1_nominal,s3_gnss_denied_zone bash scripts/run_regression.sh <run_id>
+ENABLE_ROS2_LAUNCH_PROBE=true ENABLE_ROS2_VERIFICATION_PROBE=true ROS2_VERIFICATION_SCENARIOS=s1_nominal,s3_gnss_denied_zone bash scripts/run_regression.sh <run_id>
+ENABLE_HEALTH_MONITOR_PROBE=true HEALTH_MONITOR_SCENARIOS=s1_nominal,s13_sync_low_nominal bash scripts/run_regression.sh <run_id>
+```
+
 Run one scenario:
 
 ```bash
@@ -166,6 +183,18 @@ Current-slice note:
   - `ros2_verification_probe_results.json/.md/.csv`
 - health-monitor probe comparison bundle on gated regression runs:
   - `health_monitor_probe_results.json/.md/.csv`
+
+## CI Lane Interpretation
+
+- `CI Minimum Gate`:
+  - Trigger: push/PR on `main` and `prod`.
+  - Purpose: fast merge protection (unit + shell syntax + artifact contract smoke).
+- `full-matrix` lane:
+  - Trigger: `workflow_dispatch` or schedule.
+  - Purpose: operational confidence with baseline + optional launch/verification/health probe gates.
+- Release decision rule:
+  - Use minimum gate for branch safety.
+  - Use full-matrix evidence for release promotion decisions.
 
 ## Immediate Triage Rules
 

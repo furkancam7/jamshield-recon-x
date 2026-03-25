@@ -61,7 +61,7 @@ echo "Running baseline regression into $RUN_DIR"
 for scenario in "${SCENARIOS[@]}"; do
   scenario_name="$(basename "$scenario")"
   echo "Scenario $scenario_name uses manifest-driven VIO pipeline inputs"
-  RUN_ID="$RUN_ID" CONFIG_PATH="$CONFIG_PATH" "$ROOT_DIR/scripts/run_scenario.sh" "$scenario" "$RUN_DIR"
+  RUN_ID="$RUN_ID" CONFIG_PATH="$CONFIG_PATH" bash "$ROOT_DIR/scripts/run_scenario.sh" "$scenario" "$RUN_DIR"
 done
 
 if [[ "$ENABLE_NODE_PARITY" == "true" ]]; then
@@ -78,7 +78,7 @@ if [[ "$ENABLE_NODE_PARITY" == "true" ]]; then
       echo "Missing scenario manifest for node parity: $scenario_path" >&2
       exit 1
     fi
-    RUN_ID="${RUN_ID}-node" CONFIG_PATH="$CONFIG_PATH" "$ROOT_DIR/scripts/run_node_scenario.sh" "$scenario_path" "$NODE_PARITY_RUN_DIR"
+    RUN_ID="${RUN_ID}-node" CONFIG_PATH="$CONFIG_PATH" bash "$ROOT_DIR/scripts/run_node_scenario.sh" "$scenario_path" "$NODE_PARITY_RUN_DIR"
   done
   "$PYTHON_BIN" -m evaluation.node_parity_compare "$RUN_DIR" "$NODE_PARITY_RUN_DIR" --scenarios "${NODE_PARITY_IDS[@]}" --output-dir "$RUN_DIR"
   NODE_PARITY_RESULT="$("$PYTHON_BIN" - <<'PY' "$RUN_DIR/node_parity_results.json"
@@ -110,7 +110,7 @@ if [[ "$ENABLE_ROS2_LAUNCH_PROBE" == "true" ]]; then
       echo "Missing scenario manifest for ROS2 launch probe: $scenario_path" >&2
       exit 1
     fi
-    RUN_ID="${RUN_ID}-launch" CONFIG_PATH="$CONFIG_PATH" ROS2_LAUNCH_BACKEND="$ROS2_LAUNCH_BACKEND" "$ROOT_DIR/scripts/run_ros2_launch_scenario.sh" "$scenario_path" "$ROS2_LAUNCH_RUN_DIR"
+    RUN_ID="${RUN_ID}-launch" CONFIG_PATH="$CONFIG_PATH" ROS2_LAUNCH_BACKEND="$ROS2_LAUNCH_BACKEND" bash "$ROOT_DIR/scripts/run_ros2_launch_scenario.sh" "$scenario_path" "$ROS2_LAUNCH_RUN_DIR"
   done
   "$PYTHON_BIN" -m evaluation.ros2_launch_probe_compare "$RUN_DIR" "$ROS2_LAUNCH_RUN_DIR" --scenarios "${ROS2_LAUNCH_IDS[@]}" --output-dir "$RUN_DIR"
   ROS2_LAUNCH_RESULT="$("$PYTHON_BIN" - <<'PY' "$RUN_DIR/ros2_launch_probe_results.json"
@@ -142,7 +142,7 @@ if [[ "$ENABLE_ROS2_VERIFICATION_PROBE" == "true" ]]; then
       echo "Missing scenario manifest for ROS2 verification probe: $scenario_path" >&2
       exit 1
     fi
-    RUN_ID="${RUN_ID}-verification" CONFIG_PATH="$CONFIG_PATH" EVAL_CONFIG_PATH="$EVAL_CONFIG_PATH" ENABLE_VERIFICATION_NODES=true ROS2_LAUNCH_BACKEND="$ROS2_LAUNCH_BACKEND" "$ROOT_DIR/scripts/run_ros2_launch_scenario.sh" "$scenario_path" "$ROS2_VERIFICATION_RUN_DIR"
+    RUN_ID="${RUN_ID}-verification" CONFIG_PATH="$CONFIG_PATH" EVAL_CONFIG_PATH="$EVAL_CONFIG_PATH" ENABLE_VERIFICATION_NODES=true ROS2_LAUNCH_BACKEND="$ROS2_LAUNCH_BACKEND" bash "$ROOT_DIR/scripts/run_ros2_launch_scenario.sh" "$scenario_path" "$ROS2_VERIFICATION_RUN_DIR"
   done
   "$PYTHON_BIN" -m evaluation.ros2_verification_probe_compare "$RUN_DIR" "$ROS2_VERIFICATION_RUN_DIR" --scenarios "${ROS2_VERIFICATION_IDS[@]}" --output-dir "$RUN_DIR"
   ROS2_VERIFICATION_RESULT="$("$PYTHON_BIN" - <<'PY' "$RUN_DIR/ros2_verification_probe_results.json"
@@ -174,7 +174,7 @@ if [[ "$ENABLE_HEALTH_MONITOR_PROBE" == "true" ]]; then
       echo "Missing scenario manifest for health monitor probe: $scenario_path" >&2
       exit 1
     fi
-    RUN_ID="${RUN_ID}-health" CONFIG_PATH="$CONFIG_PATH" ROS2_LAUNCH_BACKEND="$ROS2_LAUNCH_BACKEND" "$ROOT_DIR/scripts/run_ros2_launch_scenario.sh" "$scenario_path" "$HEALTH_MONITOR_RUN_DIR"
+    RUN_ID="${RUN_ID}-health" CONFIG_PATH="$CONFIG_PATH" ROS2_LAUNCH_BACKEND="$ROS2_LAUNCH_BACKEND" bash "$ROOT_DIR/scripts/run_ros2_launch_scenario.sh" "$scenario_path" "$HEALTH_MONITOR_RUN_DIR"
   done
   "$PYTHON_BIN" -m evaluation.health_monitor_probe_compare "$RUN_DIR" "$HEALTH_MONITOR_RUN_DIR" --scenarios "${HEALTH_MONITOR_IDS[@]}" --output-dir "$RUN_DIR"
   HEALTH_MONITOR_RESULT="$("$PYTHON_BIN" - <<'PY' "$RUN_DIR/health_monitor_probe_results.json"
@@ -216,9 +216,9 @@ if [[ "$ENABLE_HEALTH_MONITOR_PROBE" == "true" ]]; then
   CHECK_ENV+=("REQUIRE_HEALTH_MONITOR_PROBE=true")
 fi
 if [[ ${#CHECK_ENV[@]} -gt 0 ]]; then
-  env "${CHECK_ENV[@]}" "$ROOT_DIR/scripts/check_artifacts.sh" "$RUN_DIR"
+  env "${CHECK_ENV[@]}" bash "$ROOT_DIR/scripts/check_artifacts.sh" "$RUN_DIR"
 else
-  "$ROOT_DIR/scripts/check_artifacts.sh" "$RUN_DIR"
+  bash "$ROOT_DIR/scripts/check_artifacts.sh" "$RUN_DIR"
 fi
 
 echo
