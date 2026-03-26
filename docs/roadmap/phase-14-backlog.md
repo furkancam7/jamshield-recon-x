@@ -27,6 +27,7 @@ Start Phase 14 with a documentation-first portability contract baseline that pre
 ## Landed Evidence
 
 - `#71` landed via `docs/interfaces/sensor-adapter-contracts.md` with cross-links in interface and architecture docs.
+- `#72` landed via `docs/interfaces/timing-rate-assumptions.md` with replay-validation cross-link in `docs/runbooks/replay-analysis.md`.
 
 ## Acceptance Gates
 

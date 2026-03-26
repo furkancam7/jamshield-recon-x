@@ -8,6 +8,7 @@ This section defines the ROS2 communication contracts used by JamShield Recon-X 
 - `message-schemas.md`: normative field definitions for all message families
 - `reason-codes.md`: enumerated reason codes for trust, mission continuity, health, and evaluation
 - `sensor-adapter-contracts.md`: Phase 14-A adapter ownership boundaries and simulator-to-hardware mapping contracts
+- `timing-rate-assumptions.md`: Phase 14-A manifest-relative timing/rate/freshness validation assumptions
 
 ## Interface Rules
 

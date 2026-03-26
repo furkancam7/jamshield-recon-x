@@ -37,6 +37,16 @@ If the wrapper is absent, invoke the equivalent replay harness and `evaluation_n
 - scenario event ordering matches exactly
 - no evaluation metric is computed before deterministic replay comparison completes
 - verdict classification follows `PASS`, `FAIL`, or `INVALID` rules only
+- timing/rate validation notes are applied with manifest-relative expectations (`docs/interfaces/timing-rate-assumptions.md`)
+
+Timing/rate validation review points:
+
+- Before replay verdict finalization:
+  - confirm `expected_rate_hz` is resolved from `scenario_manifest.sensors.<family>.rate_hz`
+  - confirm required sensor topics (`/sensors/camera/front/image`, `/sensors/imu/data`, `/sensors/gnss/fix`) exist with sufficient sample evidence
+- After replay comparison:
+  - evaluate `rate_deviation_pct`, `freshness_gap_ms`, and `/sync/status.max_skew_ms` against documented assumptions
+  - classify missing/insufficient evidence as `INVALID`, threshold breaches with valid replay as `FAIL`
 
 ## Metrics Extraction
 
