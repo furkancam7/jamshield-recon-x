@@ -5,6 +5,7 @@
 This file defines the ROS2 node-level architecture of JamShield Recon-X Sim. It maps the runtime ROS2 graph to the system architecture and fixes the responsibilities, inputs, outputs, and ownership boundaries of each node.
 
 This file must remain consistent with `terminology-lock.md`.
+Sensor adapter ownership and simulator-to-hardware mapping boundaries are normatively defined in `docs/interfaces/sensor-adapter-contracts.md`.
 
 ## Node Groups
 

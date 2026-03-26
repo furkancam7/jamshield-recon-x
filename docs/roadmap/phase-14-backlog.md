@@ -24,6 +24,10 @@ Start Phase 14 with a documentation-first portability contract baseline that pre
 - `#72` P14-A2 Timing/rate assumptions and validation notes
 - `#73` P14-A3 Portability runbook + mapping matrix
 
+## Landed Evidence
+
+- `#71` landed via `docs/interfaces/sensor-adapter-contracts.md` with cross-links in interface and architecture docs.
+
 ## Acceptance Gates
 
 - Sensor adapter boundaries are decision-complete and traceable to current interfaces.
