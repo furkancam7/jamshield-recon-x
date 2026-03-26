@@ -9,9 +9,9 @@
 
 ## Current Status
 
-- Last updated: `2026-03-25`
-- Working reference: `P13 completed / P14 in progress`
-- Active phase: `Phase 14 - Hardware-Portability Layer`
+- Last updated: `2026-03-26`
+- Working reference: `P15 completed`
+- Active phase: `None (all planned phases completed)`
 - Program goal: `Simulation Production`
 
 ## Phase Table
@@ -32,36 +32,44 @@
 | 11 | Replay and Evaluation Hardening | Completed | 2026-03-13 | `docs/roadmap/phase-11-closure.md`, `artifacts/runs/20260313T1325Z_plan_probe/` | ROS2 node-based runtime migration deferred to Phase 12 |
 | 12 | ROS2 Runtime Migration | Completed | 2026-03-18 | `launch/runtime_probe.launch.py`, `launch/runtime_probe_colcon.launch.py`, `package.xml`, `setup.py`, `setup.cfg`, `src/runtime/node_runner.py`, `src/runtime/ros2_launch_runner.py`, `src/runtime/verification_nodes.py`, `src/health_monitor/service.py`, `src/health_monitor/artifacts.py`, `scripts/run_node_scenario.sh`, `scripts/run_node_parity.sh`, `scripts/run_ros2_launch_scenario.sh`, `scripts/run_regression.sh`, `scripts/check_artifacts.sh`, `src/evaluation/node_parity_compare.py`, `src/evaluation/ros2_launch_probe_compare.py`, `src/evaluation/ros2_verification_probe_compare.py`, `src/evaluation/health_monitor_probe_compare.py`, `tests/unit/test_node_runtime_parity.py`, `tests/unit/test_node_parity_compare.py`, `tests/unit/test_ros2_launch_runner.py`, `tests/unit/test_ros2_launch_probe_compare.py`, `tests/unit/test_verification_nodes.py`, `tests/unit/test_ros2_verification_probe_compare.py`, `tests/unit/test_health_monitor_node.py`, `tests/unit/test_health_monitor_probe_compare.py`, `docs/roadmap/phase-12-backlog.md`, `artifacts/runs/p12_exit_reval_health_20260318T1303Z/` | Cross-phase trust calibration tuning residual remains |
 | 13 | Deployment and Operations Hardening | Completed | 2026-03-25 | `.github/workflows/ci-minimum-gate.yml`, `.gitignore`, `scripts/bootstrap.sh`, `docs/runbooks/local-setup.md`, `docs/runbooks/run-simulation.md`, `docs/runbooks/release-ops.md`, `docs/runbooks/known-limitations.md`, `docs/runbooks/troubleshooting.md`, `docs/roadmap/progress-tracker.md`, issue `#14` closure evidence | Cross-phase trust calibration residual remains (phase-external) |
-| 14 | Hardware-Portability Layer | In Progress | 2026-03-25 | `docs/roadmap/phase-14-backlog.md`, issue `#15`, issues `#71/#72/#73` | P14-A child issues in progress |
-| 15 | Field Transition Preparation | Not Started | - | - | Phase not started |
+| 14 | Hardware-Portability Layer | Completed | 2026-03-26 | `docs/roadmap/phase-14-backlog.md`, `docs/runbooks/portability-transition.md`, issue `#15`, issues `#71/#72/#73` | Cross-phase trust calibration residual remains phase-external |
+| 15 | Field Transition Preparation | Completed | 2026-03-26 | `docs/roadmap/phase-15-backlog.md`, issue `#16`, issues `#74/#75/#76/#77` | Cross-phase trust calibration residual remains phase-external |
 
 ## Active Phase Detail
 
-### Phase 14 - Hardware-Portability Layer
+### Program Status
+
+Current state:
+
+- All roadmap phases `0-15` are complete.
+- No active implementation phase is currently open.
+- Cross-phase trust calibration tuning remains the only listed phase-external residual.
+
+### Phase 15 - Field Transition Preparation (Closed)
 
 Purpose:
 
-- Define portability contracts that preserve simulation-first behavior while preparing deterministic adapter boundaries for future hardware integration.
+- Define the field-transition preparation scope and delivery sequence for simulator-to-HIL/hardware progression.
 
 Status:
 
-- `In Progress`
+- `Completed`
 
-Initial scope in this phase (P14-A):
+Closure summary:
 
-- Lock sensor adapter interface boundaries for camera/IMU/GNSS.
-- Lock timing/rate assumptions and validation notes.
-- Produce portability runbook/mapping baseline with explicit deferred boundaries.
-- Keep runtime authority and schema/API behavior unchanged.
+- `#74` landed HIL transition roadmap.
+- `#75` landed simulated-to-real sensor replacement matrix.
+- `#76` landed calibration and sync validation plan.
+- `#77` landed field safety constraints and manual override checklist.
+- Phase completion review on epic `#16` was finalized as doc-only closure with no runtime/topic/message API behavior changes.
 
-Phase 14 progress update (2026-03-25):
+### Phase 14 - Hardware-Portability Layer (Closed)
 
-- P14 kickoff is opened on epic `#15`.
-- Backlog baseline is recorded in `docs/roadmap/phase-14-backlog.md`.
-- P14-A child issues were created:
-  - `#71` adapter interface contracts
-  - `#72` timing/rate assumptions and validation notes
-  - `#73` portability runbook + mapping matrix
+Closure summary:
+
+- P14-A child set `#71/#72/#73` was completed and documented.
+- Portability runbook baseline landed in `docs/runbooks/portability-transition.md`.
+- Phase completion review on epic `#15` was finalized as doc-only closure (no runtime/topic/message API behavior changes).
 
 ### Phase 13 - Deployment and Ops Hardening (Closed)
 
@@ -226,3 +234,11 @@ Known residuals:
 | 2026-03-25 | P13-C landed release template/checklist, known-limitations runbook, CI-gated release preflight notes, and rollback/recovery troubleshooting playbook. |
 | 2026-03-25 | P13 phase completion review was finalized; epic `#14` was closed and tracker active phase moved to Phase 14. |
 | 2026-03-25 | P14-A kickoff started on epic `#15` with child issues `#71/#72/#73` and `docs/roadmap/phase-14-backlog.md`. |
+| 2026-03-26 | P14-A `#73` portability transition runbook and mapping matrix landed via `docs/runbooks/portability-transition.md`; next step set to Phase 14 completion review on `#15`. |
+| 2026-03-26 | Phase 14 completion review was finalized and epic `#15` was closed; tracker moved to Phase 15 kickoff-pending status on epic `#16`. |
+| 2026-03-26 | Phase 15 kickoff was activated on epic `#16`; child issues `#74/#75/#76/#77` were created and `docs/roadmap/phase-15-backlog.md` was added. |
+| 2026-03-26 | P15-A1 `#74` landed via `docs/runbooks/hil-transition-roadmap.md`; epic `#16` remains open with next child focus `#75/#76/#77`. |
+| 2026-03-26 | P15-A2 `#75` landed via `docs/runbooks/sensor-replacement-matrix.md`; epic `#16` remains open with next child focus `#76/#77`. |
+| 2026-03-26 | P15-A3 `#76` landed via `docs/runbooks/calibration-sync-validation.md`; epic `#16` remains open with next child focus `#77`. |
+| 2026-03-26 | P15-A4 `#77` landed via `docs/runbooks/field-safety-override-checklist.md`; epic `#16` is ready for phase completion review. |
+| 2026-03-26 | Phase 15 completion review was finalized and epic `#16` was closed; all planned roadmap phases are now completed. |
