@@ -31,6 +31,8 @@ class TrustEngineConfig:
     sync_low_threshold: float
     default_sync_quality: float
     mode_unstable_penalty: float
+    effective_vio_weak_penalty: float
+    effective_vio_lost_penalty: float
     calibration_high_floor: float
     calibration_medium_floor: float
 
@@ -312,6 +314,12 @@ def _validate_app_config(payload: dict[str, Any], source_path: Path) -> AppConfi
             ),
             mode_unstable_penalty=_read_float(
                 trust_engine_payload, "mode_unstable_penalty"
+            ),
+            effective_vio_weak_penalty=_read_float(
+                trust_engine_payload, "effective_vio_weak_penalty"
+            ),
+            effective_vio_lost_penalty=_read_float(
+                trust_engine_payload, "effective_vio_lost_penalty"
             ),
             calibration_high_floor=_read_float(
                 trust_engine_payload, "calibration_high_floor"

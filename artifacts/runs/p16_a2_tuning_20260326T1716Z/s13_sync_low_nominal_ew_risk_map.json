@@ -1,0 +1,63 @@
+{
+  "affected_cell_count": 0,
+  "cell_size_m": 20.0,
+  "corridor_cost": 0.027,
+  "evidence_codes": [
+    "sync_quality_low"
+  ],
+  "frame_id": "map",
+  "height_cells": 4,
+  "max_risk": 0.2,
+  "origin": {
+    "x_m": -20.0,
+    "y_m": -20.0
+  },
+  "primary_reason_code": "ew_sync_instability_corridor",
+  "reason_codes": [
+    "ew_sync_instability_corridor"
+  ],
+  "risk_cells": [
+    0.0,
+    0.04,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.04,
+    0.2,
+    0.04,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.04,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "risk_cells_hash": "6602b9eb6157d0ad3ea7d4849b446640d631e0b0f89e56260cdb12d6b73f14e1",
+  "run_id": "p16_a2_tuning_20260326T1716Z",
+  "scenario_id": "s13_sync_low_nominal",
+  "schema_version": "1.0",
+  "timestamp_ns": 0,
+  "width_cells": 9
+}

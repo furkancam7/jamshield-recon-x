@@ -140,6 +140,7 @@ def run_scenario(
                 gnss_trust=gnss_assessment.gnss_trust,
                 gnss_state=gnss_assessment.gnss_state,
                 vio_health_score=resolved_vio_health_score,
+                effective_vio_state=effective_vio_state,
                 localization_confidence=fusion_assessment.localization_confidence,
                 mode_stable=fusion_assessment.mode_stable,
                 sync_quality=snapshot.sync_quality,

@@ -1,0 +1,37 @@
+{
+  "entries": [
+    {
+      "effective_vio_state": "lost",
+      "estimated_position_m": {
+        "x": 8.0,
+        "y": 0.0,
+        "z": 30.0
+      },
+      "gnss_state": "denied",
+      "gnss_trust": 0.05,
+      "localization_confidence": 0.0731377245508982,
+      "localization_mode": "HOLD_LAST_SAFE",
+      "mission_confidence": 0.038,
+      "mission_primary_reason_code": "mission_abort_vio_lost",
+      "mission_state": "MISSION_ABORT",
+      "route_progress_pct": 100.0,
+      "step_inputs": {
+        "gnss_condition": "denied",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "lost_tracking_v1"
+        }
+      },
+      "sync_quality": 1.0,
+      "tick_index": 0,
+      "timestamp_ns": 0,
+      "trust_primary_reason_code": "localization_confidence_low",
+      "vio_trust": 0.092
+    }
+  ],
+  "run_id": "p16_a2_tuning_20260326T1716Z",
+  "scenario_id": "s12_fusion_dead_reckoning",
+  "schema_version": "1.0"
+}

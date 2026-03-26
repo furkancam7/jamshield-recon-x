@@ -44,6 +44,7 @@ def _execute_denied_scenario(
         gnss_trust=gnss_assessment.gnss_trust,
         gnss_state=gnss_assessment.gnss_state,
         vio_health_score=vio_health_score,
+        effective_vio_state=effective_vio_state,
         localization_confidence=fusion_assessment.localization_confidence,
         mode_stable=fusion_assessment.mode_stable,
         sync_quality=snapshot.sync_quality,
@@ -70,7 +71,7 @@ class ExecutionConsistencyTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(first[0], "denied")
         self.assertEqual(first[1], 0.05)
-        self.assertEqual(first[2], 0.073)
+        self.assertEqual(first[2], 0.013)
         self.assertEqual(first[3], "MISSION_ABORT")
         self.assertEqual(first[4], "mission_abort_vio_lost")
 

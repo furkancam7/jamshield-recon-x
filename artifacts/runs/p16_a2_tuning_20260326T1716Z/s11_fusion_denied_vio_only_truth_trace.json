@@ -1,0 +1,17 @@
+{
+  "entries": [
+    {
+      "position_m": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 30.0
+      },
+      "route_progress_pct": 100.0,
+      "tick_index": 0,
+      "timestamp_ns": 0
+    }
+  ],
+  "run_id": "p16_a2_tuning_20260326T1716Z",
+  "scenario_id": "s11_fusion_denied_vio_only",
+  "schema_version": "1.0"
+}

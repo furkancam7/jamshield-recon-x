@@ -31,6 +31,8 @@ trust_engine:
   sync_low_threshold: 0.60
   default_sync_quality: 1.0
   mode_unstable_penalty: 0.05
+  effective_vio_weak_penalty: 0.04
+  effective_vio_lost_penalty: 0.06
   calibration_high_floor: 0.75
   calibration_medium_floor: 0.45
 mission:
@@ -132,6 +134,8 @@ trust_engine:
   vio_trust_weight: 0.20
   calibration_high_floor: 0.75
   mode_unstable_penalty: 0.05
+  effective_vio_lost_penalty: 0.06
+  effective_vio_weak_penalty: 0.04
   calibration_medium_floor: 0.45
   sync_quality_weight: 0.05
   localization_confidence_weight: 0.30
@@ -246,6 +250,8 @@ class ConfigSerializationTests(unittest.TestCase):
                     '"trust_engine":{"calibration_high_floor":0.75,'
                     '"calibration_medium_floor":0.45,'
                     '"default_sync_quality":1.0,'
+                    '"effective_vio_lost_penalty":0.06,'
+                    '"effective_vio_weak_penalty":0.04,'
                     '"gnss_low_threshold":0.45,'
                     '"gnss_trust_weight":0.45,'
                     '"localization_confidence_weight":0.3,'

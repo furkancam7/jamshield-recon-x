@@ -61,7 +61,9 @@ Phase 16 kickoff update (2026-03-26):
 
 - Epic `#78` opened for trust calibration residual hardening.
 - Child issues `#79/#80/#81` were opened with execution order:
-  - `#79` -> `#80` -> `#81`
+  - `#79` closed: residual baseline characterization landed via `docs/evaluation/p16-trust-calibration-baseline.md`
+  - `#80` closed: trust calibration tuning landed via `docs/evaluation/p16-trust-calibration-tuning.md`
+  - `#81` next: final regression validation and completion review readiness
 - Backlog baseline is recorded in `docs/roadmap/phase-16-backlog.md`.
 
 ### Phase 15 - Field Transition Preparation (Closed)
@@ -262,3 +264,5 @@ Known residuals:
 | 2026-03-26 | P15-A4 `#77` landed via `docs/runbooks/field-safety-override-checklist.md`; epic `#16` is ready for phase completion review. |
 | 2026-03-26 | Phase 15 completion review was finalized and epic `#16` was closed; all planned roadmap phases are now completed. |
 | 2026-03-26 | Residual workstream `P16` was activated on epic `#78` with child issues `#79/#80/#81` to close trust calibration mismatch bands. |
+| 2026-03-26 | P16-A1 `#79` landed baseline residual characterization via `docs/evaluation/p16-trust-calibration-baseline.md` and run `artifacts/runs/p16_a1_baseline_20260326T1410Z/`. |
+| 2026-03-26 | P16-A2 `#80` landed trust calibration tuning via `docs/evaluation/p16-trust-calibration-tuning.md` and run `artifacts/runs/p16_a2_tuning_20260326T1716Z/` with zero calibration mismatches. |

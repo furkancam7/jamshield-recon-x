@@ -28,6 +28,11 @@ Close the cross-phase trust calibration residual through measurable baseline cha
 - P16-A child issue set `#79/#80/#81` is created and linked.
 - Tracker active workstream is moved to Phase 16 residual hardening.
 
+## Landed Evidence
+
+- `#79` landed via `docs/evaluation/p16-trust-calibration-baseline.md` with baseline run artifacts in `artifacts/runs/p16_a1_baseline_20260326T1410Z/`.
+- `#80` landed via `docs/evaluation/p16-trust-calibration-tuning.md` with tuned run artifacts in `artifacts/runs/p16_a2_tuning_20260326T1716Z/`.
+
 ## Acceptance Gates
 
 - Residual mismatch is quantified with reproducible evidence.

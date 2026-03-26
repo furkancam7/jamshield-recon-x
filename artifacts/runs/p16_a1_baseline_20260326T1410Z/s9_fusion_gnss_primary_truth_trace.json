@@ -1,0 +1,17 @@
+{
+  "entries": [
+    {
+      "position_m": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 30.0
+      },
+      "route_progress_pct": 100.0,
+      "tick_index": 0,
+      "timestamp_ns": 0
+    }
+  ],
+  "run_id": "p16_a1_baseline_20260326T1410Z",
+  "scenario_id": "s9_fusion_gnss_primary",
+  "schema_version": "1.0"
+}

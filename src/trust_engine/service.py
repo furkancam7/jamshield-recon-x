@@ -40,6 +40,7 @@ class TrustEngineService:
         gnss_trust: float,
         gnss_state: str,
         vio_health_score: float,
+        effective_vio_state: str,
         localization_confidence: float,
         mode_stable: bool,
         sync_quality: float | None,
@@ -57,6 +58,11 @@ class TrustEngineService:
             3,
         )
 
+        effective_vio_penalty = _resolve_effective_vio_penalty(
+            effective_vio_state=effective_vio_state,
+            weak_penalty=self._config.effective_vio_weak_penalty,
+            lost_penalty=self._config.effective_vio_lost_penalty,
+        )
         mission_confidence = round(
             _clamp(
                 (gnss_trust * self._config.gnss_trust_weight)
@@ -66,6 +72,7 @@ class TrustEngineService:
                 )
                 + (vio_trust * self._config.vio_trust_weight)
                 + (resolved_sync_quality * self._config.sync_quality_weight)
+                - effective_vio_penalty
             ),
             3,
         )
@@ -90,6 +97,18 @@ class TrustEngineService:
             trust_primary_reason_code=primary_reason_code,
             trust_reason_codes=reason_codes,
         )
+
+
+def _resolve_effective_vio_penalty(
+    effective_vio_state: str,
+    weak_penalty: float,
+    lost_penalty: float,
+) -> float:
+    if effective_vio_state == "weak":
+        return weak_penalty
+    if effective_vio_state == "lost":
+        return lost_penalty
+    return 0.0
 
 
 def _resolve_reason_codes(
