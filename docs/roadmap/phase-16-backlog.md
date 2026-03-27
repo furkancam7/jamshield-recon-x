@@ -32,6 +32,7 @@ Close the cross-phase trust calibration residual through measurable baseline cha
 
 - `#79` landed via `docs/evaluation/p16-trust-calibration-baseline.md` with baseline run artifacts in `artifacts/runs/p16_a1_baseline_20260326T1410Z/`.
 - `#80` landed via `docs/evaluation/p16-trust-calibration-tuning.md` with tuned run artifacts in `artifacts/runs/p16_a2_tuning_20260326T1716Z/`.
+- `#81` landed via `docs/evaluation/p16-trust-calibration-validation.md` with final validation run artifacts in `artifacts/runs/p16_a3_validation_20260327T0001Z/`.
 
 ## Acceptance Gates
 
@@ -44,3 +45,8 @@ Close the cross-phase trust calibration residual through measurable baseline cha
 
 - This workstream addresses only trust calibration residuals.
 - Existing runtime authority and evaluation boundaries remain unchanged.
+
+## Closure Note
+
+- P16 closure recommendation: `PASS` (A1/A2/A3 acceptance gates satisfied).
+- Residual status: no additional cross-phase trust calibration blocker remains open after epic completion review.

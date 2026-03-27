@@ -1,0 +1,30 @@
+{
+  "entries": [
+    {
+      "candidate_state": "MISSION_EXECUTE",
+      "effective_vio_state": "good",
+      "final_state": "MISSION_EXECUTE",
+      "gnss_state": "nominal",
+      "mission_confidence": 0.882,
+      "primary_reason_code": "mission_execute_nominal",
+      "reason_codes": [
+        "mission_execute_nominal"
+      ],
+      "step_inputs": {
+        "gnss_condition": "nominal",
+        "runtime_health": {
+          "sync_quality": 0.2
+        },
+        "vio": {
+          "profile_id": "nominal_v1"
+        }
+      },
+      "tick_index": 0,
+      "transition_count": 0,
+      "trust_primary_reason_code": "sync_quality_low"
+    }
+  ],
+  "run_id": "p16_a3_validation_20260327T0001Z",
+  "scenario_id": "s13_sync_low_nominal",
+  "schema_version": "1.0"
+}

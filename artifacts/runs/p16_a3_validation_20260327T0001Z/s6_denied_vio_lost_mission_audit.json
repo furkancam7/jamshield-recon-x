@@ -1,0 +1,30 @@
+{
+  "entries": [
+    {
+      "candidate_state": "MISSION_ABORT",
+      "effective_vio_state": "lost",
+      "final_state": "MISSION_ABORT",
+      "gnss_state": "denied",
+      "mission_confidence": 0.038,
+      "primary_reason_code": "mission_abort_vio_lost",
+      "reason_codes": [
+        "mission_abort_vio_lost"
+      ],
+      "step_inputs": {
+        "gnss_condition": "denied",
+        "runtime_health": {
+          "sync_quality": 1.0
+        },
+        "vio": {
+          "profile_id": "lost_tracking_v1"
+        }
+      },
+      "tick_index": 0,
+      "transition_count": 1,
+      "trust_primary_reason_code": "localization_confidence_low"
+    }
+  ],
+  "run_id": "p16_a3_validation_20260327T0001Z",
+  "scenario_id": "s6_denied_vio_lost",
+  "schema_version": "1.0"
+}

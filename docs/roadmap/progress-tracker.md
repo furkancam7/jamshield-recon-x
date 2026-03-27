@@ -9,9 +9,9 @@
 
 ## Current Status
 
-- Last updated: `2026-03-26`
-- Working reference: `P15 completed / P16 residual in progress`
-- Active phase: `Phase 16 - Trust Calibration Residual Hardening`
+- Last updated: `2026-03-27`
+- Working reference: `P16 completed`
+- Active phase: `None (all roadmap phases 0-16 completed)`
 - Program goal: `Simulation Production`
 
 ## Phase Table
@@ -34,7 +34,7 @@
 | 13 | Deployment and Operations Hardening | Completed | 2026-03-25 | `.github/workflows/ci-minimum-gate.yml`, `.gitignore`, `scripts/bootstrap.sh`, `docs/runbooks/local-setup.md`, `docs/runbooks/run-simulation.md`, `docs/runbooks/release-ops.md`, `docs/runbooks/known-limitations.md`, `docs/runbooks/troubleshooting.md`, `docs/roadmap/progress-tracker.md`, issue `#14` closure evidence | Cross-phase trust calibration residual remains (phase-external) |
 | 14 | Hardware-Portability Layer | Completed | 2026-03-26 | `docs/roadmap/phase-14-backlog.md`, `docs/runbooks/portability-transition.md`, issue `#15`, issues `#71/#72/#73` | Cross-phase trust calibration residual remains phase-external |
 | 15 | Field Transition Preparation | Completed | 2026-03-26 | `docs/roadmap/phase-15-backlog.md`, issue `#16`, issues `#74/#75/#76/#77` | Cross-phase trust calibration residual remains phase-external |
-| 16 | Trust Calibration Residual Hardening | In Progress | 2026-03-26 | `docs/roadmap/phase-16-backlog.md`, issue `#78`, issues `#79/#80/#81` | Completion review pending on `#78` |
+| 16 | Trust Calibration Residual Hardening | Completed | 2026-03-27 | `docs/roadmap/phase-16-backlog.md`, `docs/evaluation/p16-trust-calibration-baseline.md`, `docs/evaluation/p16-trust-calibration-tuning.md`, `docs/evaluation/p16-trust-calibration-validation.md`, issues `#78/#79/#80/#81` | No open residual blocker |
 
 ## Active Phase Detail
 
@@ -42,13 +42,13 @@
 
 Current state:
 
-- Roadmap phases `0-15` remain completed.
-- Residual workstream `P16` is active to close trust calibration mismatch bands.
+- Roadmap phases `0-16` are completed.
+- Residual workstream `P16` is closed after final validation.
 - Runtime authority and `/truth/*` boundaries remain unchanged.
 
 Status:
 
-- `In Progress`
+- `Completed`
 
 Initial scope in this phase (P16-A):
 
@@ -63,7 +63,7 @@ Phase 16 kickoff update (2026-03-26):
 - Child issues `#79/#80/#81` were opened with execution order:
   - `#79` closed: residual baseline characterization landed via `docs/evaluation/p16-trust-calibration-baseline.md`
   - `#80` closed: trust calibration tuning landed via `docs/evaluation/p16-trust-calibration-tuning.md`
-  - `#81` next: final regression validation and completion review readiness
+  - `#81` closed: final regression validation landed via `docs/evaluation/p16-trust-calibration-validation.md`
 - Backlog baseline is recorded in `docs/roadmap/phase-16-backlog.md`.
 
 ### Phase 15 - Field Transition Preparation (Closed)
@@ -224,7 +224,7 @@ Known residuals:
 
 ## Open Items
 
-- Trust calibration residual band mismatches are now tracked in P16 epic `#78` and child set `#79/#80/#81`.
+- No open residual blocker is currently tracked for P16.
 
 ## Decision Notes
 
@@ -266,3 +266,5 @@ Known residuals:
 | 2026-03-26 | Residual workstream `P16` was activated on epic `#78` with child issues `#79/#80/#81` to close trust calibration mismatch bands. |
 | 2026-03-26 | P16-A1 `#79` landed baseline residual characterization via `docs/evaluation/p16-trust-calibration-baseline.md` and run `artifacts/runs/p16_a1_baseline_20260326T1410Z/`. |
 | 2026-03-26 | P16-A2 `#80` landed trust calibration tuning via `docs/evaluation/p16-trust-calibration-tuning.md` and run `artifacts/runs/p16_a2_tuning_20260326T1716Z/` with zero calibration mismatches. |
+| 2026-03-27 | P16-A3 `#81` landed final validation via `docs/evaluation/p16-trust-calibration-validation.md` and run `artifacts/runs/p16_a3_validation_20260327T0001Z/` with full matrix PASS. |
+| 2026-03-27 | P16 completion review was finalized and epic `#78` was closed; roadmap phases `0-16` are now fully completed. |

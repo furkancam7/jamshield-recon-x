@@ -1,0 +1,17 @@
+{
+  "entries": [
+    {
+      "position_m": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 28.0
+      },
+      "route_progress_pct": 100.0,
+      "tick_index": 0,
+      "timestamp_ns": 0
+    }
+  ],
+  "run_id": "p16_a3_validation_20260327T0001Z",
+  "scenario_id": "s7_conflict_score_dominates",
+  "schema_version": "1.0"
+}
